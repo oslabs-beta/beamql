@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import styles from '../styles/Home.module.css'
+import Image from 'next/image'
 
 function Navbar() {
 
@@ -30,34 +32,23 @@ function Navbar() {
   // const anchorEl = document.createElement('div');
 
   return (
-    <div>
-      <div id="NavBar">
-        <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+      <div className={styles.navbar}>
+        <Image className={styles.navbarLeft} src="/logo.png" alt="logo" width="100" height="64" />
+        <div className={styles.navbarRight}>
+        <Button style={{color: 'white'}} aria-controls="simple-menu" onClick={handleClick}>
           Sandbox
         </Button>
-        <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+        <Button style={{color: 'white'}} aria-controls="simple-menu" onClick={handleClick}>
           Docs
         </Button>
-        <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+        <Button style={{color: 'white'}} aria-controls="simple-menu" onClick={handleClick}>
           Github
         </Button>
-        <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+        <Button style={{color: 'white'}} aria-controls="simple-menu" onClick={handleClick}>
           Squad
         </Button>
+        </div>
       </div>
-<Menu
-  id="simple-menu"
-  // anchorEl={anchorEl}
-  // keepMounted
-  // open={Boolean(anchorEl)}
-  onClose={handleClose}
->
-  <MenuItem onClick={handleClose}>Profile</MenuItem>
-  <MenuItem onClick={handleClose}>My account</MenuItem>
-  <MenuItem onClick={handleClose}>Logout</MenuItem>
-</Menu>
-    </div>
-
   )
 };
 

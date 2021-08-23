@@ -15,6 +15,11 @@ a {
   box-sizing: border-box;
 }
 
-NavBar {
-  justify-content: 'space-around';
-}
+/* .navbar {
+  display: 'flex';
+  width: 500px;
+  align-items: 'center';
+  /* justify-content: 'space-between';
+  padding: '20px'; 
+  
+} 
