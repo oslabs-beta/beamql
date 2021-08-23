@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+NavBar {
+  justify-content: 'space-around';
+}
