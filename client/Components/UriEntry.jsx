@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 
 const useStyles = makeStyles({
@@ -18,7 +20,8 @@ const useStyles = makeStyles({
 
   const styles = {
       input: {
-        color: 'primary'
+        color: 'white',
+        'background-color': 'white'
       }
   };
 
@@ -29,11 +32,12 @@ export default function UriEntry () {
     return (
         <div id='uri-entry'>
         <form  id="uribox" noValidate autoComplete="off">
-        <TextField className={classes.root} id="filled-basic" color='primary' InputProps={{className: classes.input}} label="Enter database URI" variant='filled'/>
-        
-            <Button className={classes.root} variant="contained" color="white" size="small">
+        <TextField className={classes.root} id="filled-basic" InputProps={{className: classes.input}} label="Enter database URI" variant='filled'/>
+            <Link to='/visualize' >
+            <Button className={classes.root} variant="contained" size="small">
                 Submit
             </Button>
+            </Link>
         
         <FormControl className={classes.root} variant="filled">
         <InputLabel id="demo-simple-select-filled-label" >Sample DB</InputLabel>
@@ -45,12 +49,17 @@ export default function UriEntry () {
           onChange={()=>console.log('click')}
           label='Sample DB'
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={10}>One</MenuItem>
+          <MenuItem value={20}>Two</MenuItem>
+          <MenuItem value={30}>Three</MenuItem>
         </Select>
         </FormControl>
         </form>
+        <ButtonGroup size="large" color="primary" aria-label="large outlined primary button group">
+  <Button>Schema</Button>
+  <Button>Resolver</Button>
+  <Button>Copy</Button>
+</ButtonGroup>
         </div>
         
     )
