@@ -1,9 +1,10 @@
 body {
   margin: 0px;
   background-color: rgb(56, 33, 158);
-  color: black;
+  // color: black;
   font-family: Noto Sans, 'sans-serif';
   outline: none;
+
 }
 
 button:hover {
@@ -17,6 +18,20 @@ button:hover {
     justify-content: flex-end;
     margin: 0;
     background-color: rgb(56, 33, 158);
+}
+
+#gif {
+Display: flex;
+// Height: 80vh;
+Width: 50vw; 
+Align-Items: center;
+margin-left: auto;
+
+margin-right: auto;
+align-self: center;
+justify-self: center;
+Justify-Content: center;
+
 }
 
 .topButtons button {
@@ -43,6 +58,57 @@ button:hover {
     text-align:center;
     transition: all 0.2s;
 }
+#choiceButton{
+  margin-right: 80%;
+}
+#codebox{
+  display: flex;
+  position: absolute;
+  top: 20%;
+  right: 0%;
+  width: 23%;
+  height: auto;
+  justify-content: flex-start;
+  margin: 30px;
+  padding-right: 30px;
+}
+
+#outlined-multiline-static {
+  color: white;
+}
+#outlined-multiline-static-label {
+  color: white;
+  border-color: white;
+}
+
+.PrivateNotchedOutline-root-2 {
+  color: white;
+  border:0.1em solid #FFFFFF;
+}
+
+#erdbackground {
+  display: flex;
+  position: absolute;
+  width: 70%;
+  height: auto;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  color: white;
+  border:0.1em solid #FFFFFF;
+}
+
+.MuiInputBase-root .MuiOutlinedInput-input .MuiInputBase-inputMultiline .MuiOutlinedInput-inputMultiline {
+  color: white;
+  border-color: white;
+  border:0.1em solid #FFFFFF;
+}
+
+legend, fieldset {
+  color: white;
+}
+
+
 
 #uribox {
   display: flex;
@@ -54,19 +120,31 @@ button:hover {
 }
 
 #demo-simple-select-filled-label {
-  color: white
+  color: whitesmoke
+}
+
+input, select, textarea{
+  color: white;
 }
 
 #filled-basic {
-  color: white;
+  color: whitesmoke;
+  background-color: grey;
+  border-radius: 5px;
 }
 .MuiSelect-nativeInput {
   color: white;
 }
 
+.MuiFilledInput-input {
+  color: white;
+  background-color: white;
+}
+
 #logo {
   height: 80px;
   position: absolute;
+  top: 10px;
   left: 20px;
 }
 
