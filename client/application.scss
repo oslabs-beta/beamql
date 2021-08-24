@@ -1,0 +1,361 @@
+body {
+  margin: 0px;
+  background-color: rgb(56, 33, 158);
+  // color: black;
+  font-family: Noto Sans, 'sans-serif';
+  outline: none;
+
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.topButtons {
+    display: flex;
+    height: 100px;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0;
+    background-color: rgb(56, 33, 158);
+}
+
+#gif {
+Display: flex;
+// Height: 80vh;
+Width: 50vw; 
+Align-Items: center;
+margin-left: auto;
+
+margin-right: auto;
+align-self: center;
+justify-self: center;
+Justify-Content: center;
+
+}
+
+.topButtons button {
+    // margin: 0 10px 10px 0px;
+    // border: 3px solid silver;
+    // border-radius: 15px;
+    // background-color: #4c00ff;
+    // color: white;
+    // font-size: 20px;
+    // padding: 10px;
+    // width: 150px;
+    display:inline-block;
+    padding:1em 1.2em;
+    border:0.1em solid #FFFFFF;
+    background-color: rgb(56, 33, 158);
+    margin:0 1em .5em 1em;
+    font-size: 1em;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:#FFFFFF;
+    text-align:center;
+    transition: all 0.2s;
+}
+#choiceButton{
+  margin-right: 80%;
+}
+#codebox{
+  display: flex;
+  position: absolute;
+  top: 20%;
+  right: 0%;
+  width: 23%;
+  height: auto;
+  justify-content: flex-start;
+  margin: 30px;
+  padding-right: 30px;
+}
+
+#outlined-multiline-static {
+  color: white;
+}
+#outlined-multiline-static-label {
+  color: white;
+  border-color: white;
+}
+
+.PrivateNotchedOutline-root-2 {
+  color: white;
+  border:0.1em solid #FFFFFF;
+}
+
+#erdbackground {
+  display: flex;
+  position: absolute;
+  width: 70%;
+  height: auto;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  color: white;
+  border:0.1em solid #FFFFFF;
+}
+
+.MuiInputBase-root .MuiOutlinedInput-input .MuiInputBase-inputMultiline .MuiOutlinedInput-inputMultiline {
+  color: white;
+  border-color: white;
+  border:0.1em solid #FFFFFF;
+}
+
+legend, fieldset {
+  color: white;
+}
+
+
+
+#uribox {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  // border: 3px solid black;
+  justify-content: center;
+  border-radius: 1px;
+}
+
+#demo-simple-select-filled-label {
+  color: whitesmoke
+}
+
+input, select, textarea{
+  color: white;
+}
+
+#filled-basic {
+  color: whitesmoke;
+  background-color: grey;
+  border-radius: 5px;
+}
+.MuiSelect-nativeInput {
+  color: white;
+}
+
+.MuiFilledInput-input {
+  color: white;
+  background-color: white;
+}
+
+#logo {
+  height: 80px;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+.topbuttons button:hover{
+  color:#000000;
+  background-color:#FFFFFF;
+  }
+
+.leftButtons {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.rightButtons { 
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header h1 {
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 40px;
+    margin-top: 15px;
+}
+
+.wrapper__ON_ChoiceBox {
+  height: 240px;
+  width: 450px;
+  margin: auto;
+}
+
+.wrapper_on_table {
+  width: 450px;
+  margin: auto;
+  border: 3px solid #00d8ff;
+  border-radius: 15px;
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+}
+
+#together {
+  display: flex;
+  flex-wrap: wrap;
+  justify-self: center;
+  align-self: center;
+  overflow: hidden;
+}
+
+.wrapper__ON_ChoiceBox h2 {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+}
+// HISTORY text is here ^
+
+.wrapperChoicebox {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  width: 450px;
+  display: flex;
+  font-size: 24px;
+  text-align: center;
+}
+
+.wrapperChoicebox select {
+    border: 2px solid #00d8ff;
+    border-radius: 20px;
+    font-size: 20px;
+    margin: 5px;
+    width: 180px;
+    height: 45px;
+    text-align-last: center;
+    background:rgba(250, 250, 250, 0.2);
+    color: rgba(128, 128, 128, 1);
+
+}
+
+select:focus, input:focus {
+    outline: none;
+}
+
+.wrapperChoiceBox option {
+    font-size: 40px;
+}
+
+.c1test {
+    margin-right: 0px;
+}
+
+.Outsider {
+  margin: auto;
+}
+
+.wrapper {
+  width: 400px;
+  height: 300px;
+  border: 4px solid #00d8ff;
+  border-radius: 25px;
+  margin: auto;
+  font-size: 24px;
+  text-align: justify;
+}
+
+.currency1, .currency2, .defaultcurr {
+    align-items: flex-start;
+    margin: 0 20px;
+    font-family: Noto Sans, 'sans-serif';
+    font-size: large;
+}
+
+
+
+.wrapper2 {
+  width: 700px;
+  height: 415px;
+  margin: auto;
+  font-size: 14px;
+  text-align: justify;
+}
+
+.Inner_wrapper {
+  display: flex;
+  justify-content: space-around;
+  text-align: justify;
+  font-size: 20px;
+  padding: 10px;
+}
+
+
+.wrapperInput {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.wrapperInput input {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.CurrToConvert {
+    padding-left: 10px;
+}
+.convertedAmount {
+  width: 400px;
+  height: 300px;
+  margin: auto;
+}
+
+.convertedAmount {
+    margin-top: 80px;
+}
+
+.inputAmount {
+  font-size: 25px;
+  border: 3px solid #00d8ff;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+  height: 60px;
+  background-color: rgba(250, 250, 250, 0.2);
+}
+
+.amountDisplay, .inputDisplay {
+    display: flex;
+    justify-content: center;
+}
+
+.Outputer {
+    display: flex;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+.graph {
+  margin: auto;
+}
+
+// .build {
+//     height: 500px;
+//     border: 2px solid black;
+// }
+
+.butt {
+    display: flex;
+    justify-content: center;
+}
+
+.butt button {
+    margin: 0 30px 50px 0px;
+    border: 3px solid #00d8ff;
+    border-radius: 15px;
+    background-color: #00d8ff;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    width: 150px;
+}
+
+.button2 button {
+  margin: 0 20px 20px 10px;
+  border: 3px solid #00d8ff;
+  border-radius: 15px;
+  background-color: #00d8ff;
+  color: white;
+  font-size: 20px;
+  padding: 5px;
+  width: 150px;
+}
+
