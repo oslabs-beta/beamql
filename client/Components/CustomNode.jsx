@@ -11,14 +11,9 @@ export default memo(({ key, columns }) => {
         isConnectable={isConnectable}
       />
       <div>
-        Custom Color Picker Node: <strong>{data.color}</strong>
+        <div><strong>{key}</strong></div>
+        {columns.map(el => <div>{el.column_name}</div>)}
       </div>
-      <input
-        className="nodrag"
-        type="color"
-        onChange={data.onChange}
-        defaultValue={data.color}
-      />
       <Handle
         type="source"
         position="right"
