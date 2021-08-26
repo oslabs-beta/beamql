@@ -55,13 +55,13 @@ export default function UriEntry () {
         </Select>
         </FormControl>
         </form>
-        <ButtonGroup size="large" color="primary" aria-label="large outlined primary button group">
-  <Button>Schema</Button>
-  <Button>Resolver</Button>
-  <Button>Copy</Button>
-</ButtonGroup>
+              <div>
+       {/* <ButtonGroup id="Selection"size="large" color="primary" aria-label="large outlined primary button group">
+   <Button>One</Button>
+   <Button>Two</Button>
+   <Button>Three</Button>
+ </ButtonGroup> */}
         </div>
-        
+        </div>
     )
 }
-
