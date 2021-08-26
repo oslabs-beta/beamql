@@ -775,6 +775,7 @@ const typeData = () => {
   //value is an array of objs
   return types;
 };
+//console.log(typeData());
 
 //create arr of objects with first el as table name and second el is an obj of fk colums and the table it references
 const foreignKeyData = () => {
@@ -807,5 +808,141 @@ const foreignKeyData = () => {
 // }
 
 console.log(foreignKeyData());
+
+//logic to determine join tables -> solely has foreign keys as values
+//wont' use join tables as types and input foreign keys as columns on corresponding type object
+
+//add fk vals to  
+
+//add to Type
+
+// Foreign Keys of Each Table
+const fkt = [['people', { homeworld_id: 'planets', species_id: 'species' }],
+['people_in_films', { film_id: 'films', person_id: 'people' }],
+['pilots', { person_id: 'people', vessel_id: 'vessels' }],
+['planets_in_films',
+  { film_id: 'films', planet_id: 'planets' }],
+['species', { homeworld_id: 'planets' }],
+['species_in_films',
+  { film_id: 'films', species_id: 'species' }],
+['starship_specs', { vessel_id: 'vessels' }],
+['vessels_in_films',
+  { film_id: 'films', vessel_id: 'vessels' }]];
+
+// All of the Table Data
+const atd = [ [ 'planets',
+    { _id: 'integer',
+      name: 'character varying',
+      rotation_period: 'integer',
+      orbital_period: 'integer',
+      diameter: 'integer',
+      climate: 'character varying',
+      gravity: 'character varying',
+      terrain: 'character varying',
+      surface_water: 'character varying',
+      population: 'bigint' } ],
+  [ 'pilots',
+    { _id: 'integer', person_id: 'bigint', vessel_id: 'bigint' } ],
+  [ 'people_in_films',
+    { _id: 'integer', person_id: 'bigint', film_id: 'bigint' } ],
+  [ 'films',
+    { _id: 'integer',
+      title: 'character varying',
+      episode_id: 'integer',
+      opening_crawl: 'character varying',
+      director: 'character varying',
+      producer: 'character varying',
+      release_date: 'date' } ],
+  [ 'species',
+    { _id: 'integer',
+      name: 'character varying',
+      classification: 'character varying',
+      average_height: 'character varying',
+      average_lifespan: 'character varying',
+      hair_colors: 'character varying',
+      skin_colors: 'character varying',
+      eye_colors: 'character varying',
+      language: 'character varying',
+      homeworld_id: 'bigint' } ],
+  [ 'species_in_films',
+    { _id: 'integer', film_id: 'bigint', species_id: 'bigint' } ],
+  [ 'vessels',
+    { _id: 'integer',
+      name: 'character varying',
+      manufacturer: 'character varying',
+      model: 'character varying',
+      vessel_type: 'character varying',
+      vessel_class: 'character varying',
+      cost_in_credits: 'bigint',
+      length: 'character varying',
+      max_atmosphering_speed: 'character varying',
+      crew: 'integer',
+      passengers: 'integer',
+      cargo_capacity: 'character varying',
+      consumables: 'character varying' } ],
+  [ 'vessels_in_films',
+    { _id: 'integer', vessel_id: 'bigint', film_id: 'bigint' } ],
+  [ 'people',
+    { _id: 'integer',
+      name: 'character varying',
+      mass: 'character varying',
+      hair_color: 'character varying',
+      skin_color: 'character varying',
+      eye_color: 'character varying',
+      birth_year: 'character varying',
+      gender: 'character varying',
+      species_id: 'bigint',
+      homeworld_id: 'bigint',
+      height: 'integer' } ],
+  [ 'planets_in_films',
+    { _id: 'integer', film_id: 'bigint', planet_id: 'bigint' } ],
+  [ 'starship_specs',
+    { _id: 'integer',
+      hyperdrive_rating: 'character varying',
+      MGLT: 'character varying'
+}]
+]
+
+// numberofkeysObj 
+const numForeignKeys = {} // stores foreign key count from foreign key table (arr of arr)
+const countForeignKeys = (foreignKeys) => {
+  foreignKeys.forEach(purpleArray => { //purple arr for each table
+    const count = Object.keys(purpleArray[1]).length; //counts foreign keys
+    numForeignKeys[purpleArray[0]] = count;
+  })
+}
+// countForeignKeys(fkt)
+// console.log(`foreign key obj`, numForeignKeys)
+//number of total keys // tableObjectForNumKeys {planets: 17}
+const numTotalKeys = {} // stores num keys for each table from all table data
+const countTotalKeys = (allTables) => {
+  allTables.forEach(table => { //table is an array
+    const count = Object.keys(table[1]).length
+    numTotalKeys[table[0]] = count
+  })
+}
+
+countTotalKeys(atd);
+console.log(`total keys obj`, numTotalKeys);
+
+const nonJoinTables = []
+const joinTables = []
+// function typesGenerator(foreignKeys, allTables) {
+// // [nonjoin tables]
+// //find join tables
+//   //loop through all tables
+
+
+
+//   for(let i = 0; i < allTables.length; i++) {
+//     //ifjointable (determined by if # of keys of table data <=  foreignkeys + 1 || fkArr does not include table name i.e. planets)
+//     if()
+
+//   }
+//     //ifnotjointable add to [nonjointables]
+  
+// };
+
+// typesGenerator(fkt, atd)
 
 //console.log(typeData())
