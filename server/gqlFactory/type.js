@@ -998,26 +998,56 @@ function capFirstLet(string) {
 //add join table keys
 const typeObj = {}
 const typeCreator = (nonJoinTables, joinTables, fkTable) => {
-  for (const key in nonJoinTables) { // key: people
+  for (const key in nonJoinTables) { // key: people / starship spec
     if (!fkTable[key]) { //
       typeObj[key] = nonJoinTables[key];
     } else {
       typeObj[key] = {};
-      for (const prop in nonJoinTables[key]) {
+      for (const prop in nonJoinTables[key]) {//prop: key within the people obj / hyperdrive
         if (prop in fkTable[key] === false) {
           typeObj[key][prop] = nonJoinTables[key][prop];
         } else {
           const temp = fkTable[key][prop]
-          typeObj[key][temp] = capFirstLet(singular(temp));
+          typeObj[key][temp] = '['+capFirstLet(singular(temp))+']';
         }
       }
     }
   }
 }
 
+// [Planet]
 typeCreator(nonJoinTables, joinTables, fktAsObj);
-console.log(`typeObj`, typeObj);
+// console.log(`typeObj`, typeObj);
 
 
 // add join table keys to typeObjects
+const otherKeyFinder = (typeObject, fKTAO) => { //fkTAO = foreign key table object
+  // take type obj keys
+  for(let key in typeObject) { // key is people
+    // look through values OF values OF fktasObj
+    for(let fktObjKey in fKTAO) {
+      const arrFK = Object.values(fKTAO[fktObjKey]) //values of objects in fktasobject as an array
+      if (arrFK.includes(key)) {
+        const valsToInput = arrFK.filter(elem => elem !== key)
+        valsToInput.forEach(val => {
+          console.log(val)
+          typeObject[key][val] = '['+capFirstLet(singular(val))+']'
+        })
+      }
+    }
+
+  }
+  // if matches, take any OTHER value and set as key in typeObj, value as singular[]
+}
 // 
+otherKeyFinder(typeObj, fktAsObj)
+console.log('HERE', typeObj)
+
+
+//At end, when exporting as GQL formatting, need to regex and remove all quotation marks
+//throw type defs completely into backtick and ship it off to Alaska
+
+// PLNAETS missing person 
+// species missing person
+// vessels msising starship spec
+// starship spec missing vessel
