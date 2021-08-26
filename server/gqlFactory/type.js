@@ -899,7 +899,8 @@ const fkt = [['people', { homeworld_id: 'planets', species_id: 'species' }],
   [ 'starship_specs',
   { _id: 'integer',
   hyperdrive_rating: 'character varying',
-  MGLT: 'character varying'
+    MGLT: 'character varying',
+    vessel_id: 'bigint'
 }]
 ]
 
@@ -1051,3 +1052,83 @@ console.log('HERE', typeObj)
 // species missing person
 // vessels msising starship spec
 // starship spec missing vessel
+
+const afterTrainWreck = {
+  planets: {
+    _id: 'integer',
+    name: 'character varying',
+    rotation_period: 'integer',
+    orbital_period: 'integer',
+    diameter: 'integer',
+    climate: 'character varying',
+    gravity: 'character varying',
+    terrain: 'character varying',
+    surface_water: 'character varying',
+    population: 'bigint',
+    species: '[Species]',
+    films: '[Film]'
+  },
+  films: {
+    _id: 'integer',
+    title: 'character varying',
+    episode_id: 'integer',
+    opening_crawl: 'character varying',
+    director: 'character varying',
+    producer: 'character varying',
+    release_date: 'date',
+    people: '[Person]',
+    planets: '[Planet]',
+    species: '[Species]',
+    vessels: '[Vessel]'
+  },
+  species: {
+    _id: 'integer',
+    name: 'character varying',
+    classification: 'character varying',
+    average_height: 'character varying',
+    average_lifespan: 'character varying',
+    hair_colors: 'character varying',
+    skin_colors: 'character varying',
+    eye_colors: 'character varying',
+    language: 'character varying',
+    planets: '[Planet]',
+    films: '[Film]'
+  },
+  vessels: {
+    _id: 'integer',
+    name: 'character varying',
+    manufacturer: 'character varying',
+    model: 'character varying',
+    vessel_type: 'character varying',
+    vessel_class: 'character varying',
+    cost_in_credits: 'bigint',
+    length: 'character varying',
+    max_atmosphering_speed: 'character varying',
+    crew: 'integer',
+    passengers: 'integer',
+    cargo_capacity: 'character varying',
+    consumables: 'character varying',
+    people: '[Person]',
+    films: '[Film]'
+  },
+  people: {
+    _id: 'integer',
+    name: 'character varying',
+    mass: 'character varying',
+    hair_color: 'character varying',
+    skin_color: 'character varying',
+    eye_color: 'character varying',
+    birth_year: 'character varying',
+    gender: 'character varying',
+    species: '[Species]',
+    planets: '[Planet]',
+    height: 'integer',
+    films: '[Film]',
+    vessels: '[Vessel]'
+  },
+  starship_specs: {
+    _id: 'integer',
+    hyperdrive_rating: 'character varying',
+    MGLT: 'character varying'
+  }
+}
