@@ -829,80 +829,85 @@ const fkt = [['people', { homeworld_id: 'planets', species_id: 'species' }],
 ['vessels_in_films',
   { film_id: 'films', vessel_id: 'vessels' }]];
 
-// All of the Table Data
-const atd = [ [ 'planets',
-    { _id: 'integer',
-      name: 'character varying',
-      rotation_period: 'integer',
-      orbital_period: 'integer',
-      diameter: 'integer',
-      climate: 'character varying',
-      gravity: 'character varying',
-      terrain: 'character varying',
-      surface_water: 'character varying',
-      population: 'bigint' } ],
+  // All of the Table Data
+  const atd = [ [ 'planets',
+  { _id: 'integer',
+  name: 'character varying',
+  rotation_period: 'integer',
+  orbital_period: 'integer',
+  diameter: 'integer',
+  climate: 'character varying',
+  gravity: 'character varying',
+  terrain: 'character varying',
+  surface_water: 'character varying',
+  population: 'bigint' } ],
   [ 'pilots',
-    { _id: 'integer', person_id: 'bigint', vessel_id: 'bigint' } ],
+  { _id: 'integer', person_id: 'bigint', vessel_id: 'bigint' } ],
   [ 'people_in_films',
-    { _id: 'integer', person_id: 'bigint', film_id: 'bigint' } ],
+  { _id: 'integer', person_id: 'bigint', film_id: 'bigint' } ],
   [ 'films',
-    { _id: 'integer',
-      title: 'character varying',
-      episode_id: 'integer',
-      opening_crawl: 'character varying',
-      director: 'character varying',
-      producer: 'character varying',
-      release_date: 'date' } ],
+  { _id: 'integer',
+  title: 'character varying',
+  episode_id: 'integer',
+  opening_crawl: 'character varying',
+  director: 'character varying',
+  producer: 'character varying',
+  release_date: 'date' } ],
   [ 'species',
-    { _id: 'integer',
-      name: 'character varying',
-      classification: 'character varying',
-      average_height: 'character varying',
-      average_lifespan: 'character varying',
-      hair_colors: 'character varying',
-      skin_colors: 'character varying',
-      eye_colors: 'character varying',
-      language: 'character varying',
-      homeworld_id: 'bigint' } ],
+  { _id: 'integer',
+  name: 'character varying',
+  classification: 'character varying',
+  average_height: 'character varying',
+  average_lifespan: 'character varying',
+  hair_colors: 'character varying',
+  skin_colors: 'character varying',
+  eye_colors: 'character varying',
+  language: 'character varying',
+  homeworld_id: 'bigint' } ],
   [ 'species_in_films',
-    { _id: 'integer', film_id: 'bigint', species_id: 'bigint' } ],
+  { _id: 'integer', film_id: 'bigint', species_id: 'bigint' } ],
   [ 'vessels',
-    { _id: 'integer',
-      name: 'character varying',
-      manufacturer: 'character varying',
-      model: 'character varying',
-      vessel_type: 'character varying',
-      vessel_class: 'character varying',
-      cost_in_credits: 'bigint',
-      length: 'character varying',
-      max_atmosphering_speed: 'character varying',
-      crew: 'integer',
-      passengers: 'integer',
-      cargo_capacity: 'character varying',
-      consumables: 'character varying' } ],
+  { _id: 'integer',
+  name: 'character varying',
+  manufacturer: 'character varying',
+  model: 'character varying',
+  vessel_type: 'character varying',
+  vessel_class: 'character varying',
+  cost_in_credits: 'bigint',
+  length: 'character varying',
+  max_atmosphering_speed: 'character varying',
+  crew: 'integer',
+  passengers: 'integer',
+  cargo_capacity: 'character varying',
+  consumables: 'character varying' } ],
   [ 'vessels_in_films',
-    { _id: 'integer', vessel_id: 'bigint', film_id: 'bigint' } ],
+  { _id: 'integer', vessel_id: 'bigint', film_id: 'bigint' } ],
   [ 'people',
-    { _id: 'integer',
-      name: 'character varying',
-      mass: 'character varying',
-      hair_color: 'character varying',
-      skin_color: 'character varying',
-      eye_color: 'character varying',
-      birth_year: 'character varying',
-      gender: 'character varying',
-      species_id: 'bigint',
-      homeworld_id: 'bigint',
-      height: 'integer' } ],
+  { _id: 'integer',
+  name: 'character varying',
+  mass: 'character varying',
+  hair_color: 'character varying',
+  skin_color: 'character varying',
+  eye_color: 'character varying',
+  birth_year: 'character varying',
+  gender: 'character varying',
+  species_id: 'bigint',
+  homeworld_id: 'bigint',
+  height: 'integer' } ],
   [ 'planets_in_films',
-    { _id: 'integer', film_id: 'bigint', planet_id: 'bigint' } ],
+  { _id: 'integer', film_id: 'bigint', planet_id: 'bigint' } ],
   [ 'starship_specs',
-    { _id: 'integer',
-      hyperdrive_rating: 'character varying',
-      MGLT: 'character varying'
+  { _id: 'integer',
+  hyperdrive_rating: 'character varying',
+  MGLT: 'character varying'
 }]
 ]
 
+//convert tupils into objs
+const fktAsObj = Object.fromEntries(fkt);
+
+const atdAsObj = Object.fromEntries(atd);
+console.log(`atd as Obj`, atdAsObj);
 // numberofkeysObj 
 const numForeignKeys = {} // stores foreign key count from foreign key table (arr of arr)
 const countForeignKeys = (foreignKeys) => {
@@ -911,7 +916,7 @@ const countForeignKeys = (foreignKeys) => {
     numForeignKeys[purpleArray[0]] = count;
   })
 }
-// countForeignKeys(fkt)
+countForeignKeys(fkt)
 // console.log(`foreign key obj`, numForeignKeys)
 //number of total keys // tableObjectForNumKeys {planets: 17}
 const numTotalKeys = {} // stores num keys for each table from all table data
@@ -923,10 +928,22 @@ const countTotalKeys = (allTables) => {
 }
 
 countTotalKeys(atd);
-console.log(`total keys obj`, numTotalKeys);
+// console.log(`total keys obj`, numTotalKeys);
 
 const nonJoinTables = []
 const joinTables = []
+
+// numForeignKeys, numTotalKeys, fkt, atd
+const isJoinTable = (fKeyCount, pKeyCount, foreignKeyTable, allTableData) => { //filling non & joinTables
+  for(const key in fKeyCount) {
+    if(fKeyCount[key] + 1 >= pKeyCount[key]) { // loop through fkey table & find if key is in pKey table AND # corresponds to # in pKey => IS A JOIN TABLE
+
+    } else {
+
+    }
+  }
+}
+isJoinTable(numForeignKeys, numTotalKeys, fkt, atd)
 // function typesGenerator(foreignKeys, allTables) {
 // // [nonjoin tables]
 // //find join tables
@@ -943,6 +960,7 @@ const joinTables = []
   
 // };
 
+// in order to get Type
 // typesGenerator(fkt, atd)
 
 //console.log(typeData())
