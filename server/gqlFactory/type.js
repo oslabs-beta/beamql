@@ -1,4 +1,4 @@
-//const { singular } = require('pluralize');
+const { singular } = require('pluralize');
 
 const data = {
   allTables: {
@@ -807,7 +807,7 @@ const foreignKeyData = () => {
 //   return fks;
 // }
 
-console.log(foreignKeyData());
+// console.log(foreignKeyData());
 
 //logic to determine join tables -> solely has foreign keys as values
 //wont' use join tables as types and input foreign keys as columns on corresponding type object
@@ -904,10 +904,7 @@ const fkt = [['people', { homeworld_id: 'planets', species_id: 'species' }],
 ]
 
 //convert tupils into objs
-const fktAsObj = Object.fromEntries(fkt);
-
-const atdAsObj = Object.fromEntries(atd);
-console.log(`atd as Obj`, atdAsObj);
+// console.log(`atd as Obj`, atdAsObj);
 // numberofkeysObj 
 const numForeignKeys = {} // stores foreign key count from foreign key table (arr of arr)
 const countForeignKeys = (foreignKeys) => {
@@ -930,20 +927,27 @@ const countTotalKeys = (allTables) => {
 countTotalKeys(atd);
 // console.log(`total keys obj`, numTotalKeys);
 
-const nonJoinTables = []
-const joinTables = []
+const fktAsObj = Object.fromEntries(fkt);
+
+const atdAsObj = Object.fromEntries(atd);
+
+const nonJoinTables = {}
+const joinTables = {}
+
 
 // numForeignKeys, numTotalKeys, fkt, atd
-const isJoinTable = (fKeyCount, pKeyCount, foreignKeyTable, allTableData) => { //filling non & joinTables
-  for(const key in fKeyCount) {
-    if(fKeyCount[key] + 1 >= pKeyCount[key]) { // loop through fkey table & find if key is in pKey table AND # corresponds to # in pKey => IS A JOIN TABLE
-
-    } else {
-
+const isJoinTable = (fKeyCount, pKeyCount, fktObject, atdObject) => { //filling non & joinTables
+  for(const key in pKeyCount) {
+    if(fKeyCount[key] + 1 === pKeyCount[key]) { // loop through fkey table & find if key is in pKey table AND # corresponds to # in pKey => IS A JOIN TABLE // never > but is === always going to be true? test later shit to do rn
+      joinTables[key] = atdObject[key]
+    } else { // NOT JOIN TABLE
+      nonJoinTables[key] = atdObject[key]
     }
   }
 }
-isJoinTable(numForeignKeys, numTotalKeys, fkt, atd)
+isJoinTable(numForeignKeys, numTotalKeys, fktAsObj, atdAsObj);
+// console.log('NONJOINTABLESHERE', nonJoinTables);
+// console.log(`isJoinTable`, joinTables);
 // function typesGenerator(foreignKeys, allTables) {
 // // [nonjoin tables]
 // //find join tables
@@ -964,3 +968,56 @@ isJoinTable(numForeignKeys, numTotalKeys, fkt, atd)
 // typesGenerator(fkt, atd)
 
 //console.log(typeData())
+
+// type Person {
+//   _id: ID!
+//   gender: String
+//   height: Int
+//   mass: String
+//   hair_color: String
+//   skin_color: String
+//   eye_color: String
+//   name: String!
+//   birth_year: String
+//   species: [Species]
+//   planets: [Planet]
+//   films: [Film]
+//   vessels: [Vessel]
+// }
+
+
+function capFirstLet(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+// planets: [Planet]
+// npm i pluralize  --save
+// const pluralize = require('pluralize')
+// go into {nonJoinTables}, loop, w/ each key find corresponding in {fktAsObject}, change FK(key) on nonJoinTables to value of fktAsObj and value to singular of fk
+//create new obj with key as singular and keyvalues of all non FKs
+//add foreign keys
+//add join table keys
+const typeObj = {}
+const typeCreator = (nonJoinTables, joinTables, fkTable) => {
+  for (const key in nonJoinTables) { // key: people
+    if (!fkTable[key]) { //
+      typeObj[key] = nonJoinTables[key];
+    } else {
+      typeObj[key] = {};
+      for (const prop in nonJoinTables[key]) {
+        if (prop in fkTable[key] === false) {
+          typeObj[key][prop] = nonJoinTables[key][prop];
+        } else {
+          const temp = fkTable[key][prop]
+          typeObj[key][temp] = capFirstLet(singular(temp));
+        }
+      }
+    }
+  }
+}
+
+typeCreator(nonJoinTables, joinTables, fktAsObj);
+console.log(`typeObj`, typeObj);
+
+
+// add join table keys to typeObjects
+// 
