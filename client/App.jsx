@@ -5,6 +5,7 @@ import UriEntry from './Components/UriEntry.jsx';
 import theme from './theme';
 import { ThemeProvider } from '@material-ui/core';
 import CodeOutput from './Components/CodeOutput.jsx';
+import CodeOutputButtons from './Components/CodeOutputButtons.jsx';
 import CustomNodeExample from './Components/Diagram.jsx';
 
 // | App (contains navbar)
@@ -45,10 +46,11 @@ class App extends Component {
     return (
       <Router>
         <div className="header">
-          <div className="topButtons">
-            <Link to='/'>
+        <Link to='/'>
             <img id="logo" src='./dist/logo.png' />
             </Link>
+          <div className="topButtons">
+           
               <Link to='/signup'>
                 <button
                   className="signup-btn"
@@ -87,6 +89,7 @@ class App extends Component {
             </Route>
              <Route exact path="/visualize">
              <CustomNodeExample />
+             <CodeOutputButtons />
                <CodeOutput />
              </Route>
   

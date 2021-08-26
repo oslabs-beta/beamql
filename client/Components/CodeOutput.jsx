@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
-import ButtonGroup from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
+
 
 const useStyles = makeStyles({
     root: {
@@ -45,7 +47,7 @@ const styles = makeStyles({
 function CodeOutput () {
     const classes = styles();
     return (
-        <div id="codebox">
+  <div id="codebox">
     <TextField
           id="outlined-multiline-static"
           fullWidth={true}
@@ -60,6 +62,8 @@ function CodeOutput () {
           variant="outlined"
         />
         </div>
+      
+       
     )
 };
 

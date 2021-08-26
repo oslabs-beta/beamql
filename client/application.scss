@@ -12,7 +12,16 @@ button:hover {
 }
 
 .node-key {
-  background-color: black;
+  font-weight: bolder;
+  text-align: center;
+  padding: 3px;
+  font-size: 1.3em;
+}
+
+hr{
+  padding: 0px;
+  margin: 0px;
+  border-color: rgba(0, 0, 0, 0.75); 
 }
 
 .topButtons {
@@ -65,20 +74,47 @@ Justify-Content: center;
 #choiceButton{
   margin-right: 80%;
 }
+
+#Selection {
+  display: flex;
+  position: absolute;
+  justify-content: flex-end;
+  width: 20%;
+  right: 40px;
+  top: 18%;
+}
+
+#Selection button {
+  display:inline-block;
+  border:0.1em solid #FFFFFF;
+  background-color: whitesmoke;
+  margin:0 0.2em .2em .2em;
+  font-size: 1em;
+  border-radius:0.12em;
+  width: 30%;
+  // box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  font-weight:300;
+  color: rgb(56, 33, 158);
+  text-align:center;
+  transition: all 0.2s solid black;
+}
+
 #codebox{
   display: flex;
   position: absolute;
   top: 20%;
-  right: 0%;
   width: 23%;
   height: auto;
-  justify-content: flex-start;
-  margin: 30px;
-  padding-right: 30px;
+  right: 20px;
+  justify-content: flex-end;
+  margin: 10px;
+  padding-right: 10px;
 }
 
 #outlined-multiline-static {
-  color: white;
+  color: whitesmoke;
 }
 #outlined-multiline-static-label {
   color: white;
@@ -93,8 +129,7 @@ Justify-Content: center;
 #erdbackground {
   display: flex;
   position: absolute;
-  width: 70%;
-  height: auto;
+  border: 1px solid #FFFFFF;
 }
 
 .MuiOutlinedInput-notchedOutline {
@@ -112,13 +147,10 @@ legend, fieldset {
   color: white;
 }
 
-
-
 #uribox {
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  // border: 3px solid black;
   justify-content: center;
   border-radius: 1px;
 }
@@ -128,12 +160,12 @@ legend, fieldset {
 }
 
 input, select, textarea{
-  color: white;
+  color: grey;
 }
 
 #filled-basic {
-  color: whitesmoke;
-  background-color: grey;
+  color: purple;
+  background-color:lightgray;
   border-radius: 5px;
 }
 .MuiSelect-nativeInput {
@@ -146,10 +178,10 @@ input, select, textarea{
 }
 
 #logo {
-  height: 80px;
+  height: 150px;
   position: absolute;
-  top: 10px;
-  left: 20px;
+  top: 20px;
+  left: 40px;
 }
 
 .topbuttons button:hover{

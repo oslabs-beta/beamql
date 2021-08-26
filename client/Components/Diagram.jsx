@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactFlow, { Handle, Background } from 'react-flow-renderer';
+import ReactFlow, { Handle, Background, Controls } from 'react-flow-renderer';
 import CustomNode from './CustomNode.jsx';
 
 const data = {
@@ -587,6 +587,7 @@ const data = {
             }
         ]
     },
+    
     "foreignKeys": [
         {
             "foreign_table": "people",
@@ -760,60 +761,93 @@ const data = {
     ]
 }
 const coords = [[30, 20], [280, 20], [530, 20], [780, 20], [1030, 20], [30, 320], [280, 320], [530, 320], [780, 320], [1030, 320], [30, 620], [280, 620], [530, 620], [780, 620], [1030, 620], [30, 920], [280, 920], [530, 920], [780, 920], [1030, 920], [30, 1220], [280, 1220], [530, 1220], [780, 1220], [1030, 1220]];
-const nodes = [];
+let elements = [];
 let i =0;
 for (let [key, val] of Object.entries(data.allTables)) {
     //create a new node for the key
     
     let newNode = {
-        id: nodes.length,
+        id: `${elements.length}`,
         type: 'special',
         position: { x: coords[i][0], y: coords[i][1] },
-        data: { key: key, columns: [], fks: [] }
+        data: { key: key, columns: [], fks: [], pk: false }
     }
     i++;
     val.forEach(el => {
         for (let j = 0; j < data.foreignKeys.length; j++) {
             let fkObj = data.foreignKeys[j];
             if ( fkObj.fk_columns === el.column_name && fkObj.foreign_table === key ) {
-                console.log(fkObj.fk_columns, el.column_name, fkObj.foreign_table, key);
                 newNode.data.fks.push({...fkObj, pos: el.ordinal_position})
-            } else {
-                console.log('FAIL', fkObj.fk_columns, el.column_name, fkObj.foreign_table, key);
             }
         }
-        
+    
         newNode.data.columns.push(el.column_name);
     })
 
-    nodes.push(newNode);
+    elements.push(newNode);
 }
-
-
+let edgesEls = [];
+//loop through data foreign keys (fkObject)
+for (let i = 0; i < data.foreignKeys.length; i++) {
+    //getting source id and target id
+    let sourceId = false;
+    let targetId = false;
+    let sourceColId;
+        //while loop through elements and if el.data.key === fkObject.foreign_table,
+    elements.forEach(el => {
+        
+        if(el.data.key === data.foreignKeys[i].foreign_table){
+            
+            sourceId = el.id;
+          for(let j = 0; j < el.data.fks.length; j++){
+                if(el.data.fks[j].fk_columns === data.foreignKeys[i].fk_columns){
+                    sourceColId = el.data.fks[j].pos;
+                }
+          }
+        }
+        if(el.data.key === data.foreignKeys[i].primary_table){
+            el.data.pk = true;
+            targetId = el.id;
+        }
+    })
+        //get targethandle
+        //    loop through 
+        //append new edge obj to elements
+    const newEdge =  {
+        id: `e${i}`,
+        source: sourceId,
+        target: targetId,
+        sourceHandle: `${sourceColId}`,
+        arrowHeadType: 'arrow',
+        style: { stroke: 'gray', transparency: '0.9' },
+        animated: false,
+    }
+    edgesEls.push(newEdge)
+}
+console.log('nodes', elements);
+console.log('edges', edgesEls);
+// elements.concat(edgesEls);
+elements = [...elements, ...edgesEls];
+console.log('all els', elements);
 const customNodeStyles = {
-  background: '#9CA8B3',
-  color: '#FFF',
-  padding: 10,
+  background: 'lightgray',
+  color: 'rgba(0, 0, 0, 0.75)',
+  padding: '10px',
+  borderRadius: '4px'
 };
 
 const CustomNodeComponent = ({ data }) => {
     let count = 0;
-    console.log(data)
   return (
     <div style={customNodeStyles}>
-      <Handle type="target" position="left" style={{ top: '20px', borderRadius: 5 }} />
+      
       <div className="node-key">{data.key}</div>
-      {data.columns.map(el=> <div>{el}</div>)}
+      <hr/>
+      {data.pk ? <Handle type="target" position="left" style={{ top: '56px', borderRadius: 5 }} /> : "" }
+      {data.columns.map(el => <div>{el}</div>)}
       <div>
-      {data.fks.map(el=> <Handle type="target" position="right" key={`${count++}`} style={{ top: `${42+(el.pos-1)*23}px`, borderRadius: 5 }} />)}
-      </div>}
-      {/*}
-      <Handle
-        type="source"
-        position="right"
-        id="b"
-        style={{ top: '95%', borderRadius: 5 }}
-      /> */}
+      {data.fks.map(el=> <Handle type="source" position="right" key={`${count++}`} id={`${el.pos}`} style={{ top: `${56+(el.pos-1)*23}px`, borderRadius: 5 }} />)}
+      </div>
     </div>
   );
 };
@@ -824,15 +858,16 @@ const nodeTypes = {
 
 const CustomNodeExample = () => {
   return (
-    <div style={{ height: 'auto', width: '70%' }}>
-      <ReactFlow elements={nodes} nodeTypes={nodeTypes}>
+    //   <div id="renderContainer" style={{ position: 'absolute', right: 0 }}>
+    <div style={{ height: '75vh', border: '0.1em solid #FFFFFF', borderRadius: '5px', width: '70%'}}>
+      <ReactFlow elements={elements} nodeTypes={nodeTypes}>
       <Background id="erdbackground"
       variant="dots"
-      gap={50}
-      size={1}
     />
+    <Controls style={{ position: 'absolute', left: '67vw' }} />
     </ReactFlow>
     </div>
+    // </div>
   );
 };
 
