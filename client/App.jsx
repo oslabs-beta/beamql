@@ -46,10 +46,11 @@ class App extends Component {
     return (
       <Router>
         <div className="header">
-          <div className="topButtons">
-            <Link to='/'>
+        <Link to='/'>
             <img id="logo" src='./dist/logo.png' />
             </Link>
+          <div className="topButtons">
+           
               <Link to='/signup'>
                 <button
                   className="signup-btn"

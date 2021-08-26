@@ -12,7 +12,16 @@ button:hover {
 }
 
 .node-key {
-  background-color: black;
+  font-weight: bolder;
+  text-align: center;
+  padding: 3px;
+  font-size: 1.3em;
+}
+
+hr{
+  padding: 0px;
+  margin: 0px;
+  border-color: rgba(0, 0, 0, 0.75); 
 }
 
 .topButtons {
@@ -105,7 +114,7 @@ Justify-Content: center;
 }
 
 #outlined-multiline-static {
-  color: white;
+  color: whitesmoke;
 }
 #outlined-multiline-static-label {
   color: white;
@@ -120,6 +129,7 @@ Justify-Content: center;
 #erdbackground {
   display: flex;
   position: absolute;
+  border: 1px solid #FFFFFF;
 }
 
 .MuiOutlinedInput-notchedOutline {
@@ -146,16 +156,16 @@ legend, fieldset {
 }
 
 #demo-simple-select-filled-label {
-  color: white
+  color: whitesmoke
 }
 
 input, select, textarea{
-  color: white;
+  color: grey;
 }
 
 #filled-basic {
-  color: white;
-  background-color: white;
+  color: purple;
+  background-color:lightgray;
   border-radius: 5px;
 }
 .MuiSelect-nativeInput {
@@ -168,10 +178,10 @@ input, select, textarea{
 }
 
 #logo {
-  height: 80px;
+  height: 150px;
   position: absolute;
-  top: 10px;
-  left: 20px;
+  top: 20px;
+  left: 40px;
 }
 
 .topbuttons button:hover{

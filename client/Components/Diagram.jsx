@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactFlow, { Handle, Background } from 'react-flow-renderer';
+import ReactFlow, { Handle, Background, Controls } from 'react-flow-renderer';
 import CustomNode from './CustomNode.jsx';
 
 const data = {
@@ -770,7 +770,7 @@ for (let [key, val] of Object.entries(data.allTables)) {
         id: `${elements.length}`,
         type: 'special',
         position: { x: coords[i][0], y: coords[i][1] },
-        data: { key: key, columns: [], fks: [] }
+        data: { key: key, columns: [], fks: [], pk: false }
     }
     i++;
     val.forEach(el => {
@@ -806,7 +806,7 @@ for (let i = 0; i < data.foreignKeys.length; i++) {
           }
         }
         if(el.data.key === data.foreignKeys[i].primary_table){
-           
+            el.data.pk = true;
             targetId = el.id;
         }
     })
@@ -818,7 +818,6 @@ for (let i = 0; i < data.foreignKeys.length; i++) {
         source: sourceId,
         target: targetId,
         sourceHandle: `${sourceColId}`,
-        type: 'smoothstep',
         arrowHeadType: 'arrow',
         style: { stroke: 'gray', transparency: '0.9' },
         animated: false,
@@ -831,21 +830,23 @@ console.log('edges', edgesEls);
 elements = [...elements, ...edgesEls];
 console.log('all els', elements);
 const customNodeStyles = {
-  background: '#9CA8B3',
-  color: '#FFF',
-  padding: 10,
+  background: 'lightgray',
+  color: 'rgba(0, 0, 0, 0.75)',
+  padding: '10px',
+  borderRadius: '4px'
 };
 
 const CustomNodeComponent = ({ data }) => {
     let count = 0;
-    console.log(data)
   return (
     <div style={customNodeStyles}>
-      <Handle type="target" position="left" style={{ top: '43px', borderRadius: 5 }} />
+      
       <div className="node-key">{data.key}</div>
-      {data.columns.map(el=> <div>{el}</div>)}
+      <hr/>
+      {data.pk ? <Handle type="target" position="left" style={{ top: '56px', borderRadius: 5 }} /> : "" }
+      {data.columns.map(el => <div>{el}</div>)}
       <div>
-      {data.fks.map(el=> <Handle type="source" position="right" key={`${count++}`} id={`${el.pos}`} style={{ top: `${42+(el.pos-1)*23}px`, borderRadius: 5 }} />)}
+      {data.fks.map(el=> <Handle type="source" position="right" key={`${count++}`} id={`${el.pos}`} style={{ top: `${56+(el.pos-1)*23}px`, borderRadius: 5 }} />)}
       </div>
     </div>
   );
@@ -858,13 +859,12 @@ const nodeTypes = {
 const CustomNodeExample = () => {
   return (
     //   <div id="renderContainer" style={{ position: 'absolute', right: 0 }}>
-    <div style={{ height: 'auto', width: '70%'}}>
+    <div style={{ height: '75vh', border: '0.1em solid #FFFFFF', borderRadius: '5px', width: '70%'}}>
       <ReactFlow elements={elements} nodeTypes={nodeTypes}>
       <Background id="erdbackground"
       variant="dots"
-      gap={50}
-      size={1}
     />
+    <Controls style={{ position: 'absolute', left: '67vw' }} />
     </ReactFlow>
     </div>
     // </div>
