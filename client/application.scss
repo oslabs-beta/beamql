@@ -7,6 +7,20 @@ body {
 
 }
 
+#gifheader {
+  margin: 0px;
+ 
+  color: white;
+  font-size: 8em;
+  text-align: center;
+  position: absolute;
+  top:40%;
+  left: 20%;
+  font-family: Noto Sans, 'sans-serif';
+  outline: none;
+
+}
+
 button:hover {
     cursor: pointer;
 }
@@ -110,7 +124,6 @@ Justify-Content: center;
   right: 20px;
   justify-content: flex-end;
   margin: 10px;
-  padding-right: 10px;
 }
 
 #outlined-multiline-static {

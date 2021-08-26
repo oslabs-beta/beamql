@@ -20,21 +20,22 @@ const useStyles = makeStyles({
 
   const styles = {
       input: {
-        color: 'white',
         'background-color': 'white'
       }
   };
 
 
 
-export default function UriEntry () {
+export default function UriEntry(props) {
+    console.log(props.gTD);
+    
     const classes = useStyles();
     return (
         <div id='uri-entry'>
         <form  id="uribox" noValidate autoComplete="off">
-        <TextField className={classes.root} id="filled-basic" InputProps={{className: classes.input}} label="Enter database URI" variant='filled'/>
+        <TextField className={classes.root} id="filled-basic" onBlur={() => props.gTD()} InputProps={{className: classes.input}} label="Enter database URI" variant='filled'/>
             <Link to='/visualize' >
-            <Button className={classes.root} variant="contained" size="small">
+            <Button className={classes.root}  variant="contained"  size="small">
                 Submit
             </Button>
             </Link>
@@ -45,13 +46,13 @@ export default function UriEntry () {
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
           autoWidth={true}
-          value={'27'}
+          value={''}
           onChange={()=>console.log('click')}
           label='Sample DB'
         >
-          <MenuItem value={10}>One</MenuItem>
-          <MenuItem value={20}>Two</MenuItem>
-          <MenuItem value={30}>Three</MenuItem>
+          <Link to='/visualize' >
+          <MenuItem onClick={()=> props.gTD()} value={1}>starwars</MenuItem>
+          </Link>
         </Select>
         </FormControl>
         </form>
