@@ -763,20 +763,34 @@ const data = {
 //get data type for each column
 
 //Nested array of Objects with first element as table name and second el is an obj of column name and data type
+// Takes allTables, returns array, elements are tuples, 1st val 
+//tColTypes // grab ordinal position ?
 const typeData = () => {
-  const types = [];
-  for (const [key, value] of Object.entries(data.allTables)) {
-    const tempArr = [key, {}];
+  const types = []; // holds everything
+  for (const [key, value] of Object.entries(data.allTables)) { // key is col name, val is array holding objs of column data
+    const tempArr = [key, {}]; // sets up tuple
     value.forEach((val) => {
-      tempArr[1][val.column_name] = val.data_type;
+      tempArr[1][val.column_name] = val.data_type; // puts column & type into 2nd val of tuple
     });
-    types.push(tempArr);
+    types.push(tempArr); // places tuple into types
   }
   //value is an array of objs
   return types;
 };
-//console.log(typeData());
 
+const typeDataRe = (object) => {
+  const types = []; // holds everything
+  for (const [key, value] of Object.entries(object)) { // key is col name, val is array holding objs of column data
+    const typesTuple = [key, {}]; // sets up tuple
+    value.forEach((val) => {
+      typesTuple[1][val.column_name] = val.data_type; // puts column & type into 2nd val of tuple
+    });
+    types.push(typesTuple); // places tuple into types
+  }
+  //value is an array of objs
+  return types;
+};
+const typeDataResult = typesDataRe(data.allTables) 
 //create arr of objects with first el as table name and second el is an obj of fk colums and the table it references
 const foreignKeyData = () => {
   const fks = [];
@@ -1031,7 +1045,7 @@ const otherKeyFinder = (typeObject, fKTAO) => { //fkTAO = foreign key table obje
       if (arrFK.includes(key)) {
         const valsToInput = arrFK.filter(elem => elem !== key)
         valsToInput.forEach(val => {
-          console.log(val)
+          // console.log(val)
           typeObject[key][val] = '['+capFirstLet(singular(val))+']'
         })
       }
@@ -1042,7 +1056,7 @@ const otherKeyFinder = (typeObject, fKTAO) => { //fkTAO = foreign key table obje
 }
 // 
 otherKeyFinder(typeObj, fktAsObj)
-console.log('HERE', typeObj)
+// console.log('HERE', typeObj)
 
 
 //At end, when exporting as GQL formatting, need to regex and remove all quotation marks
