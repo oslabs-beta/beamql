@@ -32,7 +32,7 @@ function CodeOutput () {
         <div id="Selection">
         
         <button >Schema</button>
-        <button >Resolver</button>
+        <button >Resolvers</button>
         <button >Copy</button>
 
         </div>
