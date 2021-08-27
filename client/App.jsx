@@ -1,11 +1,12 @@
-import React, { Component, Image } from 'react';
+import React, { Component, Image, useState } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import UriEntry from './Components/UriEntry.jsx';
 import theme from './theme';
 import { ThemeProvider } from '@material-ui/core';
 import CodeOutput from './Components/CodeOutput.jsx';
-import CustomNodeExample from './Components/Diagram.jsx';
+import CodeOutputButtons from './Components/CodeOutputButtons.jsx';
+import Diagram from './Components/Diagram.jsx';
 
 // | App (contains navbar)
 //   |URI Entry
@@ -16,39 +17,51 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: [],
-      primaryKeys: [],
-      foreignKeys: []
-    };
+      database: {
+            "allTables": {
+            },
+            
+            "foreignKeys": [
+            ],
+            "primaryKeys": [
+            ]
+        }
+    } 
+    this.gTD = this.gTD.bind(this);
   }
 
-  // getTableData() {
-  //   axios.get('/api/uri')
-  // .then(function (response) {
-  //   // handle success
-  //   console.log(response);
-  //   this.setState(state => {
-  //     state.columns
-  //   })
-  // })
-  // .catch(function (error) {
-  //   // handle error
-  //   console.log(error);
-  // })
-  // .then(function () {
-  //   // always executed
-  // });
-  // }
+  gTD () {
+    
+    console.log('get tabledata invoked');
+    console.log(document.getElementById('filled-basic').value)
+    axios.post('/api/uri', {
+      uri: document.getElementById('filled-basic').value || "postgres://vdnvhfkq:sYiMTdCmk1vs2br_eUrrmX1unPvfucdW@batyr.db.elephantsql.com/vdnvhfkq"
+    })
+    .then((response) => {
+      // handle success
+      document.getElementById('filled-basic').value = "";
+      console.log('RESPONSE.DATA', response.data);
+      console.log('THIS', this);
+      this.setState({ "database": response.data })
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  
+  }
+  
 
 
   render() {
     return (
       <Router>
         <div className="header">
-          <div className="topButtons">
-            <Link to='/'>
+        <Link to='/'>
             <img id="logo" src='./dist/logo.png' />
             </Link>
+          <div className="topButtons">
+           
               <Link to='/signup'>
                 <button
                   className="signup-btn"
@@ -77,16 +90,18 @@ class App extends Component {
             
           </div>
           <ThemeProvider theme={theme}>
-        <UriEntry />
+        <UriEntry gTD={this.gTD} />
         </ThemeProvider>
       </div>
         
            <Switch>
             <Route exact path='/'>
-              <img id='gif' src="./dist/mockgif.gif" />
+              <img id='gif' src="./dist/newgif2.gif" />
+              {/* <h1 id= "gifheader">Getting Started</h1> */}
             </Route>
-             <Route exact path="/visualize">
-             <CustomNodeExample />
+             <Route path="/visualize">
+             <Diagram data={this.state.database} />
+             <CodeOutputButtons />
                <CodeOutput />
              </Route>
   

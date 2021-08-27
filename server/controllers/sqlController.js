@@ -1,5 +1,5 @@
-const { query } = require("./dbmodel");
-// const Pool = require("pg");
+// const { query } = require("./dbmodel");
+const { Pool } = require("pg");
 
 // const PG_URI = "fill in here";
 // const example_URI =
@@ -24,6 +24,19 @@ next()
 //coming from router get request to '/uri'
 sqlController.getTableData = async function (req, res, next) {
   try {
+    console.log('made it in to getTableData sql controller');
+    let PG_URI = req.body.uri;
+    const pool = new Pool({
+      connectionString: PG_URI
+    });
+
+
+    async function query (text, params, callback) {
+      console.log('executed query', text);
+      return pool.query(text, params, callback);
+    }
+  
+    
     //what type are we getting here?
     const arrayTables = await query(
       `SELECT ARRAY(SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE')`

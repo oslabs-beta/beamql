@@ -5,7 +5,7 @@ const sqlController = require("./controllers/sqlController.js");
 // const sessionController = require('../controllers/sessionController');
 
 const router = express.Router();
-
+console.log('made in router');
 ///' getItems
 // /item -> adds items
 // /deleteItem -> deletes Item
@@ -43,7 +43,7 @@ const router = express.Router();
 //   gearController.getItems,
 //   (req, res) => res.status(200).json(res.locals.items));
 
-router.get(
+router.post(
   "/uri",
   sqlController.getTableData,
   // sqlController.visualize,
