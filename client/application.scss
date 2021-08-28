@@ -92,10 +92,10 @@ Justify-Content: center;
 #Selection {
   display: flex;
   position: absolute;
-  justify-content: flex-end;
+  justify-content: center;
   width: 20%;
-  right: 40px;
-  top: 18%;
+  left: 70px;
+  top: 195px;
 }
 
 #Selection button {
@@ -114,16 +114,25 @@ Justify-Content: center;
   text-align:center;
   transition: all 0.2s solid black;
 }
-
+#OutputBox{
+  display: flex;
+}
+#outputRight{
+ right: 30px;
+}
+#outputLeft{
+  justify-self: flex-start;
+ }
 #codebox{
   display: flex;
   position: absolute;
-  top: 20%;
+  top: 210px;
   width: 23%;
   height: auto;
-  right: 20px;
-  justify-content: flex-end;
+  left: 10px;
+  justify-content: flex-start;
   margin: 10px;
+  // bottom: 50px
 }
 
 #outlined-multiline-static {

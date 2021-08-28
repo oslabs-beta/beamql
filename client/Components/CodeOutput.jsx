@@ -405,7 +405,7 @@ function CodeOutput () {
           fullWidth={true}
           label="Output"
           multiline
-          rows={36}
+          rows={Math.floor(window.innerHeight/25.75)}
           className={classes.root}
           inputProps={{className: classes.root}}
           InputLabelProps={{className: classes.root}}
