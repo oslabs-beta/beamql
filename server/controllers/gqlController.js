@@ -1,6 +1,7 @@
 gqlController = {}
 
-gqlController.makeSchema = function() {
+gqlController.makeSchema = async function (req, res, next) {
+  
 
 }
 
