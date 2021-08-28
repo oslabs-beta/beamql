@@ -100,9 +100,13 @@ class App extends Component {
               {/* <h1 id= "gifheader">Getting Started</h1> */}
             </Route>
              <Route path="/visualize">
-             <Diagram data={this.state.database} />
+               <div id='OutputBox'>
+             <Diagram id="outputRight"data={this.state.database} />
+             <div id="outputLeft">
              <CodeOutputButtons />
                <CodeOutput />
+               </div>
+               </div>
              </Route>
   
              
