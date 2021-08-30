@@ -16,8 +16,12 @@ const PORT = 3000;
   * handle requests for static files
   */
  //app.use(express.static(path.resolve(__dirname, '../client'))); // look over this later
- app.use(express.static(path.join(__dirname, '../')));
- 
+ if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.resolve(__dirname, '../dist')));
+ } else {
+    app.use(express.static(path.resolve(__dirname, '../')));
+ }
+//  console.log(path.resolve(__dirname, '../client/assets'));
  /**
   * define route handlers
   */

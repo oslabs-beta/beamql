@@ -58,7 +58,7 @@ class App extends Component {
       <Router>
         <div className="header">
         <Link to='/'>
-            <img id="logo" src='./dist/logo.png' />
+            <img id="logo" src='./assets/logo.png' />
             </Link>
           <div className="topButtons">
            
@@ -96,7 +96,7 @@ class App extends Component {
         
            <Switch>
             <Route exact path='/'>
-              <img id='gif' src="./dist/newgif2.gif" />
+              <img id='gif' src="./assets/newgif2.gif" />
               {/* <h1 id= "gifheader">Getting Started</h1> */}
             </Route>
              <Route path="/visualize">

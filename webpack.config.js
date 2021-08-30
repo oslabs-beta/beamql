@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: ['regenerator-runtime/runtime.js', './client/index.js'],
@@ -13,9 +14,11 @@ module.exports = {
   mode: process.env.NODE_ENV,
   devServer: {
     historyApiFallback: true,
+    host: 'localhost',
+    port: 8080,
     inline: true,
     compress: true,
-    publicPath: '/dist',
+    publicPath: '/',
     proxy: {
       '/': 'http://localhost:3000'
       // '/api/**': {
@@ -29,7 +32,14 @@ module.exports = {
 
     },
   },
-  plugins: [new HtmlWebpackPlugin(), new MiniCssExtractPlugin()],
+  plugins: [new HtmlWebpackPlugin({
+    title: 'Production',
+    template: 'index.html'
+ }), new MiniCssExtractPlugin(), new CopyPlugin({
+    patterns: [
+      { from: "assets", to: "assets" },
+    ],
+  }),],
   module: {
     rules: [
       {
@@ -42,7 +52,9 @@ module.exports = {
           },
         },
       },
+      {
 
+      },
       {
         test: /\.s[ac]ss$/i,
         use: [
@@ -57,5 +69,5 @@ module.exports = {
   },
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
-  },
+  }
 };
