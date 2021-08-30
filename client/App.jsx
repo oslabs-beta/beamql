@@ -87,7 +87,8 @@ class App extends Component {
               </Link>
             
             
-              <button>Github</button>
+              <button>Github
+              </button>
               <button>Squad</button>
             
           </div>

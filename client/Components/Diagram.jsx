@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactFlow, { Handle, Background, Controls } from 'react-flow-renderer';
-import CustomNode from './CustomNode.jsx';
+
 
 // const data = {
 //     "allTables": {
