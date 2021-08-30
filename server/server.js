@@ -27,7 +27,9 @@ const PORT = 3000;
   */
 app.use('/api', router);
  
-
+app.get('/*', function(req, res) {
+  res.redirect('/');
+})
  
  // catch-all route handler for any requests to an unknown route
  app.use((req, res) => res.status(404).send('This is not the page you\'re looking for...'));

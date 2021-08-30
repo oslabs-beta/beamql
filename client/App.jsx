@@ -7,6 +7,7 @@ import { ThemeProvider } from '@material-ui/core';
 import CodeOutput from './Components/CodeOutput.jsx';
 import CodeOutputButtons from './Components/CodeOutputButtons.jsx';
 import Diagram from './Components/Diagram.jsx';
+import { createBrowserHistory } from "history";
 
 // | App (contains navbar)
 //   |URI Entry
@@ -54,8 +55,9 @@ class App extends Component {
 
 
   render() {
+    const history = createBrowserHistory();
     return (
-      <Router>
+      <Router history={history}>
         <div className="header">
         <Link to='/'>
             <img id="logo" src='./assets/logo.png' />
