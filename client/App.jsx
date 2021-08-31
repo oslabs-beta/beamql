@@ -7,7 +7,8 @@ import { ThemeProvider } from '@material-ui/core';
 import CodeOutput from './Components/CodeOutput.jsx';
 import CodeOutputButtons from './Components/CodeOutputButtons.jsx';
 import Diagram from './Components/Diagram.jsx';
-import { createBrowserHistory } from "history";
+import Docs from './Components/Docs.jsx';
+import Team from './Components/Team.jsx';
 
 // | App (contains navbar)
 //   |URI Entry
@@ -55,9 +56,9 @@ class App extends Component {
 
 
   render() {
-    const history = createBrowserHistory();
+
     return (
-      <Router history={history}>
+      <Router>
         <div className="header">
         <Link to='/'>
             <img id="logo" src='./assets/logo.png' />
@@ -77,7 +78,7 @@ class App extends Component {
                 </button>
               </Link>
 
-              <Link to="/login">
+              <Link to="/docs">
                 <button
                   className="login-btn"
                 >
@@ -86,10 +87,13 @@ class App extends Component {
                 </button>
               </Link>
             
-            
+              <a href="https://github.com/oslabs-beta/beam-corp" target="_blank">
               <button>Github
               </button>
+              </a>
+              <Link to="/squad">
               <button>Squad</button>
+              </Link>
             
           </div>
           <ThemeProvider theme={theme}>
@@ -100,7 +104,12 @@ class App extends Component {
            <Switch>
             <Route exact path='/'>
               <img id='gif' src="./assets/newgif2.gif" />
-              {/* <h1 id= "gifheader">Getting Started</h1> */}
+              
+            </Route>
+            <Route exact path='/docs'>
+              <Docs />
+              <img id='gif' style={{marginRight: '30px'}} src="./assets/newgif2.gif" />
+              
             </Route>
              <Route path="/visualize">
                <div id='OutputBox'>
@@ -110,6 +119,9 @@ class App extends Component {
                <CodeOutput />
                </div>
                </div>
+             </Route>
+             <Route exact path='/squad'>
+              <Team />
              </Route>
   
              

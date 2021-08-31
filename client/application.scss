@@ -44,21 +44,31 @@ hr{
     align-items: center;
     justify-content: flex-end;
     margin: 0;
+    margin-right: 20px;
     background-color: rgb(56, 33, 158);
 }
 
-#gif {
-Display: flex;
-// Height: 80vh;
-Width: 50vw; 
-Align-Items: center;
-margin-left: auto;
+#docs {
+  color: white;
+  padding: 30px;
+  text-decoration: none;
+  width: 40vw;
+  position: absolute;
+  margin-left: 20px;
+  margin-right: auto;
+}
 
+#textlink {
+  text-decoration: underline;
+  color: white;
+}
+#gif {
+display: flex;
+width: 50vw; 
+margin-left: auto;
 margin-right: auto;
 align-self: center;
 justify-self: center;
-Justify-Content: center;
-
 }
 
 .topButtons button {
@@ -417,3 +427,62 @@ select:focus, input:focus {
   width: 150px;
 }
 
+.Title{
+  justify-content: center;
+}
+
+#top{
+  display: flex;
+}
+#bottom{
+  display: flex;
+}
+
+#title {
+  display: flex;
+  justify-content: center;
+  font-size: xx-large;
+  // position:absolute;
+}
+#topRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}
+#bottomRow {
+  display: flex;
+  justify-content: center;
+  //align-content: center;
+}
+// .middle{
+//   border-left: 2px solid #FFFFFF;
+// }
+#teams {
+  justify-self: center;
+}
+#Adam {
+  font-size: large;
+  padding-right: 30%;
+  align-content: center;
+}
+#Brian {
+  font-size: large;
+  align-content: center;
+
+}
+#Marc{
+  padding-right: 30%;
+  font-size: large;
+  align-content: center;
+}
+#Eric{
+  font-size: large;
+  font-size: large;
+  align-content: center;
+}
+a{
+  color: white;
+}
+#linebreaks{
+  margin: 0; padding: 0; list-style: none;
+}
