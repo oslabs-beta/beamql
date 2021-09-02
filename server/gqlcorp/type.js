@@ -1,5 +1,9 @@
 const { singular } = require('pluralize');
 
+function capFirstLet(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const data = {
   "allTables": {
       "planets": [
@@ -828,13 +832,30 @@ const data = {
   ]
 };
 
+
+const isNullable = (obj) => {
+  const types = {};
+  for (const tbl in obj) {
+    types[tbl] = {};
+    for (const arr of obj[tbl]) {
+      //console.log(arr)
+      for (const column in arr) {
+        let temp = arr.column_name
+        if (arr.required === 'NO') {
+          types[tbl][temp] = true;
+        }
+      }
+    }
+  }
+  return types
+}
+const nullableObj = isNullable(data.allTables) 
+
 //get table names
 //get column names for each table
 //get data type for each column
 
 //Nested array of Objects with first element as table name and second el is an obj of column name and data type
-// Takes allTables, returns array, elements are tuples, 1st val 
-//tColTypes // grab ordinal position ?
 const typeData = () => {
   const types = []; // holds everything
   for (const [key, value] of Object.entries(data.allTables)) { // key is col name, val is array holding objs of column data
@@ -847,62 +868,66 @@ const typeData = () => {
   //value is an array of objs
   return types;
 };
-// console.log('GO',typeData())
-const typeDataRe = (object) => {
+// console.log('ORIGINAL',typeData());
+// Takes allTables, returns array, elements are tuples, 1st val 
+//tColTypes // grab ordinal position ?
+// tlDataTypeRetrieval
+////////////////////////////////////////////////////////////////////////////////////
+const dataTupleMaker = (object) => {
   const types = []; // holds everything
-  for (const [key, value] of Object.entries(object)) { // key is col name, val is array holding objs of column data
-    const typesTuple = [key, {}]; // sets up tuple
-    value.forEach((val) => {
-      typesTuple[1][val.column_name] = val.data_type; // puts column & type into 2nd val of tuple
+  tupColNames = Object.entries(object)
+  for (const [tableName, colData] of tupColNames) { // key is col name, val is array holding multiple objs of column data // reducing array of objs to obj of col names and types
+    const tupTypes = [tableName, {}]; // sets up tuple
+    colData.forEach(val => {
+      tupTypes[1][val.column_name] = val.data_type; // puts column:type into object
     });
-    types.push(typesTuple); // places tuple into types
+    types.push(tupTypes); // places tuple into types
   }
   //value is an array of objs
   return types;
 };
-const typeDataResult = typeDataRe(data.allTables) 
-// console.log(typeDataResult)
+const tablesTuples = dataTupleMaker(data.allTables) /////////////////////////////////////////////////
+// console.log('REFACTOR?',tablesTuples)
+
 //create arr of objects with first el as table name and second el is an obj of fk colums and the table it references
+
 const foreignKeyData = () => {
   const fks = [];
   data.foreignKeys.forEach((obj) => {
     if (!fks.length || fks[fks.length - 1][0] !== obj.foreign_table) {
-      //console.log(`made it here`);
       const tempArr = [obj.foreign_table, {}];
       tempArr[1][obj.fk_columns] = obj.primary_table;
       fks.push(tempArr);
     } else {
-      //console.log(`here yee`)
       fks[fks.length - 1][1][obj.fk_columns] = obj.primary_table;
     }
   });
   return fks;
 };
+// console.log('ORIGINAL', foreignKeyData());
+//fkAssemblerByTable assembleForeignKeys
+//takes array of obj, spits out array of tuples [foreign keys, {foreign keys: primary tables}]
+///////////////////////////////////////////////////////////////////////////////////////
+const fkTupleMaker = array => { // array of Foreign Keys, elem is object
+  const tupArr = [];
+  array.forEach(fkObj => {
+    if (!tupArr.length || tupArr[tupArr.length - 1][0] !== fkObj.foreign_table) { //array not empty, last tuple in array's name is not yet made:
+      const tuple = [fkObj.foreign_table, {}]; //make tuple => fTableName, { columnName: primaryTable}
+      tuple[1][fkObj.fk_columns] = fkObj.primary_table; // add to foreign table obj w/ all column names to its primary table
+      tupArr.push(tuple);
+    } else { // fTable already exists in fkArray
+      tupArr[tupArr.length - 1][1][fkObj.fk_columns] = fkObj.primary_table; // add in more primary tables
+    }
+  });
+  return tupArr;
+}; 
+const fKeyTuples = fkTupleMaker(data.foreignKeys) //////////////////////////////////////////////
+// console.log('REFACTOR',fKeyTuples)
 
-// [ [ 'people', { homeworld_id: 'planets' } ],
-//   [ 'people', { species_id: 'species' } ],
-//   [ 'people_in_films', { film_id: 'films' } ],
-// const foreignKeyData = () => {
-//   const fks = [];
-//   data.foreignKeys.forEach(obj => {
-//     const tempArr = [obj.foreign_table, {}];
-//     tempArr[1][obj.fk_columns] = obj.primary_table;
-//     fks.push(tempArr);
-//   })
-//   return fks;
-// }
 
-// console.log(foreignKeyData());
-
-//logic to determine join tables -> solely has foreign keys as values
-//wont' use join tables as types and input foreign keys as columns on corresponding type object
-
-//add fk vals to
-
-//add to Type
 
 // Foreign Keys of Each Table
-const fkt = [
+const fkt = [ // fkTups
   ["people", { homeworld_id: "planets", species_id: "species" }],
   ["people_in_films", { film_id: "films", person_id: "people" }],
   ["pilots", { person_id: "people", vessel_id: "vessels" }],
@@ -914,7 +939,7 @@ const fkt = [
 ];
 
   // All of the Table Data
-  const atd = [ [ 'planets',
+  const atd = [ [ 'planets', // all table data / data tuples
   { _id: 'integer',
   name: 'character varying',
   rotation_period: 'integer',
@@ -988,47 +1013,44 @@ const fkt = [
 }]
 ]
 
-//convert tupils into objs
-// console.log(`atd as Obj`, atdAsObj);
-// numberofkeysObj 
-const numForeignKeys = {} // stores foreign key count from foreign key table (arr of arr)
-const countForeignKeys = (foreignKeys) => {
-  foreignKeys.forEach((purpleArray) => {
+
+
+const countTupleKeys = (tuples) => {
+  const keyCount = {}
+  tuples.forEach(tuple => {
     //purple arr for each table
-    const count = Object.keys(purpleArray[1]).length; //counts foreign keys
-    numForeignKeys[purpleArray[0]] = count;
+    const tableName = tuple[0]
+    const count = Object.keys(tuple[1]).length; //counts foreign keys
+    keyCount[tableName] = count;
   })
+  return keyCount
 }
-countForeignKeys(fkt)
-// console.log(`foreign key obj`, numForeignKeys)
-//number of total keys // tableObjectForNumKeys {planets: 17}
-const numTotalKeys = {}; // stores num keys for each table from all table data
-const countTotalKeys = (allTables) => {
-  allTables.forEach((table) => {
-    //table is an array
-    const count = Object.keys(table[1]).length;
-    numTotalKeys[table[0]] = count;
-  });
-};
+const fKeyCounts = countTupleKeys(fKeyTuples) /////////////////////////////////////////////////////
+const allKeyCounts = countTupleKeys(tablesTuples) ////////////////////////////////////////////////
+// console.log('ALLKEYCOUNTS',allKeyCounts)
 
-countTotalKeys(atd);
-// console.log(`total keys obj`, numTotalKeys);
 
-const fktAsObj = Object.fromEntries(fkt);
 
-const atdAsObj = Object.fromEntries(atd);
+// const fktAsObj = Object.fromEntries(fkt);
+// const atdAsObj = Object.fromEntries(atd);
 
-const atdAsObj2 = atdAsObj
+// convert tuples to objects
+const fKeysObj = Object.fromEntries(fKeyTuples) //used to be fktAsObj
+//console.log(fKeysObj)
+const tablesObj = Object.fromEntries(tablesTuples) //was atdAsObj
+//console.log(tablesObj)
+
+// const atdAsObj2 = atdAsObj
 // console.log('HIHIHI',atdAsObj2)
-const required = object => {
-  atdAsObj
-}
+// const required = object => {
+//   atdAsObj
+// }
 
 const nonJoinTables = {}
 const joinTables = {}
 
 
-// numForeignKeys, numTotalKeys, fkt, atd
+// numForeignKeys, numTotalKeys, fkt, atd // adam is this pKey or totalkeys?
 const isJoinTable = (fKeyCount, pKeyCount, fktObject, atdObject) => { //filling non & joinTables
   for(const key in pKeyCount) {
     if(fKeyCount[key] + 1 === pKeyCount[key]) { // loop through fkey table & find if key is in pKey table AND # corresponds to # in pKey => IS A JOIN TABLE // never > but is === always going to be true? test later shit to do rn
@@ -1038,51 +1060,29 @@ const isJoinTable = (fKeyCount, pKeyCount, fktObject, atdObject) => { //filling 
     }
   }
 }
-isJoinTable(numForeignKeys, numTotalKeys, fktAsObj, atdAsObj);
+// isJoinTable(numForeignKeys, numTotalKeys, fktAsObj, atdAsObj); //////////LOOK HERE
 // console.log('NONJOINTABLESHERE', nonJoinTables);
 // console.log(`isJoinTable`, joinTables);
-// function typesGenerator(foreignKeys, allTables) {
-// // [nonjoin tables]
-// //find join tables
-//   //loop through all tables
-
-//   for(let i = 0; i < allTables.length; i++) {
-//     //ifjointable (determined by if # of keys of table data <=  foreignkeys + 1 || fkArr does not include table name i.e. planets)
-//     if()
-
-//   }
-//     //ifnotjointable add to [nonjointables]
-
-// };
-
-// in order to get Type
-// typesGenerator(fkt, atd)
-
-//console.log(typeData())
-
-// type Person {
-//   _id: ID!
-//   gender: String
-//   height: Int
-//   mass: String
-//   hair_color: String
-//   skin_color: String
-//   eye_color: String
-//   name: String!
-//   birth_year: String
-//   species: [Species]
-//   planets: [Planet]
-//   films: [Film]
-//   vessels: [Vessel]
-// }
-
-
-function capFirstLet(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+////////////////////////////////////////////////////////////
+const nonAndJoinTables = (numFKeys, numAllKeys, fKeysObject, tablesObj) => {
+  const jTable = {}
+  const nJTable = {}
+  for (const tableName in numAllKeys) {
+    //if number of foreign keys + 1 equals all keys, it's a join table
+    if(numFKeys[tableName] + 1 === numAllKeys[tableName]) jTable[tableName] = tablesObj[tableName]
+    //if not, throw in non join table
+    else nJTable[tableName] = tablesObj[tableName]
+    }
+  return [jTable, nJTable]
 }
-// planets: [Planet]
-// npm i pluralize  --save
-// const pluralize = require('pluralize')
+
+const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj)
+// console.log('JOIN TABLES', joinTable)
+// console.log('NON JOIN TABLE', nonJoinTable)
+////////////////////////////////////////////////
+
+
+
 // go into {nonJoinTables}, loop, w/ each key find corresponding in {fktAsObject}, change FK(key) on nonJoinTables to value of fktAsObj and value to singular of fk
 //create new obj with key as singular and keyvalues of all non FKs
 //add foreign keys
@@ -1090,33 +1090,61 @@ function capFirstLet(string) {
 const typeObj = {}
 //populate type object
 //first function will loop through non join tables and compare to see if it has foreign keys, taken from fktObject. if it does, we'll set an empty object to fill in later. if it doesn't, we'll take all column names&types and copy them over.
-const typeCreator = (nonJoinTables, joinTables, fktObj) => {
-  for (const key in nonJoinTables) { // key: people / starship spec
-    if (!fktObj[key]) { //
-      typeObj[key] = nonJoinTables[key]; //notouch after this step
-    } else {
-      typeObj[key] = {};
+// const typeCreator = (nonJoinTables, joinTables, fktObj) => {
+//   for (const key in nonJoinTables) { // key: people / starship spec
+//     if (!fktObj[key]) { //
+//       typeObj[key] = nonJoinTables[key]; //notouch after this step
+//     } else {
+//       typeObj[key] = {};
 
-      ///////////////
-//fill foreign key type objects
-//second function must loop through each table for column data and add all of them. but if it's in the foreign key object, it adds the type as a connection to a different table.
+//       ///////////////
+// //fill foreign key type objects
+// //second function must loop through each table for column data and add all of them. but if it's in the foreign key object, it adds the type as a connection to a different table.
+//       for (const prop in nonJoinTables[key]) {//prop: key within the people obj / hyperdrive
+//         if (prop in fktObj[key] === false) {
+//           typeObj[key][prop] = nonJoinTables[key][prop];
+//         } else {
+//           const temp = fktObj[key][prop]
+//           typeObj[key][temp] = '['+capFirstLet(singular(temp))+']';
+//         }
+//       }
+//     }
+//   }
+// }
+// nonJoinTable, fKeysObj
+//first for in loop through non join tables and compare to see if it has foreign keys, taken from fktObject. if it does, we'll set an empty object to fill in later. if it doesn't, we'll take all column names&types and copy them over.
+////////////////////////////////////////////////////////////////////////////////////////////
+const typeCreator = (nonJoinTables, fktObj) => {
+  const typeObj = {};
+  
+  for (const key in nonJoinTables) { // key: people / starship spec
+    //add non foreign key value pairs to type obj
+    if (!fktObj[key]) { //
+      typeObj[key] = nonJoinTables[key]; //no touch after this step
+    } else {
+      // if foreign key, create an object, to be filled with its column names
+      typeObj[key] = {};
+      
       for (const prop in nonJoinTables[key]) {//prop: key within the people obj / hyperdrive
+        // loop through each table for column data and add column info
         if (prop in fktObj[key] === false) {
           typeObj[key][prop] = nonJoinTables[key][prop];
         } else {
+          // but if it's in the foreign key object, it adds the type as a connection to a different table.
           const temp = fktObj[key][prop]
           typeObj[key][temp] = '['+capFirstLet(singular(temp))+']';
         }
       }
     }
   }
+  return typeObj
 }
-
-// [Planet]
-typeCreator(nonJoinTables, joinTables, fktAsObj);
-// console.log(`HERE`, typeObj);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// console.log('CURRENT TESTING',typeCreator(nonJoinTable, fKeysObj))
 
 
+const wtfisgoingon = typeCreator(nonJoinTable, fKeysObj)//temp call this typeObj but change description later
+// console.log('BEFORE', wtfisgoingon)
 // add join table keys to typeObjects
 const otherKeyFinder = (typeObject, fKTAO) => { //fkTAO = foreign key table object
   // take type obj keys
@@ -1136,9 +1164,109 @@ const otherKeyFinder = (typeObject, fKTAO) => { //fkTAO = foreign key table obje
   }
   // if matches, take any OTHER value and set as key in typeObj, value as singular[]
 }
-// 
-otherKeyFinder(typeObj, fktAsObj)
-// console.log('HERE', typeObj)
+otherKeyFinder(wtfisgoingon, fKeysObj)
+// console.log('AFTER', wtfisgoingon)
+
+/////////////////////////////////////////////
+const terrified = (nonJoinTables, fktObj, nullable) => {
+  const typeObj = {};
+  
+  for (const key in nonJoinTables) { // key: people / starship spec
+    //add non foreign key value pairs to type obj
+    if (!fktObj[key]) { //
+      typeObj[key] = nonJoinTables[key]; //no touch after this step
+    } else {
+      // if foreign key, create an object, to be filled with its column names
+      typeObj[key] = {};
+      
+      for (const prop in nonJoinTables[key]) {//prop: key within the people obj / hyperdrive
+        // loop through each table for column data and add column info
+        if (prop in fktObj[key] === false) {
+          typeObj[key][prop] = nonJoinTables[key][prop];
+        } else {
+          // but if it's in the foreign key object, it adds the type as a connection to a different table.
+          const temp = fktObj[key][prop]
+          typeObj[key][temp] = '['+capFirstLet(singular(temp))+']';
+        }
+      }
+    }
+  }
+  
+  //Add Foreign Types to Type obj
+  for(let key in typeObj) { // key is people
+    // look through values OF values OF fktasObj
+    for(let fktObjKey in fktObj) {
+      const arrFK = Object.values(fktObj[fktObjKey]) //values of objects in fktasobject as an array
+      if (arrFK.includes(key)) {
+        const valsToInput = arrFK.filter(elem => elem !== key)
+        valsToInput.forEach(val => {
+          // console.log(val)
+          typeObj[key][val] = '['+capFirstLet(singular(val))+']'
+        })
+      }
+    }
+  }
+  // is currently adding join tables, but we don't like that
+  //Add Missing Foreign Keys/Types
+  for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
+    for (const fktCol in fktObj) { //iterate through fktObj fktCol i.e. people, peope_in_films
+      // console.log(`1082`)
+      for (const col in fktObj[fktCol]) { //iterate through nested obj
+        // console.log(`1083`)
+        if (fktObj[fktCol][col] === njtCol) {
+          if (Object.keys(typeObj[njtCol]).includes(fktCol)) {
+              typeObj[njtCol][fktCol] = '['+capFirstLet(singular(fktCol))+']'
+            }
+      }
+      }
+    }
+  }
+
+  //convert typeObj values to GraphQL values 
+  for (const table in typeObj) {
+    for (const column in typeObj[table]) {
+      switch (typeObj[table][column]) {
+        case 'bigint':
+          typeObj[table][column] = 'ID'
+          break;
+        case 'integer':
+          typeObj[table][column] = 'Int'
+          break;
+        case 'character varying':
+          typeObj[table][column] = 'String'
+          break;
+        case 'date':
+          typeObj[table][column] = 'ID'
+          break;
+      }
+      if (column === '_id') {
+        typeObj[table][column] = 'ID'
+      }
+    }
+  }
+
+  //Signifies which fields are nullable
+  for (const tbl in typeObj) {
+    for (const column in nullable[tbl]) {
+      let temp = typeObj[tbl][column]
+      if(temp) typeObj[tbl][column] = temp + '!'
+      }
+  }
+
+
+
+  
+  return typeObj
+  
+}
+
+console.log('terrified!!', terrified(nonJoinTable, fKeysObj, nullableObj));
+
+
+
+
+
+
 
 const fktNoJoins = (fktAsObj, nonJT) => {
   const fktNoJoinsObj = {}
@@ -1149,6 +1277,8 @@ const fktNoJoins = (fktAsObj, nonJT) => {
   }
   return fktNoJoinsObj;
   }
+// console.log(`fktNoJoins`, fktNoJoins(fktAsObj, nonJoinTables));
+
 // console.log(`fktNoJoins`, fktNoJoins(fktAsObj, nonJoinTables));
 const fktNoJoin =  {
   people: { homeworld_id: 'planets', species_id: 'species' },
@@ -1164,39 +1294,19 @@ const addMissingFks = (typeObject, fktObj, nonJt) => {
         // console.log(`1083`)
         if (fktObj[fktCol][col] === njtCol) {
           if (Object.keys(typeObject[njtCol]).includes(fktCol) === false) {
-              typeObj[njtCol][fktCol] = '['+capFirstLet(singular(fktCol))+']'
-            }
-      }
+            typeObj[njtCol][fktCol] = '['+capFirstLet(singular(fktCol))+']'
+          }
+        }
       }
     }
   }
 }
 
-// const addMissingFks = (typeObject, fktObjNj) => {
-//   for (const typeCol in typeObject) { //type object name i.e. planets, species, films
-//     console.log('1095')
-//     for (const fktCol in fktObjNj) { //iterate through fktObj fktCol i.e. people, peope_in_films
-//       console.log(`1097`) // NEVER ENTERING THIS FOR LOOP
-//       for (const col in fktObjNj[fktCol]) { //iterate through nested obj
-//         console.log(`1099`)
-//         if (fktObjNj[fktCol][typeCol] === typeCol) {
-//           console.log(`1101`)
-//           //console.log(`debuggin`, Object.keys(typeObject[typeCol]).includes(fktCol))
-//           if (Object.keys(typeObject[typeCol]).includes(fktCol) === false) {
-//               typeObj[typeCol][fktCol] = '['+capFirstLet(singular(fktCol))+']'
-//             }
-//       }
-//       }
-//     }
-//   }
-// }
-//not hitting 1097
-//
  
 
     
-    //addMissingFks(tablesWTypes,fktNoJoins)
-//addMissingFks(tablesWTypes, fktAsObj, nonJoinTables);
+    //addMissingFks(typeObj,fktNoJoins)
+//addMissingFks(typeObj, fktAsObj, nonJoinTables);
 // planets: {
   //   _id: 'integer',
 //   name: 'character varying',
@@ -1229,7 +1339,7 @@ const addMissingFks = (typeObject, fktObj, nonJt) => {
 
 // readyForTypeAndMutation
 // before will be tableWTypes
-const tablesWTypes = {
+const typeObj123089170 = {
   planets: {
     _id: 'integer',
     name: 'character varying',
@@ -1310,35 +1420,35 @@ const tablesWTypes = {
   }
 }
 
-addMissingFks(tablesWTypes, fktNoJoin, nonJoinTables);
+addMissingFks(typeObj, fktNoJoin, nonJoinTables);
 // console.log('FINAL', typeObj)
 
 const convertToGql = () => {
-  for (const table in tablesWTypes) {
-    for (const column in tablesWTypes[table]) {
-      switch (tablesWTypes[table][column]) {
+  for (const table in typeObj) {
+    for (const column in typeObj[table]) {
+      switch (typeObj[table][column]) {
         case 'bigint':
-          tablesWTypes[table][column] = 'ID'
+          typeObj[table][column] = 'ID'
           break;
         case 'integer':
-          tablesWTypes[table][column] = 'Int'
+          typeObj[table][column] = 'Int'
           break;
         case 'character varying':
-          tablesWTypes[table][column] = 'String'
+          typeObj[table][column] = 'String'
           break;
         case 'date':
-          tablesWTypes[table][column] = 'ID'
+          typeObj[table][column] = 'ID'
           break;
       }
       if (column === '_id') {
-        tablesWTypes[table][column] = 'ID'
+        typeObj[table][column] = 'ID'
       }
     }
   }
 };
 // after will be GQL types without needed keys
 convertToGql()
-// console.log('HERE', tablesWTypes)
+// console.log('HERE', typeObj)
 
 // now grab required or not
 
@@ -1359,24 +1469,6 @@ convertToGql()
 // };
 
 
-const isNullable = (obj) => {
-  const types = {};
-  for (const tbl in obj) {
-    types[tbl] = {};
-    for (const arr of obj[tbl]) {
-      //console.log(arr)
-      for (const column in arr) {
-        let temp = arr.column_name
-        if (arr.required === 'NO') {
-          types[tbl][temp] = true;
-        }
-      }
-    }
-  }
-  return types
-}
-
-const tttest = isNullable(data.allTables) 
 // console.log('////////////////////////////////////////////', tttest)
 
 
@@ -1412,8 +1504,8 @@ const addNullableFields = (dataWTypes, Nullable) => {
     return dataWTypes;
 }
 
-// console.log(tablesWTypes)
-console.log('addNullFIelds', addNullableFields(tablesWTypes, outputOfIsNullable));
+// console.log(typeObj)
+// console.log('addNullFIelds', addNullableFields(typeObj, outputOfIsNullable));
 
 const outputOfaddNullableFields =  {
   planets: {
