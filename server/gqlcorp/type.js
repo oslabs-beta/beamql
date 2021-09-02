@@ -850,7 +850,7 @@ const isNullable = (obj) => {
   return types
 }
 const nullableObj = isNullable(data.allTables) 
-
+console.log('AOTHAW3T6YW3490TYHERIOGAHG3489TAY3',nullableObj)
 //get table names
 //get column names for each table
 //get data type for each column
