@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactFlow, { Handle, Background, Controls } from 'react-flow-renderer';
-import CustomNode from './CustomNode.jsx';
+
 
 // const data = {
 //     "allTables": {
@@ -1690,7 +1690,7 @@ const Diagram = ({ data }) => {
 
   return (
     //   <div id="renderContainer" style={{ position: 'absolute', right: 0 }}>
-    <div style={{ height: '75vh', border: '0.1em solid #FFFFFF', borderRadius: '5px', width: '70%'}}>
+    <div style={{ height: '75vh', border: '0.1em solid #FFFFFF', margin: '10px', position: 'absolute', right: '5px', borderRadius: '5px', width: '70%'}}>
       <ReactFlow elements={elements} nodeTypes={nodeTypes}>
       <Background id="erdbackground"
       variant="dots"

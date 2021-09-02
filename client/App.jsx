@@ -7,6 +7,8 @@ import { ThemeProvider } from '@material-ui/core';
 import CodeOutput from './Components/CodeOutput.jsx';
 import CodeOutputButtons from './Components/CodeOutputButtons.jsx';
 import Diagram from './Components/Diagram.jsx';
+import Docs from './Components/Docs.jsx';
+import Team from './Components/Team.jsx';
 
 // | App (contains navbar)
 //   |URI Entry
@@ -54,11 +56,12 @@ class App extends Component {
 
 
   render() {
+
     return (
       <Router>
         <div className="header">
         <Link to='/'>
-            <img id="logo" src='./dist/logo.png' />
+            <img id="logo" src='./assets/logo.png' />
             </Link>
           <div className="topButtons">
            
@@ -75,7 +78,7 @@ class App extends Component {
                 </button>
               </Link>
 
-              <Link to="/login">
+              <Link to="/docs">
                 <button
                   className="login-btn"
                 >
@@ -84,9 +87,13 @@ class App extends Component {
                 </button>
               </Link>
             
-            
-              <button>Github</button>
+              <a href="https://github.com/oslabs-beta/beam-corp" target="_blank">
+              <button>Github
+              </button>
+              </a>
+              <Link to="/squad">
               <button>Squad</button>
+              </Link>
             
           </div>
           <ThemeProvider theme={theme}>
@@ -96,13 +103,25 @@ class App extends Component {
         
            <Switch>
             <Route exact path='/'>
-              <img id='gif' src="./dist/newgif2.gif" />
-              {/* <h1 id= "gifheader">Getting Started</h1> */}
+              <img id='gif' src="./assets/newgif2.gif" />
+              
+            </Route>
+            <Route exact path='/docs'>
+              <Docs />
+              <img id='gif' style={{marginRight: '30px'}} src="./assets/newgif2.gif" />
+              
             </Route>
              <Route path="/visualize">
-             <Diagram data={this.state.database} />
+               <div id='OutputBox'>
+             <Diagram id="outputRight"data={this.state.database} />
+             <div id="outputLeft">
              <CodeOutputButtons />
                <CodeOutput />
+               </div>
+               </div>
+             </Route>
+             <Route exact path='/squad'>
+              <Team />
              </Route>
   
              
