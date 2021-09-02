@@ -1,5 +1,5 @@
 {
-  "name": "currencyconverter",
+  "name": "BeamQL",
   "version": "1.0.0",
   "description": "",
   "main": "./client/index.js",
@@ -14,7 +14,7 @@
       "client"
     ]
   },
-  "author": "Shawn Convery, Oleksii Hordiienko, Mark Liu, Hasan Ozutemiz, Lucas Taffo",
+  "author": "Adam Goodman, Brian Grosso, Eric Askew, Mark Liu",
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",

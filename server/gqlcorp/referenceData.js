@@ -1,3 +1,87 @@
+const finalResultOfTypeWorkByFriday = {
+  planets: {
+    _id: 'integer',
+    name: 'character varying',
+    rotation_period: 'integer',
+    orbital_period: 'integer',
+    diameter: 'integer',
+    climate: 'character varying',
+    gravity: 'character varying',
+    terrain: 'character varying',
+    surface_water: 'character varying',
+    population: 'bigint',
+    species: '[Species]',
+    films: '[Film]',
+    people: '[Person]'
+  },
+  films: {
+    _id: 'integer',
+    title: 'character varying',
+    episode_id: 'integer',
+    opening_crawl: 'character varying',
+    director: 'character varying',
+    producer: 'character varying',
+    release_date: 'date',
+    people: '[Person]',
+    planets: '[Planet]',
+    species: '[Species]',
+    vessels: '[Vessel]'
+  },
+  species: {
+    _id: 'integer',
+    name: 'character varying',
+    classification: 'character varying',
+    average_height: 'character varying',
+    average_lifespan: 'character varying',
+    hair_colors: 'character varying',
+    skin_colors: 'character varying',
+    eye_colors: 'character varying',
+    language: 'character varying',
+    planets: '[Planet]',
+    films: '[Film]',
+    people: '[Person]'
+  },
+  vessels: {
+    _id: 'integer',
+    name: 'character varying',
+    manufacturer: 'character varying',
+    model: 'character varying',
+    vessel_type: 'character varying',
+    vessel_class: 'character varying',
+    cost_in_credits: 'bigint',
+    length: 'character varying',
+    max_atmosphering_speed: 'character varying',
+    crew: 'integer',
+    passengers: 'integer',
+    cargo_capacity: 'character varying',
+    consumables: 'character varying',
+    people: '[Person]',
+    films: '[Film]',
+    starship_specs: '[Starship_spec]'
+  },
+  people: {
+    _id: 'integer',
+    name: 'character varying',
+    mass: 'character varying',
+    hair_color: 'character varying',
+    skin_color: 'character varying',
+    eye_color: 'character varying',
+    birth_year: 'character varying',
+    gender: 'character varying',
+    species: '[Species]',
+    planets: '[Planet]',
+    height: 'integer',
+    films: '[Film]',
+    vessels: '[Vessel]'
+  },
+  starship_specs: {
+    _id: 'integer',
+    hyperdrive_rating: 'character varying',
+    MGLT: 'character varying',
+    vessels: '[Vessel]'
+  }
+}
+
 const tDRes = [
   [
     'planets',
@@ -106,32 +190,27 @@ const tDRes = [
   ]
 ]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const outputOfIsNullable = {
+  planets: { _id: true },
+  pilots: { _id: true, person_id: true, vessel_id: true },
+  people_in_films: { _id: true, person_id: true, film_id: true },
+  films: {
+    _id: true,
+    title: true,
+    episode_id: true,
+    opening_crawl: true,
+    director: true,
+    producer: true,
+    release_date: true
+  },
+  species: { _id: true, name: true },
+  species_in_films: { _id: true, film_id: true, species_id: true },
+  vessels: { _id: true, name: true, vessel_type: true, vessel_class: true },
+  vessels_in_films: { _id: true, vessel_id: true, film_id: true },
+  people: { _id: true, name: true },
+  planets_in_films: { _id: true, film_id: true, planet_id: true },
+  starship_specs: { _id: true, vessel_id: true }
+}
 
 
 
@@ -243,7 +322,7 @@ const atd = [
   ]
 ]
 const fkt = [
-  [ 'people', { homeworld_id: 'planets', species_id: 'species' } ], //
+  [ 'people', { homeworld_id: 'planets', species_id: 'species' } ], 
   [ 'people_in_films', { film_id: 'films', person_id: 'people' } ], //join
   [ 'pilots', { person_id: 'people', vessel_id: 'vessels' } ], //join
   [ 'planets_in_films', { film_id: 'films', planet_id: 'planets' } ], //join
@@ -252,6 +331,106 @@ const fkt = [
   [ 'starship_specs', { vessel_id: 'vessels' } ], //
   [ 'vessels_in_films', { film_id: 'films', vessel_id: 'vessels' } ]
 ]
+
+// const nonJoinTables = {
+//   planets: {
+//     _id: 'integer',
+//     name: 'character varying',
+//     rotation_period: 'integer',
+//     orbital_period: 'integer',
+//     diameter: 'integer',
+//     climate: 'character varying',
+//     gravity: 'character varying',
+//     terrain: 'character varying',
+//     surface_water: 'character varying',
+//     population: 'bigint'
+//   },
+
+// FKT AS OBJECT {
+//   people: { homeworld_id: 'planets', species_id: 'species' },
+
+// typeObject/////////////////////
+// planets: {
+//   _id: 'integer',
+//   name: 'character varying',
+//   rotation_period: 'integer',
+//   orbital_period: 'integer',
+//   diameter: 'integer',
+//   climate: 'character varying',
+//   gravity: 'character varying',
+//   terrain: 'character varying',
+//   surface_water: 'character varying',
+//   population: 'bigint',
+//   species: '[Species]',
+//   films: '[Film]'
+// },
+
+FKT AS OBJECT {
+  people: { homeworld_id: 'planets', species_id: 'species' },
+  people_in_films: { film_id: 'films', person_id: 'people' },//
+  pilots: { person_id: 'people', vessel_id: 'vessels' },//
+  planets_in_films: { film_id: 'films', planet_id: 'planets' },//
+  species: { homeworld_id: 'planets' },
+  species_in_films: { film_id: 'films', species_id: 'species' },//
+  starship_specs: { vessel_id: 'vessels' },
+  vessels_in_films: { film_id: 'films', vessel_id: 'vessels' }//
+}
+
+fktNoJoins {
+  people: { homeworld_id: 'planets', species_id: 'species' },
+  species: { homeworld_id: 'planets' },
+  starship_specs: { vessel_id: 'vessels' }
+}
+
+
+//types w/ missing foreign kkeys
+planets: { //person
+  _id: 'integer',
+  name: 'character varying',
+  rotation_period: 'integer',
+  orbital_period: 'integer',
+  diameter: 'integer',
+  climate: 'character varying',
+  gravity: 'character varying',
+  terrain: 'character varying',
+  surface_water: 'character varying',
+  population: 'bigint',
+  species: '[Species]',
+  films: '[Film]'
+},
+
+species: { //person 
+  _id: 'integer',
+  name: 'character varying',
+  classification: 'character varying',
+  average_height: 'character varying',
+  average_lifespan: 'character varying',
+  hair_colors: 'character varying',
+  skin_colors: 'character varying',
+  eye_colors: 'character varying',
+  language: 'character varying',
+  planets: '[Planet]',
+  films: '[Film]'
+},
+
+vessels: { //starship_spec
+  _id: 'integer',
+  name: 'character varying',
+  manufacturer: 'character varying',
+  model: 'character varying',
+  vessel_type: 'character varying',
+  vessel_class: 'character varying',
+  cost_in_credits: 'bigint',
+  length: 'character varying',
+  max_atmosphering_speed: 'character varying',
+  crew: 'integer',
+  passengers: 'integer',
+  cargo_capacity: 'character varying',
+  consumables: 'character varying',
+  people: '[Person]',
+  films: '[Film]'
+},
+
 const numForeignKeys = {
   people: 2,
   people_in_films: 2,
@@ -546,8 +725,8 @@ typeObj {
     eye_color: 'character varying',
     birth_year: 'character varying',
     gender: 'character varying',
-    species: 'Species', // NEED TO BE ARR
-    planets: 'Planet', //NEED TO BE ARR
+    species: 'Species', 
+    planets: 'Planet', 
     height: 'integer'
   }
   ///etc
@@ -634,4 +813,145 @@ isJoinTable {
   species_in_films: { _id: 'integer', film_id: 'bigint', species_id: 'bigint' },
   vessels_in_films: { _id: 'integer', vessel_id: 'bigint', film_id: 'bigint' },
   planets_in_films: { _id: 'integer', film_id: 'bigint', planet_id: 'bigint' }
+}
+
+//non join table with correct types 8/30
+const nonjoinTablewithCorrectTypes = {
+  planets: {
+  _id: 'ID',
+  name: 'String',
+  rotation_period: 'Int',
+  orbital_period: 'Int',
+  diameter: 'Int',
+  climate: 'String',
+  gravity: 'String',
+  terrain: 'String',
+  surface_water: 'String',
+  population: 'ID'
+},
+films: {
+  _id: 'ID',
+  title: 'String',
+  episode_id: 'Int',
+  opening_crawl: 'String',
+  director: 'String',
+  producer: 'String',
+  release_date: 'ID'
+},
+species: {
+  _id: 'ID',
+  name: 'String',
+  classification: 'String',
+  average_height: 'String',
+  average_lifespan: 'String',
+  hair_colors: 'String',
+  skin_colors: 'String',
+  eye_colors: 'String',
+  language: 'String',
+  homeworld_id: 'ID'
+},
+vessels: {
+  _id: 'ID',
+  name: 'String',
+  manufacturer: 'String',
+  model: 'String',
+  vessel_type: 'String',
+  vessel_class: 'String',
+  cost_in_credits: 'ID',
+  length: 'String',
+  max_atmosphering_speed: 'String',
+  crew: 'Int',
+  passengers: 'Int',
+  cargo_capacity: 'String',
+  consumables: 'String'
+},
+people: {
+  _id: 'ID',
+  name: 'String',
+  mass: 'String',
+  hair_color: 'String',
+  skin_color: 'String',
+  eye_color: 'String',
+  birth_year: 'String',
+  gender: 'String',
+  species_id: 'ID',
+  homeworld_id: 'ID',
+  height: 'Int'
+},
+starship_specs: {
+  _id: 'ID',
+  hyperdrive_rating: 'String',
+  MGLT: 'String',
+  vessel_id: 'ID'
+}
+}
+
+const outputOfaddNullableFields = {
+  planets: {
+    _id: 'ID!',
+    name: 'String',
+    rotation_period: 'Int',
+    orbital_period: 'Int',
+    diameter: 'Int',
+    climate: 'String',
+    gravity: 'String',
+    terrain: 'String',
+    surface_water: 'String',
+    population: 'ID'
+  },
+  films: {
+    _id: 'ID!',
+    title: 'String!',
+    episode_id: 'Int!',
+    opening_crawl: 'String!',
+    director: 'String!',
+    producer: 'String!',
+    release_date: 'ID!'
+  },
+  species: {
+    _id: 'ID!',
+    name: 'String!',
+    classification: 'String',
+    average_height: 'String',
+    average_lifespan: 'String',
+    hair_colors: 'String',
+    skin_colors: 'String',
+    eye_colors: 'String',
+    language: 'String',
+    homeworld_id: 'ID'
+  },
+  vessels: {
+    _id: 'ID!',
+    name: 'String!',
+    manufacturer: 'String',
+    model: 'String',
+    vessel_type: 'String!',
+    vessel_class: 'String!',
+    cost_in_credits: 'ID',
+    length: 'String',
+    max_atmosphering_speed: 'String',
+    crew: 'Int',
+    passengers: 'Int',
+    cargo_capacity: 'String',
+    consumables: 'String'
+  },
+  people: {
+    _id: 'ID!',
+    name: 'String!',
+    mass: 'String',
+    hair_color: 'String',
+    skin_color: 'String',
+    eye_color: 'String',
+    birth_year: 'String',
+    gender: 'String',
+    species_id: 'ID',
+    homeworld_id: 'ID',
+    height: 'Int'
+  },
+  starship_specs: {
+    _id: 'ID!',
+    hyperdrive_rating: 'String',
+    MGLT: 'String',
+    vessel_id: 'ID!'
+  }
 }

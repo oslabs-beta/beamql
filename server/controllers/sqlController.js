@@ -21,22 +21,22 @@ for(let i = 0; i < arrayTables.length; i++) {
 next()
  */
 
+
+
 //coming from router get request to '/uri'
 sqlController.getTableData = async function (req, res, next) {
   try {
-    console.log('made it in to getTableData sql controller');
-    let PG_URI = req.body.uri;
+    console.log("made it in to getTableData sql controller");
+    let PG_URI = req.body.uri ?? 'postgres://vdnvhfkq:sYiMTdCmk1vs2br_eUrrmX1unPvfucdW@batyr.db.elephantsql.com/vdnvhfkq';
     const pool = new Pool({
-      connectionString: PG_URI
+      connectionString: PG_URI,
     });
 
-
-    async function query (text, params, callback) {
-      console.log('executed query', text);
+    async function query(text, params, callback) {
+      console.log("executed query", text);
       return pool.query(text, params, callback);
     }
-  
-    
+
     //what type are we getting here?
     const arrayTables = await query(
       `SELECT ARRAY(SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE')`
@@ -50,7 +50,7 @@ sqlController.getTableData = async function (req, res, next) {
 
     const allTables = {};
     for (let i = 0; i < arrayString.length; i++) {
-      const columnQuery = `select table_name, column_name, ordinal_position, column_default, data_type, udt_name from information_schema.columns where table_name = $1`;
+      const columnQuery = `select table_name, column_name, ordinal_position, column_default, data_type, udt_name, is_nullable AS required from information_schema.columns where table_name = $1`;
       const { rows } = await query(columnQuery, [arrayString[i]]); //arrays
       allTables[arrayString[i]] = rows;
     }

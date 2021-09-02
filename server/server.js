@@ -16,20 +16,14 @@ const PORT = 3000;
   * handle requests for static files
   */
  //app.use(express.static(path.resolve(__dirname, '../client'))); // look over this later
- if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(__dirname, '../dist')));
- } else {
-    app.use(express.static(path.resolve(__dirname, '../')));
- }
-//  console.log(path.resolve(__dirname, '../client/assets'));
+ app.use(express.static(path.join(__dirname, '../')));
+ 
  /**
   * define route handlers
   */
 app.use('/api', router);
  
-app.get('/*', function(req, res) {
-  res.redirect('/');
-})
+
  
  // catch-all route handler for any requests to an unknown route
  app.use((req, res) => res.status(404).send('This is not the page you\'re looking for...'));
