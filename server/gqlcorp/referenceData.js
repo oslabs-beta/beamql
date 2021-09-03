@@ -1,10 +1,9 @@
 TYPE.JS
-fn capFirstLet
 data
   allTables
   primaryKeys
   foreignKeys
-
+  
 outputOfIsNullable(allTables): nullableObj
 dataTupleMaker(allTables): tablesTuples
 fkTupleMaker(foreignKeys): fKeyTuples
@@ -17,7 +16,7 @@ fkTupleMaker(foreignKeys): fKeyTuples
 
 nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj): joinTable AND nonJoinTable
 
-terrified(nonJoinTable[16], fKeysObj[12], nullableObj[6]): "finalTypeObjectFinito"
+typeCreator(nonJoinTable[16], fKeysObj[12], nullableObj[6]): "finalTypeObjectFinito"
 
 
 

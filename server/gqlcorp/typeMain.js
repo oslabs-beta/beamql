@@ -1,4 +1,110 @@
-const terrified = (nonJoinTables, fktObj, nullable) => {
+const { singular } = require('pluralize');
+
+function capFirstLet(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const isNullable = (obj) => {
+  const types = {};
+  for (const tbl in obj) {
+    types[tbl] = {};
+    for (const arr of obj[tbl]) {
+      //console.log(arr)
+      for (const column in arr) {
+        let temp = arr.column_name
+        if (arr.required === 'NO') {
+          types[tbl][temp] = true;
+        }
+      }
+    }
+  }
+  return types
+}
+
+// Takes allTables, returns array, elements are tuples, 1st val 
+const dataTupleMaker = (object) => {
+  const types = []; // holds everything
+  tupColNames = Object.entries(object)
+  for (const [tableName, colData] of tupColNames) { // key is col name, val is array holding multiple objs of column data // reducing array of objs to obj of col names and types
+    const tupTypes = [tableName, {}]; // sets up tuple
+    colData.forEach(val => {
+      tupTypes[1][val.column_name] = val.data_type; // puts column:type into object
+    });
+    types.push(tupTypes); // places tuple into types
+  }
+  //value is an array of objs
+  return types;
+};
+
+//takes array of obj, spits out array of tuples [foreign keys, {foreign keys: primary tables}]
+const fkTupleMaker = array => { // array of Foreign Keys, elem is object
+  const tupArr = [];
+  array.forEach(fkObj => {
+    if (!tupArr.length || tupArr[tupArr.length - 1][0] !== fkObj.foreign_table) { //array not empty, last tuple in array's name is not yet made:
+      const tuple = [fkObj.foreign_table, {}]; //make tuple => fTableName, { columnName: primaryTable}
+      tuple[1][fkObj.fk_columns] = fkObj.primary_table; // add to foreign table obj w/ all column names to its primary table
+      tupArr.push(tuple);
+    } else { // fTable already exists in fkArray
+      tupArr[tupArr.length - 1][1][fkObj.fk_columns] = fkObj.primary_table; // add in more primary tables
+    }
+  });
+  return tupArr;
+}; 
+
+
+const countTupleKeys = (tuples) => {
+  const keyCount = {}
+  tuples.forEach(tuple => {
+    //purple arr for each table
+    const tableName = tuple[0]
+    const count = Object.keys(tuple[1]).length; //counts foreign keys
+    keyCount[tableName] = count;
+  })
+  return keyCount
+}
+
+const nonAndJoinTables = (numFKeys, numAllKeys, fKeysObject, tablesObj) => {
+  const jTable = {}
+  const nJTable = {}
+  for (const tableName in numAllKeys) {
+    //if number of foreign keys + 1 equals all keys, it's a join table
+    if(numFKeys[tableName] + 1 === numAllKeys[tableName]) jTable[tableName] = tablesObj[tableName]
+    //if not, throw in non join table
+    else nJTable[tableName] = tablesObj[tableName]
+    }
+  return [jTable, nJTable]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const typeCreator = (nonJoinTables, fktObj, nullable) => {
   const typeObj = {};
   
   //initial type creator
@@ -91,6 +197,6 @@ const terrified = (nonJoinTables, fktObj, nullable) => {
   
 }
 
-console.log('terrified!!', terrified(nonJoinTable, fKeysObj, nullableObj));
+console.log('terrified!!', typeCreator(nonJoinTable, fKeysObj, nullableObj));
 
 

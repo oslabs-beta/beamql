@@ -1,5 +1,6 @@
 const express = require("express");
 const sqlController = require("./controllers/sqlController.js");
+const gqlController = require("./controllers/gqlController.js");
 // const userController = require('../controllers/userController.js');
 // const cookieController = require('../controllers/cookieController');
 // const sessionController = require('../controllers/sessionController');
@@ -47,6 +48,9 @@ router.post(
   "/uri",
   sqlController.getTableData,
   // sqlController.visualize,
+  // gqlController.makeSchemaTypes,
+  // gqlController.makeSchemaQueries,
+  // gqlController.makeSchemaMutations,
   // gqlController.makeSchema,
   // gqlController.makeResolver,
   (req, res) =>

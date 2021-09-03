@@ -890,7 +890,7 @@ const tablesTuples = dataTupleMaker(data.allTables) ////////////////////////////
 // console.log('REFACTOR?',tablesTuples)
 
 //create arr of objects with first el as table name and second el is an obj of fk colums and the table it references
-
+//converted to fkTupleMaker
 const foreignKeyData = () => {
   const fks = [];
   data.foreignKeys.forEach((obj) => {

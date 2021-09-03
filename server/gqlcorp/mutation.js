@@ -5,7 +5,6 @@ const { singular } = require("pluralize");
 
 const mutationDaddy = input => {
 
-  returns output
 }
 
 function capitalizeFirstLetter(string) {
