@@ -1228,7 +1228,7 @@ const terrified = (nonJoinTables, fktObj, nullable) => {
     for (const column in typeObj[table]) {
       switch (typeObj[table][column]) {
         case 'bigint':
-          typeObj[table][column] = 'ID'
+          typeObj[table][column] = 'Int'
           break;
         case 'integer':
           typeObj[table][column] = 'Int'
@@ -1237,7 +1237,7 @@ const terrified = (nonJoinTables, fktObj, nullable) => {
           typeObj[table][column] = 'String'
           break;
         case 'date':
-          typeObj[table][column] = 'ID'
+          typeObj[table][column] = 'String'
           break;
       }
       if (column === '_id') {

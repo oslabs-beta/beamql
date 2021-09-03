@@ -1,3 +1,5 @@
+TYPE.JS
+fn capFirstLet
 data
   allTables
   primaryKeys
@@ -16,6 +18,16 @@ fkTupleMaker(foreignKeys): fKeyTuples
 nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj): joinTable AND nonJoinTable
 
 terrified(nonJoinTable[16], fKeysObj[12], nullableObj[6]): "finalTypeObjectFinito"
+
+
+
+MUTATION.JS
+
+
+
+
+
+
 
 
 

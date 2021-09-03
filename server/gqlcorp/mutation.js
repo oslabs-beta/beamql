@@ -151,7 +151,7 @@ const addNullableFields = (dataWTypes, Nullable) => {
   return dataWTypes;
 };
 
-// console.log('NONJOINTABLESWITHNULLABLEADDED', addNullableFields(nonjoinTablewithCorrectTypes, outputOfIsNullable));
+console.log('NONJOINTABLESWITHNULLABLEADDED', addNullableFields(nonjoinTablewithCorrectTypes, outputOfIsNullable));
 
 const mutatableObject = addNullableFields(nonjoinTablewithCorrectTypes, outputOfIsNullable)
 // mutation =>  /////////////////////////////////////////////////////////
@@ -233,3 +233,11 @@ const finalBaby = replacerOne(JSON.stringify(toReplace))
 console.log('dear god', finalBaby)
 
 //////////////////////////////////////////////////////////////////////////
+
+
+// Morning, 9/3 // creating mutation daddy
+
+const mutationDaddy = input => {
+
+  
+}

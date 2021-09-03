@@ -4,25 +4,8 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-function snakeToCamel(str) {
-  return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
-  return str.split("_").map(capitalizeFirstLetter).join("");
-}
-
-// console.log(snakeToCamel(starship_specs))
-// function removeUnderscore(str) {
-//   for (let i = 0; i < str.length; i++) {
-    
-//   }
-//   str.replace(/[_]/, '');
-// }
-
 const camelCaseIt = string => string.toLowerCase().trim().split(/[.\-_\s]/g).reduce((string, word) => string + word[0].toUpperCase() + word.slice(1));
 
-//grab keys
-//set as keys in new table, set value as [singularizedkey!]!, also set singularized as key in new table PLUS (_id: ID!), assign value as singularedkey!
-
-// string it , add type Query_[space] in front
 
 const nonjoinTablewithCorrectTypes = {
   planets: {
@@ -94,22 +77,22 @@ const nonjoinTablewithCorrectTypes = {
   },
 };
   
-  // const typeDefs =
-  //   type Query {
-  //     people: [Person!]!
-  //     person(_id: ID!): Person!
-  //     films: [Film!]!
-  //     film(_id: ID!): Film!
-  //     planets: [Planet!]!
-  //     planet(_id: ID!): Planet!
-  //     species: [Species!]!
-  //     speciesById(_id: ID!): Species!
-  //     vessels: [Vessel!]!
-  //     vessel(_id: ID!): Vessel!
-  //     starshipSpecs: [StarshipSpec!]!
-  //     starshipSpec(_id: ID!): StarshipSpec!
-  //   }
-  // capitalizeFirstLetter
+// const typeDefs =
+//   type Query {
+//     people: [Person!]!
+//     person(_id: ID!): Person!
+//     films: [Film!]!
+//     film(_id: ID!): Film!
+//     planets: [Planet!]!
+//     planet(_id: ID!): Planet!
+//     species: [Species!]!
+//     speciesById(_id: ID!): Species!
+//     vessels: [Vessel!]!
+//     vessel(_id: ID!): Vessel!
+//     starshipSpecs: [StarshipSpec!]!
+//     starshipSpec(_id: ID!): StarshipSpec!
+//   }
+// capitalizeFirstLetter
 
 const queryCreator = object => {
   const queryObject = {}
