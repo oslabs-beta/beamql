@@ -18,6 +18,89 @@ nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj): joinTable AND n
 
 typeCreator(nonJoinTable[16], fKeysObj[12], nullableObj[6]): "finalTypeObjectFinito"
 
+{
+  planets: {
+    _id: 'ID!',
+    name: 'String',
+    rotation_period: 'Int',
+    orbital_period: 'Int',
+    diameter: 'Int',
+    climate: 'String',
+    gravity: 'String',
+    terrain: 'String',
+    surface_water: 'String',
+    population: 'Int',
+    species: '[Species]',
+    films: '[Film]'
+  },
+  films: {
+    _id: 'ID!',
+    title: 'String!',
+    episode_id: 'Int!',
+    opening_crawl: 'String!',
+    director: 'String!',
+    producer: 'String!',
+    release_date: 'String!',
+    people: '[Person]',
+    planets: '[Planet]',
+    species: '[Species]',
+    vessels: '[Vessel]'
+  },
+  species: {
+    _id: 'ID!',
+    name: 'String!',
+    classification: 'String',
+    average_height: 'String',
+    average_lifespan: 'String',
+    hair_colors: 'String',
+    skin_colors: 'String',
+    eye_colors: 'String',
+    language: 'String',
+    planets: '[Planet]',
+    films: '[Film]'
+  },
+  vessels: {
+    _id: 'ID!',
+    name: 'String!',
+    manufacturer: 'String',
+    model: 'String',
+    vessel_type: 'String!',
+    vessel_class: 'String!',
+    cost_in_credits: 'Int',
+    length: 'String',
+    max_atmosphering_speed: 'String',
+    crew: 'Int',
+    passengers: 'Int',
+    cargo_capacity: 'String',
+    consumables: 'String',
+    people: '[Person]',
+    films: '[Film]'
+  },
+  people: {
+    _id: 'ID!',
+    name: 'String!',
+    mass: 'String',
+    hair_color: 'String',
+    skin_color: 'String',
+    eye_color: 'String',
+    birth_year: 'String',
+    gender: 'String',
+    species: '[Species]',
+    planets: '[Planet]',
+    height: 'Int',
+    films: '[Film]',
+    vessels: '[Vessel]'
+  },
+  starship_specs: {
+    _id: 'ID!',
+    hyperdrive_rating: 'String',
+    MGLT: 'String',
+    vessels: '[Vessel]'
+  }
+}
+
+
+
 
 
 MUTATION.JS

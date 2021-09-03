@@ -136,7 +136,7 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
     for (const column in typeObj[table]) {
       switch (typeObj[table][column]) {
         case 'bigint':
-          typeObj[table][column] = 'ID'
+          typeObj[table][column] = 'Int'
           break;
         case 'integer':
           typeObj[table][column] = 'Int'
@@ -145,7 +145,7 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
           typeObj[table][column] = 'String'
           break;
         case 'date':
-          typeObj[table][column] = 'ID'
+          typeObj[table][column] = 'String'
           break;
       }
       if (column === '_id') {
@@ -1006,8 +1006,15 @@ const fKeyTuples = fkTupleMaker(foreignKeys)
 
 const fKeyCounts = countTupleKeys(fKeyTuples)
 const allKeyCounts = countTupleKeys(tablesTuples)
-const fKeysObj = Object.fromEntries(fKeyTuples)
-const tablesObj = Object.fromEntries(tablesTuples)
+// const fKeysObj = Object.fromEntries(fKeyTuples)
+// const tablesObj = Object.fromEntries(tablesTuples)
+
+// const tuplesToObjects = (foreignKeyTuples, allTablesTuples) => [Object.fromEntries(foreignKeyTuples), Object.fromEntries(allTablesTuples)]
+
+const tuplesToObjects = (a,b) => [a,b].map(x=>Object.fromEntries(x))
+
+const [fKeysObj, tablesObj] = tuplesToObjects(fKeyTuples, tablesTuples)
+
 
 const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj)
 
