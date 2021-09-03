@@ -1,8 +1,9 @@
-gqlController = {}
+const { singular } = require('pluralize');
+const gqlController = {}
 
 gqlController.makeSchemaTypes = async function (req, res, next) {
   try{
-    const { allTables, primaryKeys, foreignKeys } = res.locals
+    const { allTables, foreignKeys } = res.locals.data
     // modify fns in type, mutation, query to pull directly allTables, primaryKeys, foreignKeys
 
     // invoke typeAllFns on necessary 
@@ -96,25 +97,18 @@ gqlController.makeSchemaMutations = async function (req, res, next) {
 
 
 gqlController.makeResolvers = function(req, res, next) {
-  let resolvers = ``;
-  //loop thru all table data
-  for (let i = 0; i < res.locals.allTables.length; i++){
-    //loop thru fktable
-    for(let j = 0; j < res.locals.foreignKeys.length; j++){
-      //if curr el of fkttable (subarray) 1st element (string of table name) is the same as the 1st element (also string table name) of current subarray of all table data.
-      if(res.locals.foreignKeys[j][0] === res.locals.allTables[i][0]){
-        //then now check if number of properties of atd second element is > than number of properties of fkt second element
-
-        if(Object.keys(res.locals.allTables[j][1]).length > Object.keys(res.locals.foreignKeys[j][1]).length + 1){
-          //if so then we have a non-join table to make query resolvers for
-          //singular
-          console.log(res.locals.allTables[i][0])
-          //plural
+    let resolvers = ``;
+    //loop thru all table data
+    for (let [key,val] of Object.entries(res.locals.allTables)){
+      //count props in fks that match current key
+          const fkCount = res.locals.foreignKeys.filter(el => el.foreign_table === key).length;
+          //if not a join table
+        if (val.length > fkCount+1) {
+          console.log(key);
+          
         }
-      }
     }
-  }
-      
+        
 }
 
 const data = {
@@ -880,4 +874,4 @@ const data = {
 
 console.log(gqlController.makeResolvers(null, data, null));
 
- export default gqlController;
+// export default gqlController;

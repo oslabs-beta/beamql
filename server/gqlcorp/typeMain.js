@@ -4,6 +4,10 @@ function capFirstLet(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function snakeToTitle(str) {
+  return str.split("_").map(capFirstLet).join("");
+}
+
 const isNullable = (obj) => {
   const types = {};
   for (const tbl in obj) {
@@ -75,6 +79,15 @@ const nonAndJoinTables = (numFKeys, numAllKeys, fKeysObject, tablesObj) => {
   return [jTable, nJTable]
 }
 
+const fktNoJoins = (fktAsObj, nonJT) => {
+    const fktNoJoinsObj = {}
+    for (const key in fktAsObj) {
+      if (nonJT[key]) {
+        fktNoJoinsObj[key] = fktAsObj[key];
+      }
+    }
+    return fktNoJoinsObj;
+    }
 
 const typeCreator = (nonJoinTables, fktObj, nullable) => {
   const typeObj = {};
@@ -116,15 +129,17 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
     }
   }
   // is currently adding join tables, but we don't like that
-  //Add Missing Foreign Keys/Types
+
+  //testing with fktNoJoin instead of fktObj
   for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
-    for (const fktCol in fktObj) { //iterate through fktObj fktCol i.e. people, peope_in_films
+    for (const fktCol in fktObjNoJoins) { //iterate through fktObj fktCol i.e. people, peope_in_films
       // console.log(`1082`)
-      for (const col in fktObj[fktCol]) { //iterate through nested obj
+      for (const col in fktObjNoJoins[fktCol]) { //iterate through nested obj
         // console.log(`1083`)
-        if (fktObj[fktCol][col] === njtCol) {
-          if (Object.keys(typeObj[njtCol]).includes(fktCol)) {
-              typeObj[njtCol][fktCol] = '['+capFirstLet(singular(fktCol))+']'
+        if (fktObjNoJoins[fktCol][col] === njtCol) {
+            if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
+              //console.log('missing fks', typeObj[njtCol],fktCol)
+              typeObj[njtCol][fktCol] = '['+snakeToTitle(singular(fktCol))+']'
             }
       }
       }
@@ -162,11 +177,7 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
       }
   }
 
-
-
-  
-  return typeObj
-  
+  return typeObj  
 }
 
 
@@ -1009,14 +1020,20 @@ const allKeyCounts = countTupleKeys(tablesTuples)
 // const fKeysObj = Object.fromEntries(fKeyTuples)
 // const tablesObj = Object.fromEntries(tablesTuples)
 
-// const tuplesToObjects = (foreignKeyTuples, allTablesTuples) => [Object.fromEntries(foreignKeyTuples), Object.fromEntries(allTablesTuples)]
+const tuplesToObjects = (foreignKeyTuples, allTablesTuples) => [Object.fromEntries(foreignKeyTuples), Object.fromEntries(allTablesTuples)]
 
 const tuplesToObjects = (a,b) => [a,b].map(x=>Object.fromEntries(x))
-
 const [fKeysObj, tablesObj] = tuplesToObjects(fKeyTuples, tablesTuples)
 
 
 const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj)
+
+const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable)
+
+
+
+
+
 
 const finalResult = typeCreator(nonJoinTable, fKeysObj, nullableObj) 
 
@@ -1025,6 +1042,8 @@ console.log(finalResult)
 
 
 // we never use primaryKeys data ? seem to compare fKeyCount to totalKeyCount to determine join tables
+  // primaryKeys are used on the front end for sake of visualization
+
 // we never use joinTable? def use nonJoinTable but not join
 // will we use joinTable or primaryKeys in mutations, queries, resolvers?
 

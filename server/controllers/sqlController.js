@@ -31,7 +31,7 @@ sqlController.getTableData = async function (req, res, next) {
     const pool = new Pool({
       connectionString: PG_URI,
     });
-
+    const data = {}
     async function query(text, params, callback) {
       console.log("executed query", text);
       return pool.query(text, params, callback);
@@ -41,7 +41,7 @@ sqlController.getTableData = async function (req, res, next) {
     const arrayTables = await query(
       `SELECT ARRAY(SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE')`
     );
-
+    
     //`SELECT array_agg(table_name) FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'`
     const junk = arrayTables.rows[0].array; // string '{this is some bullshit we're going to convert}'
     const junkString = junk.slice(1, junk.length - 1); // cutting off brackets at the end
@@ -56,7 +56,8 @@ sqlController.getTableData = async function (req, res, next) {
     }
     console.log(`ALLTABLES!!`, allTables);
 
-    res.locals.allTables = allTables;
+    //add allTables to data object. Will send data object to front-end via data
+    data.allTables = allTables;
     
     const foreignKeyQuery =
       await query(`select kcu.table_name as foreign_table, '>-' as rel, rel_tco.table_name as primary_table, string_agg(kcu.column_name, ', ') as fk_columns, kcu.constraint_name, tco.constraint_type from information_schema.table_constraints tco join information_schema.key_column_usage kcu on tco.constraint_schema = kcu.constraint_schema and tco.constraint_name = kcu.constraint_name join information_schema.referential_constraints rco on tco.constraint_schema = rco.constraint_schema
@@ -74,7 +75,7 @@ group by kcu.table_schema,
 order by kcu.table_schema,
       kcu.table_name`);
 
-    res.locals.foreignKeys = foreignKeyQuery.rows;
+    data.foreignKeys = foreignKeyQuery.rows;
 
     //allTables will be an object, keys are table names & values are full arrays with each column & info as an object
     console.log("Foreign Key", foreignKeyQuery.rows); // -> send foreignKeyQuery.rows to the front-end
@@ -93,7 +94,7 @@ group by tco.constraint_name,
     kcu.table_name
 order by kcu.table_schema,
       kcu.table_name`);
-    res.locals.primaryKeys = primaryKeyQuery.rows;
+    data.primaryKeys = primaryKeyQuery.rows;
     console.log(`primaryKeyQuery`, primaryKeyQuery.rows); // -> send primaryKeyQuery.rows to the front-end
     // -- 2. query each table for columns, column types, primary key, foreign keys
     // --   each query would return multiple columns, column types, ONE pk, multiple fks
@@ -108,6 +109,7 @@ order by kcu.table_schema,
     // }
 
     // res.locals.finalData = finalData; // will be an array of table objects
+    res.locals.data = data
     return next();
   } catch (err) {
     console.log("HIT CATCH ERROR IN sqlC.getTableData: ", err);

@@ -55,13 +55,9 @@ router.post(
   // gqlController.makeResolver,
   (req, res) =>
     res.status(200).json({
-      allTables: res.locals.allTables,
-      foreignKeys: res.locals.foreignKeys,
-      primaryKeys: res.locals.primaryKeys,
-//OR HOLD ALL STUFF FROM SQL ON res.locals.data
-      // allTables: res.locals.data.allTables,
-      // foreignKeys: res.locals.data.foreignKeys,
-      // primaryKeys: res.locals.data.primaryKeys,
+      allTables: res.locals.data.allTables,
+      foreignKeys: res.locals.data.foreignKeys,
+      primaryKeys: res.locals.data.primaryKeys,
 
       finalResolver: res.locals.finalResolver
     })
