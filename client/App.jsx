@@ -90,14 +90,15 @@ class App extends Component {
 
         <Switch>
           <Route exact path="/">
-            <img id="gif" src="./assets/newgif2.gif" alt="Get Started" />
+            <img id="gif" src="./assets/getstarted.gif" alt="Get Started" />
+            {/* <h1 id="gifheader">Getting Started</h1> */}
           </Route>
           <Route exact path="/docs">
             <Docs />
             <img
               id="gif"
               style={{ marginRight: '30px', width: '50vw' }}
-              src="./assets/newgif2.gif"
+              src="./assets/getstarted.gif"
               alt="Get Started"
             />
           </Route>
