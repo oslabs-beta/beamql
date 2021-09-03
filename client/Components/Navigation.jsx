@@ -15,59 +15,54 @@ class Navigation extends Component {
     super(props);
     this.state = {
       loggedIn: false,
-      failedLogin: false, 
+      failedLogin: false,
       currentpage: 'home',
     };
-    
   }
   //need function to update the state on what is clicked
 
-
   render() {
-  if (this.state.currentpage === 'home') {
-    return (
-      <div className="header">
-        <div className="topButtons">
-          <div className="leftButtons">
-            <button
-              className="signup-btn"
-              onClick={(event) => {
-                console.log('trying to send you to singup');
-                console.log(this.state);
-                this.setState({ currentpage: 'signup' });}}
-            >
-              {' '}
-              Sandbox{' '}
-            </button>
-            <button
-              className="login-btn"
-              onClick={(event) => (window.location.href = '/login')}
-            >
-              {' '}
-              Docs{' '}
-            </button>
+    if (this.state.currentpage === 'home') {
+      return (
+        <div className="header">
+          <div className="topButtons">
+            <div className="leftButtons">
+              <button
+                className="signup-btn"
+                onClick={(event) => {
+                  console.log('trying to send you to singup');
+                  console.log(this.state);
+                  this.setState({ currentpage: 'signup' });
+                }}
+              >
+                {' '}
+                Sandbox{' '}
+              </button>
+              <button
+                className="login-btn"
+                onClick={(event) => (window.location.href = '/login')}
+              >
+                {' '}
+                Docs{' '}
+              </button>
+            </div>
+
+            <div className="rightButtons">
+              <button>Github</button>
+              <button>Team</button>
+            </div>
           </div>
-          
-          <div className="rightButtons">
-            <button>Github</button>
-            <button>Squad</button>
-          </div>
+          <div></div>
         </div>
-        <div>
-        
-        </div>
-      </div>
-    );
-  }
+      );
+    }
     if (this.state.currentpage === 'signup') {
-      return ( <Redirect to='/signup'/>
-    );
-  }
+      return <Redirect to="/signup" />;
+    }
 
-// if (this.state.currentpage === 'signup') {
-//  return ( <Redirect to='/signup' >
-// );
-
+    // if (this.state.currentpage === 'signup') {
+    //  return ( <Redirect to='/signup' >
+    // );
   }
 }
 
