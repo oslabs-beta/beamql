@@ -374,24 +374,30 @@ const styles = makeStyles({
     root: {
         "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
           borderColor: "white",
+          border: '2px solid white',
           width: '100%',
           position: 'absolute',
           right: '0',
-          height: '100%'
+          height: '100%',
+          spellCheck: "false"
         },
         "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
           borderColor: "white",
+          border: '2px solid white',
           width: '100%',
           position: 'absolute',
           right: '0',
-          height: '100%'
+          height: '100%',
+          spellCheck: "false"
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderColor: "white",
+          border: '2px solid white',
           width: '100%',
           position: 'absolute',
           right: '0',
-          height: '100%'
+          height: '100%',
+          spellCheck: "false"
         },
     }
 });
