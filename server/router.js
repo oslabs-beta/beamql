@@ -48,7 +48,7 @@ router.post(
   "/uri",
   sqlController.getTableData,
   // sqlController.visualize,
-  // gqlController.makeSchemaTypes,
+   gqlController.makeSchemaTypes,
   // gqlController.makeSchemaQueries,
   // gqlController.makeSchemaMutations,
   // gqlController.makeSchema,

@@ -1020,9 +1020,10 @@ const allKeyCounts = countTupleKeys(tablesTuples)
 // const fKeysObj = Object.fromEntries(fKeyTuples)
 // const tablesObj = Object.fromEntries(tablesTuples)
 
-const tuplesToObjects = (foreignKeyTuples, allTablesTuples) => [Object.fromEntries(foreignKeyTuples), Object.fromEntries(allTablesTuples)]
+// const tuplesToObjects = (foreignKeyTuples, allTablesTuples) => [Object.fromEntries(foreignKeyTuples), Object.fromEntries(allTablesTuples)]
 
 const tuplesToObjects = (a,b) => [a,b].map(x=>Object.fromEntries(x))
+
 const [fKeysObj, tablesObj] = tuplesToObjects(fKeyTuples, tablesTuples)
 
 
@@ -1047,3 +1048,13 @@ console.log(finalResult)
 // we never use joinTable? def use nonJoinTable but not join
 // will we use joinTable or primaryKeys in mutations, queries, resolvers?
 
+module.exports = {  capFirstLet, 
+          snakeToTitle, 
+          isNullable, 
+          dataTupleMaker, 
+          fkTupleMaker, 
+          countTupleKeys, 
+          tuplesToObjects, 
+          nonAndJoinTables, 
+          fktNoJoins, 
+          typeCreator }
