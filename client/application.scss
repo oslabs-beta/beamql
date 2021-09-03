@@ -4,25 +4,23 @@ body {
   // color: black;
   font-family: Noto Sans, 'sans-serif';
   outline: none;
-
 }
 
 #gifheader {
   margin: 0px;
- 
+
   color: white;
   font-size: 8em;
   text-align: center;
   position: absolute;
-  top:40%;
+  top: 40%;
   left: 20%;
   font-family: Noto Sans, 'sans-serif';
   outline: none;
-
 }
 
 button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .node-key {
@@ -32,20 +30,20 @@ button:hover {
   font-size: 1.3em;
 }
 
-hr{
+hr {
   padding: 0px;
   margin: 0px;
-  border-color: rgba(0, 0, 0, 0.75); 
+  border-color: rgba(0, 0, 0, 0.75);
 }
 
 .topButtons {
-    display: flex;
-    height: 100px;
-    align-items: center;
-    justify-content: flex-end;
-    margin: 0;
-    margin-right: 20px;
-    background-color: rgb(56, 33, 158);
+  display: flex;
+  height: 100px;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  margin-right: 20px;
+  background-color: rgb(56, 33, 158);
 }
 
 #docs {
@@ -63,39 +61,40 @@ hr{
   color: white;
 }
 #gif {
-display: flex;
-width: 50vw; 
-margin-left: auto;
-margin-right: auto;
-align-self: center;
-justify-self: center;
+  display: flex;
+  border: 2px solid white;
+  width: 75vw;
+  margin-left: auto;
+  margin-right: auto;
+  align-self: center;
+  justify-self: center;
 }
 
 .topButtons button {
-    // margin: 0 10px 10px 0px;
-    // border: 3px solid silver;
-    // border-radius: 15px;
-    // background-color: #4c00ff;
-    // color: white;
-    // font-size: 20px;
-    // padding: 10px;
-    // width: 150px;
-    display:inline-block;
-    padding:1em 1.2em;
-    border:0.1em solid #FFFFFF;
-    background-color: rgb(56, 33, 158);
-    margin:0 1em .5em 1em;
-    font-size: 1em;
-    border-radius:0.12em;
-    box-sizing: border-box;
-    text-decoration:none;
-    font-family:'Roboto',sans-serif;
-    font-weight:300;
-    color:#FFFFFF;
-    text-align:center;
-    transition: all 0.2s;
+  // margin: 0 10px 10px 0px;
+  // border: 3px solid silver;
+  // border-radius: 15px;
+  // background-color: #4c00ff;
+  // color: white;
+  // font-size: 20px;
+  // padding: 10px;
+  // width: 150px;
+  display: inline-block;
+  padding: 1em 1.2em;
+  border: 0.1em solid #ffffff;
+  background-color: rgb(56, 33, 158);
+  margin: 0 1em 0.5em 1em;
+  font-size: 1em;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
 }
-#choiceButton{
+#choiceButton {
   margin-right: 80%;
 }
 
@@ -105,35 +104,35 @@ justify-self: center;
   justify-content: center;
   width: 20%;
   left: 70px;
-  top: 195px;
+  top: 193px;
 }
 
 #Selection button {
-  display:inline-block;
-  border:0.1em solid #FFFFFF;
+  display: inline-block;
+  border: 0.1em solid #ffffff;
   background-color: whitesmoke;
-  margin:0 0.2em .2em .2em;
+  margin: 0 0.2em 0.2em 0.2em;
   font-size: 1em;
-  border-radius:0.12em;
+  border-radius: 0.12em;
   width: 30%;
   // box-sizing: border-box;
-  text-decoration:none;
-  font-family:'Roboto',sans-serif;
-  font-weight:300;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
   color: rgb(56, 33, 158);
-  text-align:center;
+  text-align: center;
   transition: all 0.2s solid black;
 }
-#OutputBox{
+#OutputBox {
   display: flex;
 }
-#outputRight{
- right: 30px;
+#outputRight {
+  right: 30px;
 }
-#outputLeft{
+#outputLeft {
   justify-self: flex-start;
- }
-#codebox{
+}
+#codebox {
   display: flex;
   position: absolute;
   top: 210px;
@@ -155,27 +154,31 @@ justify-self: center;
 
 .PrivateNotchedOutline-root-2 {
   color: white;
-  border:0.1em solid #FFFFFF;
+  border: 0.1em solid #ffffff;
 }
 
 #erdbackground {
   display: flex;
   position: absolute;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
 }
 
 .MuiOutlinedInput-notchedOutline {
   color: white;
-  border:0.1em solid #FFFFFF;
+  border: 0.1em solid #ffffff;
 }
 
-.MuiInputBase-root .MuiOutlinedInput-input .MuiInputBase-inputMultiline .MuiOutlinedInput-inputMultiline {
+.MuiInputBase-root
+  .MuiOutlinedInput-input
+  .MuiInputBase-inputMultiline
+  .MuiOutlinedInput-inputMultiline {
   color: white;
   border-color: white;
-  border:0.1em solid #FFFFFF;
+  border: 0.1em solid #ffffff;
 }
 
-legend, fieldset {
+legend,
+fieldset {
   color: white;
 }
 
@@ -188,16 +191,18 @@ legend, fieldset {
 }
 
 #demo-simple-select-filled-label {
-  color: whitesmoke
+  color: whitesmoke;
 }
 
-input, select, textarea{
+input,
+select,
+textarea {
   color: grey;
 }
 
 #filled-basic {
   color: purple;
-  background-color:lightgray;
+  background-color: lightgray;
   border-radius: 5px;
 }
 .MuiSelect-nativeInput {
@@ -216,49 +221,42 @@ input, select, textarea{
   left: 40px;
 }
 
-.topbuttons button:hover{
-  color:#000000;
-  background-color:#FFFFFF;
-  }
-
-.leftButtons {
-    display: flex;
-    justify-content: flex-start;
+.topbuttons button:hover {
+  color: #000000;
+  background-color: #ffffff;
 }
 
-.rightButtons { 
-    display: flex;
-    justify-content: flex-end;
+.leftButtons {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.rightButtons {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .header h1 {
-    display: flex;
-    justify-content: center;
-    font-size: 40px;
-    margin-bottom: 40px;
-    margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  margin-bottom: 40px;
+  margin-top: 15px;
 }
-
-
-// .build {
-//     height: 500px;
-//     border: 2px solid black;
-// }
-
 .butt {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .butt button {
-    margin: 0 30px 50px 0px;
-    border: 3px solid #00d8ff;
-    border-radius: 15px;
-    background-color: #00d8ff;
-    color: white;
-    font-size: 20px;
-    padding: 10px;
-    width: 150px;
+  margin: 0 30px 50px 0px;
+  border: 3px solid #00d8ff;
+  border-radius: 15px;
+  background-color: #00d8ff;
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+  width: 150px;
 }
 
 .button2 button {
@@ -272,60 +270,71 @@ input, select, textarea{
   width: 150px;
 }
 
-.Title{
+.Title {
   justify-content: center;
 }
-
-#top{
+#team {
   display: flex;
-}
-#bottom{
-  display: flex;
-}
-
-#title {
-  display: flex;
-  justify-content: center;
-  font-size: xx-large;
-  // position:absolute;
-}
-#topRow {
-  display: flex;
-  justify-content: center;
-  margin-top: 10%;
-}
-#bottomRow {
-  display: flex;
-  justify-content: center;
-  //align-content: center;
-}
-// .middle{
-//   border-left: 2px solid #FFFFFF;
-// }
-#teams {
-  justify-self: center;
-}
-#Adam {
-  font-size: large;
-  padding-right: 30%;
-  align-content: center;
+  justify-content: space-evenly;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 18vh;
 }
 #Brian {
   font-size: large;
-  align-content: center;
 
+  width: 20%;
+  text-align: center;
 }
-#Marc{
-  padding-right: 30%;
+#Eric {
   font-size: large;
-  align-content: center;
+  width: 20%;
+  text-align: center;
 }
-#Eric{
+#Adam {
   font-size: large;
+  width: 20%;
+  text-align: center;
+}
+#Marc {
   font-size: large;
-  align-content: center;
+  width: 20%;
+  text-align: center;
+}
+h2 {
+  color: white;
+}
+p {
+  color: white;
+  font-family: 'Helvetica';
+  text-decoration: underline;
+}
+.teampic{
+  border-radius: 100%;
+  border:2px solid white;
+}
+.teampic:hover{
+ border:2px solid #48BFE3;
 }
 
-#linebreaks{
-  margin: 0; padding: 0; list-style: none;
+.socials{
+  display: flex;
+  justify-content: center;
+  font-size: 2.0em;
+  color: white;
+}
+a:hover{
+  color:#48BFE3;
+}
+.firstLetter{
+  color:#48BFE3;
+  font-weight: bold;
+}
+.fa-github {
+  color:whitesmoke;
+  margin: 0 10px 0 10px;
+}
+.fa-linkedin {
+  color:whitesmoke;
+  margin: 0 10px 0 10px;
 }
