@@ -3,8 +3,8 @@ data
   allTables
   primaryKeys
   foreignKeys
-  
-outputOfIsNullable(allTables): nullableObj
+
+isNullable(allTables): nullableObj
 dataTupleMaker(allTables): tablesTuples
 fkTupleMaker(foreignKeys): fKeyTuples
 [
