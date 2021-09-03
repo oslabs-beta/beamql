@@ -54,6 +54,8 @@ router.post(
       allTables: res.locals.allTables,
       foreignKeys: res.locals.foreignKeys,
       primaryKeys: res.locals.primaryKeys,
+
+      finalResolver: res.locals.finalResolver
     })
 );
 
