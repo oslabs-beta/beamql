@@ -137,6 +137,9 @@ const convertTypesforMutation = object => {
 };
 const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables);
 // console.log(nonJoinTables,'after')
+
+
+
 // addNullable -> ////////////////////////////////////////////////////////////
 const addNullableFields = (dataWTypes, Nullable) => {
   for (const tbl in dataWTypes) {

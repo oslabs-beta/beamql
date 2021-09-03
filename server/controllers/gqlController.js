@@ -2,7 +2,7 @@ gqlController = {}
 
 gqlController.makeSchema = async function (req, res, next) {
   try{
-    const {primaryKeys, foreignKeys,} = res.body.data
+    const { allTables, primaryKeys, foreignKeys } = res.body.data
     const final = mutationDaddy(info)
     res.locals.info = info
     return next()

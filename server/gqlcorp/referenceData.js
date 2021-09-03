@@ -1,3 +1,25 @@
+data
+  allTables
+  primaryKeys
+  foreignKeys
+
+outputOfIsNullable(allTables): nullableObj
+dataTupleMaker(allTables): tablesTuples
+fkTupleMaker(foreignKeys): fKeyTuples
+[
+  countTupleKeys(fKeyTuples): fKeyCounts
+  countTupleKeys(tablesTuples): allKeyCounts
+  Object.fromEntries(fKeyTuples): fKeysObj
+  Object.fromEntries(tablesTuples): tablesObj
+]
+
+nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj): joinTable AND nonJoinTable
+
+terrified(nonJoinTable[16], fKeysObj[12], nullableObj[6]): "finalTypeObjectFinito"
+
+
+
+
 const finalResultOfTypeWorkByFriday = {
   planets: {
     _id: 'integer',

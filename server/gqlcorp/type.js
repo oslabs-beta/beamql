@@ -1113,7 +1113,7 @@ const typeObj = {}
 // }
 // nonJoinTable, fKeysObj
 //first for in loop through non join tables and compare to see if it has foreign keys, taken from fktObject. if it does, we'll set an empty object to fill in later. if it doesn't, we'll take all column names&types and copy them over.
-////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////// already thrown into terrified
 const typeCreator = (nonJoinTables, fktObj) => {
   const typeObj = {};
   
@@ -1171,6 +1171,7 @@ otherKeyFinder(wtfisgoingon, fKeysObj)
 const terrified = (nonJoinTables, fktObj, nullable) => {
   const typeObj = {};
   
+  //intitial type creator
   for (const key in nonJoinTables) { // key: people / starship spec
     //add non foreign key value pairs to type obj
     if (!fktObj[key]) { //
