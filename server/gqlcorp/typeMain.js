@@ -13,7 +13,6 @@ const isNullable = (obj) => {
   for (const tbl in obj) {
     types[tbl] = {};
     for (const arr of obj[tbl]) {
-      //console.log(arr)
       for (const column in arr) {
         let temp = arr.column_name
         if (arr.required === 'NO') {
@@ -122,7 +121,6 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
       if (arrFK.includes(key)) {
         const valsToInput = arrFK.filter(elem => elem !== key)
         valsToInput.forEach(val => {
-          // console.log(val)
           typeObj[key][val] = '['+capFirstLet(singular(val))+']'
         })
       }
@@ -133,9 +131,7 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
   //testing with fktNoJoin instead of fktObj
   for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
     for (const fktCol in fktObjNoJoins) { //iterate through fktObj fktCol i.e. people, peope_in_films
-      // console.log(`1082`)
       for (const col in fktObjNoJoins[fktCol]) { //iterate through nested obj
-        // console.log(`1083`)
         if (fktObjNoJoins[fktCol][col] === njtCol) {
             if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
               //console.log('missing fks', typeObj[njtCol],fktCol)
@@ -1037,9 +1033,6 @@ const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable)
 
 
 const finalResult = typeCreator(nonJoinTable, fKeysObj, nullableObj) 
-
-console.log(finalResult)
-// console.log('terrified!!', typeCreator(nonJoinTable, fKeysObj, nullableObj));
 
 
 // we never use primaryKeys data ? seem to compare fKeyCount to totalKeyCount to determine join tables

@@ -11,112 +11,91 @@ const {
     nonAndJoinTables,
     fktNoJoins,
     typeCreator
-} = require('../gqlcorp/typeMain.js')
+} = require('../gqlcorp/typeMain.js');
+
+const { convertTypesforMutation, addNullableFields, mutation, replacerOne } = require('../gqlcorp/mutation.js');
+
+const { camelCaseIt, queryCreator } = require('../gqlcorp/query.js');
 
 
 gqlController.makeSchemaTypes = async function (req, res, next) {
   try{
-    const { allTables, foreignKeys } = res.locals.data
+    const { allTables, foreignKeys } = res.locals.data;
       
-    const nullableObj = isNullable(allTables)
-      
-    const tablesTuples = dataTupleMaker(allTables)
-     
-    const fKeyTuples = fkTupleMaker(foreignKeys)
+    const nullableObj = isNullable(allTables);
+    res.locals.data.nullableObj = nullableObj
+    const tablesTuples = dataTupleMaker(allTables);
     
-    const fKeyCounts = countTupleKeys(fKeyTuples)
-      
-    const allKeyCounts = countTupleKeys(tablesTuples)
-      
-    const [fKeysObj, tablesObj] = tuplesToObjects(fKeyTuples, tablesTuples)
+    const fKeyTuples = fkTupleMaker(foreignKeys);
+
+    const fKeyCounts = countTupleKeys(fKeyTuples);
     
-    const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj)
+    const allKeyCounts = countTupleKeys(tablesTuples);
     
-    const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable)
+    const [fKeysObj, tablesObj] = tuplesToObjects(fKeyTuples, tablesTuples);
+
+    const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj);
     
-    const gqlTypes = typeCreator(nonJoinTable, fKeysObj, nullableObj) 
-      console.log(`gqlTYPES-gqlController`, gqlTypes);
+    res.locals.data.nonJoinTable = nonJoinTable
+    const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable);
+    const gqlTypes = typeCreator(nonJoinTable, fKeysObj, nullableObj);
     
-    return (next);
+    res.locals.schemaTypes = gqlTypes;
+
+    return next();
 
   } catch (err) {
-    console.log('Error in makeSchema is: ', err)
+    console.log('Error in makeSchemaTypes is: ', err)
     return next(err);
   }
 }
+
+
+
+
+gqlController.makeSchemaMutations = async function (req, res, next) {
+    try{
+        const { nullableObj, nonJoinTable } = res.locals.data;
+        const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTable);
+        res.locals.data.nonjoinTablewithCorrectTypes = nonjoinTablewithCorrectTypes;
+        const mutatableObject = addNullableFields(nonjoinTablewithCorrectTypes, nullableObj);
+
+        const regExFormat = mutation(mutatableObject)
+
+        const completeMutation = replacerOne(regExFormat);
+
+        res.locals.schemaMutations = completeMutation;
+        console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM', completeMutation)
+        return next();
+      
+  } catch (err) {
+    console.log('Error in makeSchemaMutations is: ', err)
+    return next(err);
+  }
+}
+
 
 gqlController.makeSchemaQueries = async function (req, res, next) {
   try{
-    const { allTables, primaryKeys, foreignKeys } = res.locals
-    // modify fns in type, mutation, query to pull directly allTables, primaryKeys, foreignKeys
-    // 1
-    //2
-    //3
-    // invoke typeAllFns on necessary 
-      //fkeytuplemaker
-      //alltablemaker
-      //nullablemaker
-      //etc maker
-    // invoke mutationAll on necessary
-      //
-      //
-      //
-      //
-      //
-      //
-    //  invoke 
-
-    const final = mutationDaddy(info)
-    res.locals.info = info
-    return next()
-
-
-
-
+      const { nonjoinTablewithCorrectTypes,
+      } = res.locals.data;
+      
+      const completeQuery = queryCreator(nonjoinTablewithCorrectTypes);
+      res.locals.schemaQueries = completeQuery;
+      console.log('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ', completeQuery)
+      return next();
   } catch (err) {
-    console.log('Error in makeSchema is: ', err)
-    return next(err);
-  }
-}
-gqlController.makeSchemaMutations = async function (req, res, next) {
-  try{
-    const { allTables, primaryKeys, foreignKeys } = res.locals
-    // modify fns in type, mutation, query to pull directly allTables, primaryKeys, foreignKeys
-    // 1
-    //2
-    //3
-    // invoke typeAllFns on necessary 
-      //fkeytuplemaker
-      //alltablemaker
-      //nullablemaker
-      //etc maker
-    // invoke mutationAll on necessary
-      //
-      //
-      //
-      //
-      //
-      //
-    //  invoke 
-
-    const final = mutationDaddy(info)
-    res.locals.info = info
-    return next()
-
-
-
-
-  } catch (err) {
-    console.log('Error in makeSchema is: ', err)
+    console.log('Error in makeSchemaQueries is: ', err)
     return next(err);
   }
 }
 
-
+// convert types for mutation is done in mutation as well as types. do in types, store on res.locals, doesn't need to be done in makeschemamutations again (convertTypesForMutation)
+//rename variables i.e. regExFormat/toReplace
 
 
 // gqlController.makeResolvers = function(req, res, next) {
-//     let resolvers = ``;
+    //     let resolvers = ``;
 //     //loop thru all table data
 //     for (let [key,val] of Object.entries(res.locals.allTables)){
 //       //count props in fks that match current key
@@ -135,3 +114,5 @@ gqlController.makeSchemaMutations = async function (req, res, next) {
 // console.log(gqlController.makeResolvers(null, data, null));
 
 module.exports = gqlController;
+
+

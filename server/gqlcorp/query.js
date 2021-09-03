@@ -1,6 +1,6 @@
 const { singular } = require('pluralize');
 
-function capitalizeFirstLetter(string) {
+function capFirstLet(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
@@ -101,7 +101,7 @@ const queryCreator = object => {
     const camelCaseName = camelCaseIt(table) //starshipSpecs
     const ccnWithID = singular(camelCaseName) + '(_id:ID!)' // starshipSpecs(_id: ID!)
     // values
-    const titleCaseWithBang = capitalizeFirstLetter(singular(camelCaseName)) + '!' // StarshipSpec!
+    const titleCaseWithBang = capFirstLet(singular(camelCaseName)) + '!' // StarshipSpec!
     const pluralValue = '[' + titleCaseWithBang + ']!' // [StarshipSpec!]!
     //assign key value pairs in obj
     queryObject[camelCaseName] = pluralValue;
@@ -124,3 +124,5 @@ const queryCreator = object => {
 
 const x = queryCreator(nonjoinTablewithCorrectTypes)
 console.log(x)
+
+module.exports = { camelCaseIt, queryCreator };

@@ -3,16 +3,14 @@ const { singular } = require("pluralize");
 
 // types for bigint currently convert to Int. must determine if Int, ID, string is correct. population is taken as bigint, was ID, now is Int.
 
-const mutationDaddy = input => {
 
-}
 
-function capitalizeFirstLetter(string) {
+function capFirstLet(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function snakeToTitle(str) {
-  return str.split("_").map(capitalizeFirstLetter).join("");
+  return str.split("_").map(capFirstLet).join("");
 }
 /////////////////////////////////////////////////////////////////////////////
 const outputOfIsNullable = {
@@ -108,7 +106,6 @@ const nonJoinTables = {
 };
 /////////////////////////////////////////////////
 ////////////change all names before running
-// console.log(nonJoinTables,'before')
 // convert Types for Mutation -> /////////////////////////////////////////
 const convertTypesforMutation = object => {
   for (const table in object) {
@@ -134,8 +131,10 @@ const convertTypesforMutation = object => {
   }
   return object //quicfix
 };
+
 const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables);
-// console.log(nonJoinTables,'after')
+
+// const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables); // old one
 
 
 
@@ -150,7 +149,6 @@ const addNullableFields = (dataWTypes, Nullable) => {
   return dataWTypes;
 };
 
-console.log('NONJOINTABLESWITHNULLABLEADDED', addNullableFields(nonjoinTablewithCorrectTypes, outputOfIsNullable));
 
 const mutatableObject = addNullableFields(nonjoinTablewithCorrectTypes, outputOfIsNullable)
 // mutation =>  /////////////////////////////////////////////////////////
@@ -158,7 +156,7 @@ const mutation = (obj) => {
   mutationObj = {};
   for (const key in obj) {
     let keyName = snakeToTitle(key);
-    let temp = "add" + capitalizeFirstLetter(singular(keyName));
+    let temp = "add" + capFirstLet(singular(keyName));
     mutationObj[temp] = {};
     for (const column in obj[key]) {
       if (column !== "_id") {
@@ -166,7 +164,7 @@ const mutation = (obj) => {
       }
     }
     let keyName1 = snakeToTitle(key);
-    let temp1 = "update" + capitalizeFirstLetter(singular(keyName1));
+    let temp1 = "update" + capFirstLet(singular(keyName1));
     mutationObj[temp1] = {};
     for (const col in obj[key]) {
       mutationObj[temp1][col] = obj[key][col];
@@ -175,9 +173,9 @@ const mutation = (obj) => {
       let keyName2 = snakeToTitle(key);
       let temp2 =
         "delete" +
-        capitalizeFirstLetter(singular(keyName2)) +
+        capFirstLet(singular(keyName2)) +
         "(_id: ID!): " +
-        capitalizeFirstLetter(singular(keyName2)) +
+        capFirstLet(singular(keyName2)) +
         "!";
       mutationObj[temp2] = true;
     }
@@ -185,9 +183,10 @@ const mutation = (obj) => {
   return mutationObj;
 };
 const toReplace = mutation(mutatableObject)
-// console.log('TO REPLACE',toReplace)
+
 // replacer One ///////////////////////////////////////////////////////////
 const replacerOne = (str) => {
+  str = JSON.stringify(str)
   str =
     "\n" +
     str
@@ -208,9 +207,6 @@ const replacerOne = (str) => {
   //look for text between add and {
     let txtToAdd = str.match(/(?<=add).*(?=\()/);
     //replace the following 2 closing commas with ): [that text]!
-    // console.log('string', str);
-    // console.log('ALL', txtToAdd);
-    // console.log(`texttoAdd`, txtToAdd[0]);
     str = str.replace(/\)\n/, `): ${txtToAdd[0]}!\n`);
     output+=str.slice(0, str.indexOf(`update`));
     str = str.slice(str.indexOf(`update`));
@@ -223,20 +219,11 @@ const replacerOne = (str) => {
   if (str.length) output+=str;
   
   return output;
-    //.replace() //.replace(/[(]/g, '(\n')
+
 }
 
-const finalBaby = replacerOne(JSON.stringify(toReplace))
-// console.log("ONE", replacerOne(JSON.stringify(mutationOutput)));
-
-console.log('dear god', finalBaby)
+const finalBaby = replacerOne(toReplace)
 
 //////////////////////////////////////////////////////////////////////////
 
-
-// Morning, 9/3 // creating mutation daddy
-
-const mutationDaddy = input => {
-
-  
-}
+module.exports = { convertTypesforMutation, addNullableFields, mutation, replacerOne };
