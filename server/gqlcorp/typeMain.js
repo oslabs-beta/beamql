@@ -10,9 +10,12 @@ function snakeToTitle(str) {
 
 const isNullable = (obj) => {
   const types = {};
+  
   for (const tbl in obj) {
     types[tbl] = {};
+  
     for (const arr of obj[tbl]) {
+  
       for (const column in arr) {
         let temp = arr.column_name
         if (arr.required === 'NO') {
@@ -28,6 +31,7 @@ const isNullable = (obj) => {
 const dataTupleMaker = (object) => {
   const types = []; // holds everything
   tupColNames = Object.entries(object)
+
   for (const [tableName, colData] of tupColNames) { // key is col name, val is array holding multiple objs of column data // reducing array of objs to obj of col names and types
     const tupTypes = [tableName, {}]; // sets up tuple
     colData.forEach(val => {
@@ -69,6 +73,7 @@ const countTupleKeys = (tuples) => {
 const nonAndJoinTables = (numFKeys, numAllKeys, fKeysObject, tablesObj) => {
   const jTable = {}
   const nJTable = {}
+
   for (const tableName in numAllKeys) {
     //if number of foreign keys + 1 equals all keys, it's a join table
     if(numFKeys[tableName] + 1 === numAllKeys[tableName]) jTable[tableName] = tablesObj[tableName]
@@ -80,6 +85,7 @@ const nonAndJoinTables = (numFKeys, numAllKeys, fKeysObject, tablesObj) => {
 
 const fktNoJoins = (fktAsObj, nonJT) => {
     const fktNoJoinsObj = {}
+
     for (const key in fktAsObj) {
       if (nonJT[key]) {
         fktNoJoinsObj[key] = fktAsObj[key];
@@ -130,7 +136,9 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
 
   //testing with fktNoJoin instead of fktObj
   for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
+
     for (const fktCol in fktObjNoJoins) { //iterate through fktObj fktCol i.e. people, peope_in_films
+
       for (const col in fktObjNoJoins[fktCol]) { //iterate through nested obj
         if (fktObjNoJoins[fktCol][col] === njtCol) {
             if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
@@ -144,6 +152,7 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
 
   //convert typeObj values to GraphQL values 
   for (const table in typeObj) {
+
     for (const column in typeObj[table]) {
       switch (typeObj[table][column]) {
         case 'bigint':
@@ -167,6 +176,7 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
 
   //Signifies which fields are nullable
   for (const tbl in typeObj) {
+      
     for (const column in nullable[tbl]) {
       let temp = typeObj[tbl][column]
       if(temp) typeObj[tbl][column] = temp + '!'

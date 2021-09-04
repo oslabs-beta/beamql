@@ -14,7 +14,9 @@ function snakeToTitle(str) {
 
 // Takes non join tables, and switches SQL types to GQL types.
 const convertTypesforMutation = object => {
+
   for (const table in object) {
+
     for (const column in object[table]) {
       switch (object[table][column]) {
         case "bigint":
@@ -42,7 +44,9 @@ const convertTypesforMutation = object => {
 
 // Takes GQL typed non Join table and adds ! after the type to show it is required in GQL formatting
 const addNullableFields = (dataWTypes, nullable) => {
+
   for (const tbl in dataWTypes) {
+
     for (const column in nullable[tbl]) {
       let temp = dataWTypes[tbl][column];
       if (temp) dataWTypes[tbl][column] = temp + "!";
@@ -61,6 +65,7 @@ const mutation = (obj) => {
     let keyName = snakeToTitle(key);
     let temp = "add" + capFirstLet(singular(keyName));
     mutationObj[temp] = {};
+
     for (const column in obj[key]) {
       if (column !== "_id") {
         mutationObj[temp][column] = obj[key][column];
@@ -70,6 +75,7 @@ const mutation = (obj) => {
     let keyName1 = snakeToTitle(key);
     let temp1 = "update" + capFirstLet(singular(keyName1));
     mutationObj[temp1] = {};
+    
     for (const col in obj[key]) {
       mutationObj[temp1][col] = obj[key][col];
     }
