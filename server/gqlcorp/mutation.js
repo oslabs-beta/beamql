@@ -75,7 +75,7 @@ const mutation = (obj) => {
     let keyName1 = snakeToTitle(key);
     let temp1 = "update" + capFirstLet(singular(keyName1));
     mutationObj[temp1] = {};
-    
+
     for (const col in obj[key]) {
       mutationObj[temp1][col] = obj[key][col];
     }

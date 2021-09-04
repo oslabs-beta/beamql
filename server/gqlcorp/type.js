@@ -1148,7 +1148,7 @@ const wtfisgoingon = typeCreator(nonJoinTable, fKeysObj)//temp call this typeObj
 // add join table keys to typeObjects
 const otherKeyFinder = (typeObject, fKTAO) => { //fkTAO = foreign key table object
   // take type obj keys
-  for(let key in typeObject) { // key is people
+  for(let key in typeObject) { // key is people // table
     // look through values OF values OF fktasObj
     for(let fktObjKey in fKTAO) {
       const arrFK = Object.values(fKTAO[fktObjKey]) //values of objects in fktasobject as an array

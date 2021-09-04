@@ -1,13 +1,21 @@
 const { singular } = require('pluralize');
 
+//Capitalizes first letter of any string
 function capFirstLet(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//Converts to PascalCaseFrom snake_case
 function snakeToTitle(str) {
-  return str.split("_").map(capFirstLet).join("");
+    return str.split("_").map(capFirstLet).join("");
 }
 
+//Easy mapper for the two tuple items
+const tuplesToObjects = (a,b) => [a,b].map(x=>Object.fromEntries(x))
+
+
+//Determines if each column in the table is nullable, if no add to nullable obj
+//pass in all table data as argument
 const isNullable = (obj) => {
   const types = {};
   
@@ -58,7 +66,7 @@ const fkTupleMaker = array => { // array of Foreign Keys, elem is object
   return tupArr;
 }; 
 
-
+//Takes tuple array and returns object of each tableName as key and value as number of foreign keys
 const countTupleKeys = (tuples) => {
   const keyCount = {}
   tuples.forEach(tuple => {
@@ -70,6 +78,7 @@ const countTupleKeys = (tuples) => {
   return keyCount
 }
 
+// Compares all tables & their # of keys to foreign key tables and gives join and nonJoin tables
 const nonAndJoinTables = (numFKeys, numAllKeys, fKeysObject, tablesObj) => {
   const jTable = {}
   const nJTable = {}
@@ -83,6 +92,7 @@ const nonAndJoinTables = (numFKeys, numAllKeys, fKeysObject, tablesObj) => {
   return [jTable, nJTable]
 }
 
+//Creates obj of all the foreign keys in non join tables
 const fktNoJoins = (fktAsObj, nonJT) => {
     const fktNoJoinsObj = {}
 
@@ -94,10 +104,13 @@ const fktNoJoins = (fktAsObj, nonJT) => {
     return fktNoJoinsObj;
     }
 
+//From non join tables, creating GQL formatted string with all types
 const typeCreator = (nonJoinTables, fktObj, nullable) => {
   const typeObj = {};
   
-  //initial type creator
+  //creates schema types for nonJoinTables with foreign keys and without foreign keys.
+    //NJT's w/o FK's are added directly as key/value pairs
+    //NJT w/ FK's are added with the foreign key singularized and capitalized 
   for (const key in nonJoinTables) { // key: people / starship spec
     //add non foreign key value pairs to type obj
     if (!fktObj[key]) { //
@@ -119,22 +132,23 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
     }
   }
   
-  //Add Foreign Types to Type obj
-  for(let key in typeObj) { // key is people
+  //Add corresponding foreign keys from join tables & non join tables to their appropriate type in GraphQL. This enables us to properly connect our types with relational data
+  for(let table in typeObj) { // key is people
     // look through values OF values OF fktasObj
     for(let fktObjKey in fktObj) {
       const arrFK = Object.values(fktObj[fktObjKey]) //values of objects in fktasobject as an array
-      if (arrFK.includes(key)) {
-        const valsToInput = arrFK.filter(elem => elem !== key)
-        valsToInput.forEach(val => {
-          typeObj[key][val] = '['+capFirstLet(singular(val))+']'
+      if (arrFK.includes(table)) {
+        const valsToInput = arrFK.filter(elem => elem !== table) //filter for all other tables
+        valsToInput.forEach(val => { //Add to final table 
+          typeObj[table][val] = '['+capFirstLet(singular(val))+']'
         })
       }
     }
   }
-  // is currently adding join tables, but we don't like that
 
-  //testing with fktNoJoin instead of fktObj
+  
+  //Add Foreign Types to Type obj
+  //Due to no join tables, adding corresponding foreign keys to each non join table so each table can be relationally linked
   for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
 
     for (const fktCol in fktObjNoJoins) { //iterate through fktObj fktCol i.e. people, peope_in_films
@@ -150,7 +164,7 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
     }
   }
 
-  //convert typeObj values to GraphQL values 
+  //convert SQL types to GQL type
   for (const table in typeObj) {
 
     for (const column in typeObj[table]) {
@@ -174,9 +188,9 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
     }
   }
 
-  //Signifies which fields are nullable
+  //Signifies which fields are nullable and adds them to the final object with ! for GQL format
   for (const tbl in typeObj) {
-      
+
     for (const column in nullable[tbl]) {
       let temp = typeObj[tbl][column]
       if(temp) typeObj[tbl][column] = temp + '!'
@@ -187,833 +201,6 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
 }
 
 
-const data = {
-  "allTables": {
-      "planets": [
-          {
-              "table_name": "planets",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('planets__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "name",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "rotation_period",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "YES"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "orbital_period",
-              "ordinal_position": 4,
-              "column_default": null,
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "YES"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "diameter",
-              "ordinal_position": 5,
-              "column_default": null,
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "YES"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "climate",
-              "ordinal_position": 6,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "gravity",
-              "ordinal_position": 7,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "terrain",
-              "ordinal_position": 8,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "surface_water",
-              "ordinal_position": 9,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "planets",
-              "column_name": "population",
-              "ordinal_position": 10,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "YES"
-          }
-      ],
-      "pilots": [
-          {
-              "table_name": "pilots",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('pilots__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "pilots",
-              "column_name": "person_id",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          },
-          {
-              "table_name": "pilots",
-              "column_name": "vessel_id",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          }
-      ],
-      "people_in_films": [
-          {
-              "table_name": "people_in_films",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('people_in_films__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "people_in_films",
-              "column_name": "person_id",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          },
-          {
-              "table_name": "people_in_films",
-              "column_name": "film_id",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          }
-      ],
-      "films": [
-          {
-              "table_name": "films",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('films__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "films",
-              "column_name": "title",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "films",
-              "column_name": "episode_id",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "films",
-              "column_name": "opening_crawl",
-              "ordinal_position": 4,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "films",
-              "column_name": "director",
-              "ordinal_position": 5,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "films",
-              "column_name": "producer",
-              "ordinal_position": 6,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "films",
-              "column_name": "release_date",
-              "ordinal_position": 7,
-              "column_default": null,
-              "data_type": "date",
-              "udt_name": "date",
-              "required": "NO"
-          }
-      ],
-      "species": [
-          {
-              "table_name": "species",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('species__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "species",
-              "column_name": "name",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "species",
-              "column_name": "classification",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "species",
-              "column_name": "average_height",
-              "ordinal_position": 4,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "species",
-              "column_name": "average_lifespan",
-              "ordinal_position": 5,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "species",
-              "column_name": "hair_colors",
-              "ordinal_position": 6,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "species",
-              "column_name": "skin_colors",
-              "ordinal_position": 7,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "species",
-              "column_name": "eye_colors",
-              "ordinal_position": 8,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "species",
-              "column_name": "language",
-              "ordinal_position": 9,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "species",
-              "column_name": "homeworld_id",
-              "ordinal_position": 10,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "YES"
-          }
-      ],
-      "species_in_films": [
-          {
-              "table_name": "species_in_films",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('species_in_films__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "species_in_films",
-              "column_name": "film_id",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          },
-          {
-              "table_name": "species_in_films",
-              "column_name": "species_id",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          }
-      ],
-      "vessels": [
-          {
-              "table_name": "vessels",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('vessels__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "name",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "manufacturer",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "model",
-              "ordinal_position": 4,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "vessel_type",
-              "ordinal_position": 5,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "vessel_class",
-              "ordinal_position": 6,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "cost_in_credits",
-              "ordinal_position": 7,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "YES"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "length",
-              "ordinal_position": 8,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "max_atmosphering_speed",
-              "ordinal_position": 9,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "crew",
-              "ordinal_position": 10,
-              "column_default": null,
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "YES"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "passengers",
-              "ordinal_position": 11,
-              "column_default": null,
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "YES"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "cargo_capacity",
-              "ordinal_position": 12,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "vessels",
-              "column_name": "consumables",
-              "ordinal_position": 13,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          }
-      ],
-      "vessels_in_films": [
-          {
-              "table_name": "vessels_in_films",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('vessels_in_films__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "vessels_in_films",
-              "column_name": "vessel_id",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          },
-          {
-              "table_name": "vessels_in_films",
-              "column_name": "film_id",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          }
-      ],
-      "people": [
-          {
-              "table_name": "people",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('people__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "people",
-              "column_name": "name",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "NO"
-          },
-          {
-              "table_name": "people",
-              "column_name": "mass",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "people",
-              "column_name": "hair_color",
-              "ordinal_position": 4,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "people",
-              "column_name": "skin_color",
-              "ordinal_position": 5,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "people",
-              "column_name": "eye_color",
-              "ordinal_position": 6,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "people",
-              "column_name": "birth_year",
-              "ordinal_position": 7,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "people",
-              "column_name": "gender",
-              "ordinal_position": 8,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "people",
-              "column_name": "species_id",
-              "ordinal_position": 9,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "YES"
-          },
-          {
-              "table_name": "people",
-              "column_name": "homeworld_id",
-              "ordinal_position": 10,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "YES"
-          },
-          {
-              "table_name": "people",
-              "column_name": "height",
-              "ordinal_position": 11,
-              "column_default": null,
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "YES"
-          }
-      ],
-      "planets_in_films": [
-          {
-              "table_name": "planets_in_films",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('planets_in_films__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "planets_in_films",
-              "column_name": "film_id",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          },
-          {
-              "table_name": "planets_in_films",
-              "column_name": "planet_id",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          }
-      ],
-      "starship_specs": [
-          {
-              "table_name": "starship_specs",
-              "column_name": "_id",
-              "ordinal_position": 1,
-              "column_default": "nextval('starship_specs__id_seq'::regclass)",
-              "data_type": "integer",
-              "udt_name": "int4",
-              "required": "NO"
-          },
-          {
-              "table_name": "starship_specs",
-              "column_name": "hyperdrive_rating",
-              "ordinal_position": 2,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "starship_specs",
-              "column_name": "MGLT",
-              "ordinal_position": 3,
-              "column_default": null,
-              "data_type": "character varying",
-              "udt_name": "varchar",
-              "required": "YES"
-          },
-          {
-              "table_name": "starship_specs",
-              "column_name": "vessel_id",
-              "ordinal_position": 4,
-              "column_default": null,
-              "data_type": "bigint",
-              "udt_name": "int8",
-              "required": "NO"
-          }
-      ]
-  },
-  "foreignKeys": [
-      {
-          "foreign_table": "people",
-          "rel": ">-",
-          "primary_table": "planets",
-          "fk_columns": "homeworld_id",
-          "constraint_name": "people_fk1",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "people",
-          "rel": ">-",
-          "primary_table": "species",
-          "fk_columns": "species_id",
-          "constraint_name": "people_fk0",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "people_in_films",
-          "rel": ">-",
-          "primary_table": "films",
-          "fk_columns": "film_id",
-          "constraint_name": "people_in_films_fk1",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "people_in_films",
-          "rel": ">-",
-          "primary_table": "people",
-          "fk_columns": "person_id",
-          "constraint_name": "people_in_films_fk0",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "pilots",
-          "rel": ">-",
-          "primary_table": "people",
-          "fk_columns": "person_id",
-          "constraint_name": "pilots_fk0",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "pilots",
-          "rel": ">-",
-          "primary_table": "vessels",
-          "fk_columns": "vessel_id",
-          "constraint_name": "pilots_fk1",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "planets_in_films",
-          "rel": ">-",
-          "primary_table": "films",
-          "fk_columns": "film_id",
-          "constraint_name": "planets_in_films_fk0",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "planets_in_films",
-          "rel": ">-",
-          "primary_table": "planets",
-          "fk_columns": "planet_id",
-          "constraint_name": "planets_in_films_fk1",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "species",
-          "rel": ">-",
-          "primary_table": "planets",
-          "fk_columns": "homeworld_id",
-          "constraint_name": "species_fk0",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "species_in_films",
-          "rel": ">-",
-          "primary_table": "films",
-          "fk_columns": "film_id",
-          "constraint_name": "species_in_films_fk0",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "species_in_films",
-          "rel": ">-",
-          "primary_table": "species",
-          "fk_columns": "species_id",
-          "constraint_name": "species_in_films_fk1",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "starship_specs",
-          "rel": ">-",
-          "primary_table": "vessels",
-          "fk_columns": "vessel_id",
-          "constraint_name": "starship_specs_fk0",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "vessels_in_films",
-          "rel": ">-",
-          "primary_table": "films",
-          "fk_columns": "film_id",
-          "constraint_name": "vessels_in_films_fk1",
-          "constraint_type": "FOREIGN KEY"
-      },
-      {
-          "foreign_table": "vessels_in_films",
-          "rel": ">-",
-          "primary_table": "vessels",
-          "fk_columns": "vessel_id",
-          "constraint_name": "vessels_in_films_fk0",
-          "constraint_type": "FOREIGN KEY"
-      }
-  ],
-  "primaryKeys": [
-      {
-          "table_name": "films",
-          "constraint_name": "films_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "people",
-          "constraint_name": "people_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "people_in_films",
-          "constraint_name": "people_in_films_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "pilots",
-          "constraint_name": "pilots_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "planets",
-          "constraint_name": "planets_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "planets_in_films",
-          "constraint_name": "planets_in_films_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "species",
-          "constraint_name": "species_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "species_in_films",
-          "constraint_name": "species_in_films_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "starship_specs",
-          "constraint_name": "starship_specs_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "vessels",
-          "constraint_name": "vessels_pk",
-          "primary_key_columns": "_id"
-      },
-      {
-          "table_name": "vessels_in_films",
-          "constraint_name": "vessels_in_films_pk",
-          "primary_key_columns": "_id"
-      }
-  ]
-};
 
 const {allTables, foreignKeys} = data
 
@@ -1023,12 +210,6 @@ const fKeyTuples = fkTupleMaker(foreignKeys)
 
 const fKeyCounts = countTupleKeys(fKeyTuples)
 const allKeyCounts = countTupleKeys(tablesTuples)
-// const fKeysObj = Object.fromEntries(fKeyTuples)
-// const tablesObj = Object.fromEntries(tablesTuples)
-
-// const tuplesToObjects = (foreignKeyTuples, allTablesTuples) => [Object.fromEntries(foreignKeyTuples), Object.fromEntries(allTablesTuples)]
-
-const tuplesToObjects = (a,b) => [a,b].map(x=>Object.fromEntries(x))
 
 const [fKeysObj, tablesObj] = tuplesToObjects(fKeyTuples, tablesTuples)
 
@@ -1040,11 +221,6 @@ const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable)
 const finalResult = typeCreator(nonJoinTable, fKeysObj, nullableObj) 
 
 
-// we never use primaryKeys data ? seem to compare fKeyCount to totalKeyCount to determine join tables
-  // primaryKeys are used on the front end for sake of visualization
-
-// we never use joinTable? def use nonJoinTable but not join
-// will we use joinTable or primaryKeys in mutations, queries, resolvers?
 
 module.exports = {  capFirstLet, 
           snakeToTitle, 
