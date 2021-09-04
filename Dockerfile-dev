@@ -1,0 +1,6 @@
+FROM node:14.17.6
+RUN npm i webpack
+WORKDIR /src
+COPY package*.json /src
+RUN npm i
+EXPOSE 8080
