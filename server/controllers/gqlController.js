@@ -78,7 +78,7 @@ gqlController.makeSchemaMutations = async function (req, res, next) {
       nonjoinTablewithCorrectTypes,
       nullableObj
     );
-
+    //
     const regExFormat = mutation(mutatableObject);
 
     const completeMutation = replacerOne(regExFormat);

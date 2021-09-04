@@ -201,10 +201,9 @@ const replacerOne = (str) => {
       .replace(/[(]/g, `(\n`)
       .replace(/: true,/g, "\n")
       .replace(/: true/g, "")
-      .replace(/,\n/g,',\n  ')
-      // .replace
-      // .replace(/[(\n]/g,'(\n  ');
-// \t
+      .replace(/,\n/g, ',\n  ')
+      .replace(/\(\n/g, '(\n  ')
+      .replace(/\(\n  _id :ID!\n\)/g, '(_id: ID!)');
   let output = "";
 
   //while str length
@@ -230,5 +229,29 @@ const replacerOne = (str) => {
 const finalBaby = replacerOne(toReplace)
 console.log('AAAAAAAAAAAAAAAAAAAA\n',finalBaby)
 //////////////////////////////////////////////////////////////////////////
+
+// addFilm(
+//   director: String!,
+//   opening_crawl: String!,
+//   episode_id: Int!,
+//   title: String!,
+//   release_date: String!,
+//   producer: String!,
+// ): Film!
+
+// updateFilm(
+//   director: String,
+//   opening_crawl: String,
+//   episode_id: Int,
+//   _id: ID!,
+//   title: String,
+//   release_date: String,
+//   producer: String,
+// ): Film!
+
+// deleteFilm(_id: ID!): Film!
+
+
+
 
 module.exports = { convertTypesforMutation, addNullableFields, mutation, replacerOne };
