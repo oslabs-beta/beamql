@@ -18,6 +18,7 @@ module.exports = {
     port: 8080,
     inline: true,
     compress: true,
+    hot: true,
     publicPath: '/',
     proxy: {
       '/': 'http://localhost:3000'
@@ -57,6 +58,7 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
+        exclude: /node_modules/,
         use: [
           process.env.NODE_ENV === 'production'
             ? MiniCssExtractPlugin.loader
