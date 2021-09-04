@@ -1,117 +1,23 @@
 const { singular } = require("pluralize");
-//for each type we need: add, update, delete
 
-// types for bigint currently convert to Int. must determine if Int, ID, string is correct. population is taken as bigint, was ID, now is Int.
-
-
-
+//Capitalizes first letter of any string
 function capFirstLet(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
+};
 
+//Converts to PascalCaseFrom snake_case
 function snakeToTitle(str) {
   return str.split("_").map(capFirstLet).join("");
-}
-/////////////////////////////////////////////////////////////////////////////
-const outputOfIsNullable = {
-  planets: { _id: true },
-  pilots: { _id: true, person_id: true, vessel_id: true },
-  people_in_films: { _id: true, person_id: true, film_id: true },
-  films: {
-    _id: true,
-    title: true,
-    episode_id: true,
-    opening_crawl: true,
-    director: true,
-    producer: true,
-    release_date: true
-  },
-  species: { _id: true, name: true },
-  species_in_films: { _id: true, film_id: true, species_id: true },
-  vessels: { _id: true, name: true, vessel_type: true, vessel_class: true },
-  vessels_in_films: { _id: true, vessel_id: true, film_id: true },
-  people: { _id: true, name: true },
-  planets_in_films: { _id: true, film_id: true, planet_id: true },
-  starship_specs: { _id: true, vessel_id: true }
-}
-//////////////////////////////////////////////////////
-const nonJoinTables = {
-  planets: {
-    _id: "integer",
-    name: "character varying",
-    rotation_period: "integer",
-    orbital_period: "integer",
-    diameter: "integer",
-    climate: "character varying",
-    gravity: "character varying",
-    terrain: "character varying",
-    surface_water: "character varying",
-    population: "bigint",
-  },
-  films: {
-    _id: "integer",
-    title: "character varying",
-    episode_id: "integer",
-    opening_crawl: "character varying",
-    director: "character varying",
-    producer: "character varying",
-    release_date: "date",
-  },
-  species: {
-    _id: "integer",
-    name: "character varying",
-    classification: "character varying",
-    average_height: "character varying",
-    average_lifespan: "character varying",
-    hair_colors: "character varying",
-    skin_colors: "character varying",
-    eye_colors: "character varying",
-    language: "character varying",
-    homeworld_id: "bigint",
-  },
-  vessels: {
-    _id: "integer",
-    name: "character varying",
-    manufacturer: "character varying",
-    model: "character varying",
-    vessel_type: "character varying",
-    vessel_class: "character varying",
-    cost_in_credits: "bigint",
-    length: "character varying",
-    max_atmosphering_speed: "character varying",
-    crew: "integer",
-    passengers: "integer",
-    cargo_capacity: "character varying",
-    consumables: "character varying",
-  },
-  people: {
-    _id: "integer",
-    name: "character varying",
-    mass: "character varying",
-    hair_color: "character varying",
-    skin_color: "character varying",
-    eye_color: "character varying",
-    birth_year: "character varying",
-    gender: "character varying",
-    species_id: "bigint",
-    homeworld_id: "bigint",
-    height: "integer",
-  },
-  starship_specs: {
-    _id: "integer",
-    hyperdrive_rating: "character varying",
-    MGLT: "character varying",
-    vessel_id: "bigint",
-  },
 };
-/////////////////////////////////////////////////
-////////////change all names before running
-// convert Types for Mutation -> /////////////////////////////////////////
+
+
+
+// Takes non join tables, and switches SQL types to GQL types.
 const convertTypesforMutation = object => {
   for (const table in object) {
     for (const column in object[table]) {
       switch (object[table][column]) {
-        case "bigint": ///////////////////// changing 9/2 from ID
+        case "bigint":
           object[table][column] = "Int";
           break;
         case "integer":
@@ -132,14 +38,12 @@ const convertTypesforMutation = object => {
   return object //quicfix
 };
 
-const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables);
-
-// const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables); // old one
 
 
-const addNullableFields = (dataWTypes, Nullable) => {
+// Takes GQL typed non Join table and adds ! after the type to show it is required in GQL formatting
+const addNullableFields = (dataWTypes, nullable) => {
   for (const tbl in dataWTypes) {
-    for (const column in Nullable[tbl]) {
+    for (const column in nullable[tbl]) {
       let temp = dataWTypes[tbl][column];
       if (temp) dataWTypes[tbl][column] = temp + "!";
     }
@@ -148,8 +52,8 @@ const addNullableFields = (dataWTypes, Nullable) => {
 };
 
 
-const mutatableObject = addNullableFields(nonjoinTablewithCorrectTypes, outputOfIsNullable)
 
+//Creates strings for all mutations in GQL
 const mutation = (obj) => {
   mutationObj = {};
   //Creating add Mutation for each nonJoinTable
@@ -183,7 +87,8 @@ const mutation = (obj) => {
   }
   return mutationObj;
 };
-const toReplace = mutation(mutatableObject)
+
+
 
 //Regex for GraphQL syntax, spacing, and indentation
 const replacerOne = (str) => {
@@ -204,7 +109,7 @@ const replacerOne = (str) => {
       .replace(/: true/g, "")
       .replace(/,\n/g, ',\n  ')
       .replace(/\(\n/g, '(\n  ')
-      .replace(/\(\n  _id :ID!\n\)/g, '(_id: ID!)');
+      .replace(/\(\n  _id :ID!\n\)/g, '(_id: ID!)');//creates new line for delete mutations
   let output = "";
 
   //while str length
@@ -226,33 +131,6 @@ const replacerOne = (str) => {
   return output;
 
 }
-
-const finalBaby = replacerOne(toReplace)
-console.log('AAAAAAAAAAAAAAAAAAAA\n',finalBaby)
-//////////////////////////////////////////////////////////////////////////
-
-// addFilm(
-//   director: String!,
-//   opening_crawl: String!,
-//   episode_id: Int!,
-//   title: String!,
-//   release_date: String!,
-//   producer: String!,
-// ): Film!
-
-// updateFilm(
-//   director: String,
-//   opening_crawl: String,
-//   episode_id: Int,
-//   _id: ID!,
-//   title: String,
-//   release_date: String,
-//   producer: String,
-// ): Film!
-
-// deleteFilm(_id: ID!): Film!
-
-
 
 
 module.exports = { convertTypesforMutation, addNullableFields, mutation, replacerOne };

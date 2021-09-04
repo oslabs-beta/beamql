@@ -1027,11 +1027,6 @@ const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKe
 
 const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable)
 
-
-
-
-
-
 const finalResult = typeCreator(nonJoinTable, fKeysObj, nullableObj) 
 
 
