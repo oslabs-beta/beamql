@@ -137,8 +137,6 @@ const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables);
 // const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables); // old one
 
 
-
-// addNullable -> ////////////////////////////////////////////////////////////
 const addNullableFields = (dataWTypes, Nullable) => {
   for (const tbl in dataWTypes) {
     for (const column in Nullable[tbl]) {
@@ -151,9 +149,10 @@ const addNullableFields = (dataWTypes, Nullable) => {
 
 
 const mutatableObject = addNullableFields(nonjoinTablewithCorrectTypes, outputOfIsNullable)
-// mutation =>  /////////////////////////////////////////////////////////
+
 const mutation = (obj) => {
   mutationObj = {};
+  //Creating add Mutation for each nonJoinTable
   for (const key in obj) {
     let keyName = snakeToTitle(key);
     let temp = "add" + capFirstLet(singular(keyName));
@@ -163,12 +162,14 @@ const mutation = (obj) => {
         mutationObj[temp][column] = obj[key][column];
       }
     }
+  //Creating update Mutation for each nonJoinTable
     let keyName1 = snakeToTitle(key);
     let temp1 = "update" + capFirstLet(singular(keyName1));
     mutationObj[temp1] = {};
     for (const col in obj[key]) {
       mutationObj[temp1][col] = obj[key][col];
     }
+    //Createing delete mutation for each nonJoinTable
     for (const prop in obj) {
       let keyName2 = snakeToTitle(key);
       let temp2 =
@@ -184,7 +185,7 @@ const mutation = (obj) => {
 };
 const toReplace = mutation(mutatableObject)
 
-// replacer One ///////////////////////////////////////////////////////////
+//Regex for GraphQL syntax, spacing, and indentation
 const replacerOne = (str) => {
   str = JSON.stringify(str)
   console.log('before regex:', str)
@@ -201,10 +202,9 @@ const replacerOne = (str) => {
       .replace(/[(]/g, `(\n`)
       .replace(/: true,/g, "\n")
       .replace(/: true/g, "")
-      .replace(/,\n/g,',\n  ')
-      // .replace
-      // .replace(/[(\n]/g,'(\n  ');
-// \t
+      .replace(/,\n/g, ',\n  ')
+      .replace(/\(\n/g, '(\n  ')
+      .replace(/\(\n  _id :ID!\n\)/g, '(_id: ID!)');
   let output = "";
 
   //while str length
@@ -230,5 +230,29 @@ const replacerOne = (str) => {
 const finalBaby = replacerOne(toReplace)
 console.log('AAAAAAAAAAAAAAAAAAAA\n',finalBaby)
 //////////////////////////////////////////////////////////////////////////
+
+// addFilm(
+//   director: String!,
+//   opening_crawl: String!,
+//   episode_id: Int!,
+//   title: String!,
+//   release_date: String!,
+//   producer: String!,
+// ): Film!
+
+// updateFilm(
+//   director: String,
+//   opening_crawl: String,
+//   episode_id: Int,
+//   _id: ID!,
+//   title: String,
+//   release_date: String,
+//   producer: String,
+// ): Film!
+
+// deleteFilm(_id: ID!): Film!
+
+
+
 
 module.exports = { convertTypesforMutation, addNullableFields, mutation, replacerOne };
