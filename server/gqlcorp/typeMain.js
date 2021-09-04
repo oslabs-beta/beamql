@@ -149,20 +149,37 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
   
   //Add Foreign Types to Type obj
   //Due to no join tables, adding corresponding foreign keys to each non join table so each table can be relationally linked
-  for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
+  // for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
 
-    for (const fktCol in fktObjNoJoins) { //iterate through fktObj fktCol i.e. people, peope_in_films
+  //   for (const fktCol in fktObjNoJoins) { //iterate through fktObj fktCol i.e. people, peope_in_films
 
-      for (const col in fktObjNoJoins[fktCol]) { //iterate through nested obj
-        if (fktObjNoJoins[fktCol][col] === njtCol) {
-            if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
-              //console.log('missing fks', typeObj[njtCol],fktCol)
-              typeObj[njtCol][fktCol] = '['+snakeToTitle(singular(fktCol))+']'
-            }
-      }
-      }
+  //     for (const col in fktObjNoJoins[fktCol]) { //iterate through nested obj
+  //       if (fktObjNoJoins[fktCol][col] === njtCol) {
+  //           if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
+  //             //console.log('missing fks', typeObj[njtCol],fktCol)
+  //             typeObj[njtCol][fktCol] = '['+snakeToTitle(singular(fktCol))+']'
+  //           }
+  //     }
+  //     }
+  //   }
+  // }
+////////////////////////////////////////////////////////////////TEST//////////////////////////////////
+for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
+
+  for (const fktCol in fktObj) { //iterate through fktObj fktCol i.e. people, peope_in_films
+
+    for (const col in fktObj[fktCol]) { //iterate through nested obj
+      if (fktObj[fktCol][col] === njtCol) {
+          if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
+            //console.log('missing fks', typeObj[njtCol],fktCol)
+            typeObj[njtCol][fktCol] = '['+snakeToTitle(singular(fktCol))+']'
+          }
+    }
     }
   }
+}
+////////////////////////////////////////////////////////////////TEST//////////////////////////////////
+
 
   //convert SQL types to GQL type
   for (const table in typeObj) {
@@ -202,23 +219,23 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
 
 
 
-const {allTables, foreignKeys} = data
+// const {allTables, foreignKeys} = data
 
-const nullableObj = isNullable(allTables)
-const tablesTuples = dataTupleMaker(allTables)
-const fKeyTuples = fkTupleMaker(foreignKeys)
+// const nullableObj = isNullable(allTables)
+// const tablesTuples = dataTupleMaker(allTables)
+// const fKeyTuples = fkTupleMaker(foreignKeys)
 
-const fKeyCounts = countTupleKeys(fKeyTuples)
-const allKeyCounts = countTupleKeys(tablesTuples)
+// const fKeyCounts = countTupleKeys(fKeyTuples)
+// const allKeyCounts = countTupleKeys(tablesTuples)
 
-const [fKeysObj, tablesObj] = tuplesToObjects(fKeyTuples, tablesTuples)
+// const [fKeysObj, tablesObj] = tuplesToObjects(fKeyTuples, tablesTuples)
 
 
-const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj)
+// const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj)
 
-const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable)
+// const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable)
 
-const finalResult = typeCreator(nonJoinTable, fKeysObj, nullableObj) 
+// const finalResult = typeCreator(nonJoinTable, fKeysObj, nullableObj) 
 
 
 
