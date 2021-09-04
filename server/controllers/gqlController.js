@@ -65,7 +65,7 @@ gqlController.makeSchemaMutations = async function (req, res, next) {
         const completeMutation = replacerOne(regExFormat);
 
         res.locals.schemaMutations = completeMutation;
-        console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM', completeMutation)
+        console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n', completeMutation)
         return next();
       
   } catch (err) {
@@ -82,7 +82,7 @@ gqlController.makeSchemaQueries = async function (req, res, next) {
       
       const completeQuery = queryCreator(nonjoinTablewithCorrectTypes);
       res.locals.schemaQueries = completeQuery;
-      console.log('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ', completeQuery)
+      console.log('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ\n', completeQuery)
       return next();
   } catch (err) {
     console.log('Error in makeSchemaQueries is: ', err)

@@ -187,6 +187,7 @@ const toReplace = mutation(mutatableObject)
 // replacer One ///////////////////////////////////////////////////////////
 const replacerOne = (str) => {
   str = JSON.stringify(str)
+  console.log('before regex:', str)
   str =
     "\n" +
     str
@@ -199,7 +200,11 @@ const replacerOne = (str) => {
       .replace(/[)]/g, `\n)`)
       .replace(/[(]/g, `(\n`)
       .replace(/: true,/g, "\n")
-      .replace(/: true/g, "");
+      .replace(/: true/g, "")
+      .replace(/,\n/g,',\n  ')
+      // .replace
+      // .replace(/[(\n]/g,'(\n  ');
+// \t
   let output = "";
 
   //while str length
@@ -223,7 +228,7 @@ const replacerOne = (str) => {
 }
 
 const finalBaby = replacerOne(toReplace)
-
+console.log('AAAAAAAAAAAAAAAAAAAA\n',finalBaby)
 //////////////////////////////////////////////////////////////////////////
 
 module.exports = { convertTypesforMutation, addNullableFields, mutation, replacerOne };
