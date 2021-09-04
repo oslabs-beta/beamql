@@ -78,11 +78,11 @@ gqlController.makeSchemaMutations = async function (req, res, next) {
       nonjoinTablewithCorrectTypes,
       nullableObj
     );
-    //
+    //Coverts mutableObject syntax to GraphQL readable syntax (still in object form)
     const regExFormat = mutation(mutatableObject);
-
+    //Outputs object in string form, formatted with spacing for GQL
     const completeMutation = replacerOne(regExFormat);
-
+    //add completeMutation to res.locals
     res.locals.schemaMutations = completeMutation;
     return next();
   } catch (err) {
@@ -93,8 +93,9 @@ gqlController.makeSchemaMutations = async function (req, res, next) {
 
 gqlController.makeSchemaQueries = async function (req, res, next) {
   try {
+    //Object destructuring to pull nonJoinTablewithCorrectTypes from res.locals
     const { nonjoinTablewithCorrectTypes } = res.locals.data;
-
+    //Creates all queries for each nonJoinTable, outputting as string
     const completeQuery = queryCreator(nonjoinTablewithCorrectTypes);
     res.locals.schemaQueries = completeQuery;
     return next();

@@ -137,8 +137,6 @@ const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables);
 // const nonjoinTablewithCorrectTypes = convertTypesforMutation(nonJoinTables); // old one
 
 
-
-// addNullable -> ////////////////////////////////////////////////////////////
 const addNullableFields = (dataWTypes, Nullable) => {
   for (const tbl in dataWTypes) {
     for (const column in Nullable[tbl]) {
@@ -151,9 +149,10 @@ const addNullableFields = (dataWTypes, Nullable) => {
 
 
 const mutatableObject = addNullableFields(nonjoinTablewithCorrectTypes, outputOfIsNullable)
-// mutation =>  /////////////////////////////////////////////////////////
+
 const mutation = (obj) => {
   mutationObj = {};
+  //Creating add Mutation for each nonJoinTable
   for (const key in obj) {
     let keyName = snakeToTitle(key);
     let temp = "add" + capFirstLet(singular(keyName));
@@ -163,12 +162,14 @@ const mutation = (obj) => {
         mutationObj[temp][column] = obj[key][column];
       }
     }
+  //Creating update Mutation for each nonJoinTable
     let keyName1 = snakeToTitle(key);
     let temp1 = "update" + capFirstLet(singular(keyName1));
     mutationObj[temp1] = {};
     for (const col in obj[key]) {
       mutationObj[temp1][col] = obj[key][col];
     }
+    //Createing delete mutation for each nonJoinTable
     for (const prop in obj) {
       let keyName2 = snakeToTitle(key);
       let temp2 =
@@ -184,7 +185,7 @@ const mutation = (obj) => {
 };
 const toReplace = mutation(mutatableObject)
 
-// replacer One ///////////////////////////////////////////////////////////
+//Regex for GraphQL syntax, spacing, and indentation
 const replacerOne = (str) => {
   str = JSON.stringify(str)
   console.log('before regex:', str)
