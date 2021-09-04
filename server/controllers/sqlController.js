@@ -26,14 +26,13 @@ next()
 //coming from router get request to '/uri'
 sqlController.getTableData = async function (req, res, next) {
   try {
-    console.log("made it in to getTableData sql controller");
     let PG_URI = req.body.uri ?? 'postgres://vdnvhfkq:sYiMTdCmk1vs2br_eUrrmX1unPvfucdW@batyr.db.elephantsql.com/vdnvhfkq';
     const pool = new Pool({
       connectionString: PG_URI,
     });
     const data = {}
     async function query(text, params, callback) {
-      console.log("executed query", text);
+      console.log("Executed query", text);
       return pool.query(text, params, callback);
     }
 
@@ -46,7 +45,7 @@ sqlController.getTableData = async function (req, res, next) {
     const junk = arrayTables.rows[0].array; // string '{this is some bullshit we're going to convert}'
     const junkString = junk.slice(1, junk.length - 1); // cutting off brackets at the end
     const arrayString = junkString.split(","); // string[]
-    console.log(`arrayString`, arrayString);
+
 
     const allTables = {};
     for (let i = 0; i < arrayString.length; i++) {
@@ -54,7 +53,7 @@ sqlController.getTableData = async function (req, res, next) {
       const { rows } = await query(columnQuery, [arrayString[i]]); //arrays
       allTables[arrayString[i]] = rows;
     }
-    console.log(`ALLTABLES!!`, allTables);
+
 
     //add allTables to data object. Will send data object to front-end via data
     data.allTables = allTables;
@@ -95,7 +94,6 @@ group by tco.constraint_name,
 order by kcu.table_schema,
       kcu.table_name`);
     data.primaryKeys = primaryKeyQuery.rows;
-    console.log(`primaryKeyQuery`, primaryKeyQuery.rows); // -> send primaryKeyQuery.rows to the front-end
     // -- 2. query each table for columns, column types, primary key, foreign keys
     // --   each query would return multiple columns, column types, ONE pk, multiple fks
     // to get all column names => SELECT column_name[, data_type] FROM information_schema.columns WHERE table_name = <nameoftablehere>
