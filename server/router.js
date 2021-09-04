@@ -12,7 +12,7 @@ router.post(
   gqlController.makeSchemaMutations,
   gqlController.makeSchemaQueries,
   // gqlController.makeSchema,
-  // gqlController.makeResolver,
+  gqlController.makeResolvers,
   (req, res) =>
     res.status(200).json({
       allTables: res.locals.data.allTables,
@@ -20,7 +20,8 @@ router.post(
       primaryKeys: res.locals.data.primaryKeys,
       schemaTypes: res.locals.schemaTypes,
       schemaMutations: res.locals.schemaMutations,
-      schemaQueries: res.locals.schemaQueries
+      schemaQueries: res.locals.schemaQueries,
+      resolvers: res.locals.resolvers
     })
 );
 

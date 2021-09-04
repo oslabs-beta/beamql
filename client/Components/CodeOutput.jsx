@@ -357,6 +357,7 @@ vessels: [Vessel]
 
 `;
 
+const text3 = "(parent, args) => {\n  let valList = [];\n  for (const updateKey of Object.keys(args)) {\n    if (updateKey !== '_id') valList.push(args[updateKey]);\n  }\n  valList.push(args._id);\n  const argsArray = Object.keys(args).filter((el) => el !== '_id');\n  let setString = argsArray.map((x, i) => x + ' = $' + (i + 1)).join(', ');\n  const pKArg = '$'+ (argsArray.length + 1);\n  const query = 'UPDATE planets SET '+ setString +' WHERE _id = '+pKArg+' RETURNING *';\n  const values = valList; \n  return db.query(query, values)\n    .then(data => data.rows[0])\n    .catch(err => new Error(err));\n};"
 
 // const useStyles = makeStyles({
 //     root: {
@@ -415,7 +416,7 @@ function CodeOutput () {
           className={classes.root}
           inputProps={{className: classes.root}}
           InputLabelProps={{className: classes.root}}
-          defaultValue={text2}
+          defaultValue={text3}
           variant="outlined"
         />
         </div>
