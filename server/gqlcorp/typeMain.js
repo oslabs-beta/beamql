@@ -1,4 +1,5 @@
 const { singular } = require('pluralize');
+const s
 
 //Capitalizes first letter of any string
 function capFirstLet(string) {
@@ -214,10 +215,12 @@ for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, 
       }
   }
 
-  return typeObj  
+  // const toDisplay = \t \n .replace
+  // const directToCopy straighup string
+  return JSON.stringify(typeObj).replace(/"/g, '')
 }
 
-
+// "{\"planets\":{\"_id\":\"ID!\",\"name\":\"String\",\"rotation_period\":\"Int\",\"orbital_period\":\"Int\",\"diameter\":\"Int\",\"climate\":\"String\",\"gravity\":\"String\",\"terrain\":\"String\",\"surface_water\":\"String\",\"population\":\"Int\",\"species\":\"[Species]\",\"films\":\"[Film]\",\"people\":\"[Person]\",\"planets_in_films\":\"[PlanetsInFilm]\"},\"films\":{\"_id\":\"ID!\",\"title\":\"String!\",\"episode_id\":\"Int!\",\"opening_crawl\":\"String!\",\"director\":\"String!\",\"producer\":\"String!\",\"release_date\":\"String!\",\"people\":\"[Person]\",\"planets\":\"[Planet]\",\"species\":\"[Species]\",\"vessels\":\"[Vessel]\",\"people_in_films\":\"[PeopleInFilm]\",\"planets_in_films\":\"[PlanetsInFilm]\",\"species_in_films\":\"[SpeciesInFilm]\",\"vessels_in_films\":\"[VesselsInFilm]\"},\"species\":{\"_id\":\"ID!\",\"name\":\"String!\",\"classification\":\"String\",\"average_height\":\"String\",\"average_lifespan\":\"String\",\"hair_colors\":\"String\",\"skin_colors\":\"String\",\"eye_colors\":\"String\",\"language\":\"String\",\"planets\":\"[Planet]\",\"films\":\"[Film]\",\"people\":\"[Person]\",\"species_in_films\":\"[SpeciesInFilm]\"},\"vessels\":{\"_id\":\"ID!\",\"name\":\"String!\",\"manufacturer\":\"String\",\"model\":\"String\",\"vessel_type\":\"String!\",\"vessel_class\":\"String!\",\"cost_in_credits\":\"Int\",\"length\":\"String\",\"max_atmosphering_speed\":\"String\",\"crew\":\"Int\",\"passengers\":\"Int\",\"cargo_capacity\":\"String\",\"consumables\":\"String\",\"people\":\"[Person]\",\"films\":\"[Film]\",\"pilots\":\"[Pilot]\",\"starship_specs\":\"[StarshipSpec]\",\"vessels_in_films\":\"[VesselsInFilm]\"},\"people\":{\"_id\":\"ID!\",\"name\":\"String!\",\"mass\":\"String\",\"hair_color\":\"String\",\"skin_color\":\"String\",\"eye_color\":\"String\",\"birth_year\":\"String\",\"gender\":\"String\",\"species\":\"[Species]\",\"planets\":\"[Planet]\",\"height\":\"Int\",\"films\":\"[Film]\",\"vessels\":\"[Vessel]\",\"people_in_films\":\"[PeopleInFilm]\",\"pilots\":\"[Pilot]\"},\"starship_specs\":{\"_id\":\"ID!\",\"hyperdrive_rating\":\"String\",\"MGLT\":\"String\",\"vessels\":\"[Vessel]\"}}"
 
 // const {allTables, foreignKeys} = data
 
