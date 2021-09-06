@@ -1,7 +1,7 @@
 FROM node:14.17.6
 # Set up a WORKDIR for application in the container and set it to /usr/src/app.
 WORKDIR /src
-COPY . /src
+COPY . .
 #COPY . /usr/src/app
 # RUN a command to npm install your node_modules in the container
 RUN npm i

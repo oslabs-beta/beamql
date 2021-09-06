@@ -1,0 +1,30 @@
+version: "3.0"
+services:
+  dev:
+    image: beamcorp/bql-dev
+    container_name: bql-dev
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/src
+      - node_modules:/src/node_modules
+    command: npm run dev # trying without quotes, need dev:hot in package json
+  #   depends_on:
+  #     - postgres-db
+# WE HAVE NO DATABASE OF OUR OWN.
+  # postgres-db:
+  #   image: beamcorp/bql-postgres:9.5
+  #   container_name: bql-database
+  #   environment:
+  #     - POSTGRES_PASSWORD=admin
+  #     - POSTGRES_USER=bqladmin
+  #     - POSTGRES_DB=bqldb
+  #   volumes:
+  #     - dev-db-volume:/var/lib/postgresql/data
+
+volumes:
+  node_modules:
+  # dev-db-volume:
+
+# unchecked, DO NOT RUN
+# not hot module reloading

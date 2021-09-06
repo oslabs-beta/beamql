@@ -4,7 +4,7 @@
   "description": "",
   "main": "./client/index.js",
   "scripts": {
-    "start": "NODE_ENV=production nodemon ./server/server.js",
+    "start": "NODE_ENV=production node ./server/server.js",
     "build": "NODE_ENV=production webpack",
     "dev": "NODE_ENV=development node ./server/server.js & NODE_ENV=development webpack serve"
   },
