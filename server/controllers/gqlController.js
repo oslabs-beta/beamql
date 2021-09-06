@@ -111,29 +111,37 @@ gqlController.makeSchemaQueries = async function (req, res, next) {
 
 gqlController.makeResolvers = async function(req, res, next) {
     try {
+        //first build resolvers as a js object, then convert to a string
         const resolvers = {};
+        //there are 3 resolver types: Query, Mutation, (and some categorized by the table they relate to)
         resolvers['Query'] = {};
         resolvers['Mutation'] = {};
+        //Our logic in building resolvers depends heavily on if a table presents data itself, or is a derivation or "join" table that simply links info from other tables to communicate a higher order thing such as all the people who appear in a given film.  The trademark of a join table is that it only has foreign keys
         const nonJoinTables = {};
         const joinTables = {};
         //loop thru all table data
         for (let [key,val] of Object.entries(res.locals.data.allTables)){
           //count props in fks that match current key
               const fkCount = res.locals.data.foreignKeys.filter(el => el.foreign_table === key).length;
-              //if not a join table
+              //if not a join table then we will be doing lots of stuff for this table!
             if (val.length > fkCount+1) {
               nonJoinTables[key] = true;
               //query one
               //look for pk name
               let pkName;
+              //find the name of the primary key of the current table
               for (let i = 0; i<res.locals.data.primaryKeys.length; i++) {
                   if (res.locals.data.primaryKeys[i].table_name === key) pkName = res.locals.data.primaryKeys[i].primary_key_columns;
               }
+              //if the singular of a word is the same as the plural, we will append 'ById' to the singular 
               let queryKey = singular(key) === key ? `${camelCase(key)}ById` : camelCase(key);
+              //add singular query to Query for current table
               resolvers.Query[singular(queryKey)] = `(parent, args) => {\n      const query = 'SELECT * FROM ${key} WHERE ${pkName} = $1';\n      const values = [args.${pkName}];\n      return db.query(query, values)\n        .then(data => data.rows[0])\n        .catch(err => new Error(err));\n    },`;
               
-              //query many
+              //add plural query to Query for current table
               resolvers.Query[camelCase(key)] = `() => {\n      const query = `+`'SELECT * FROM ${key}'`+ `;\n      return db.query(query)\n        .then(data => data.rows)\n        .catch(err =>new Error(err));\n    },`
+
+              //MUTATIONS
               
               //find all of the non primary key colums of the current table.
               const nonPkColumns = []; 
@@ -145,25 +153,32 @@ gqlController.makeResolvers = async function(req, res, next) {
                         nonPkColumns.push(val[i].column_name);
                     }
                 }
-        
+              
+              //add mutation
               resolvers.Mutation[camelCase(`add_${singular(key)}`)] = `(parent, args) => {\n      const query = `+`'INSERT INTO ${key} (${nonPkColumns.join(", ")}) VALUES (${nonPkColNums.join(', ')}) RETURNING *'` +`;\n      const values = (${nonPkColumns.map(el => 'args.'+el)});\n      return db.query(query, values)\n        .then(data => data.rows[0])\n        .catch(err => new Error(err));\n    },`;
     
              
-    
+              //update mutation
               resolvers.Mutation[camelCase(`update_${singular(key)}`)] = `(parent, args) => {\n      let valList = [];\n      for (const updateKey of Object.keys(args)) {\n        if (updateKey !== '${pkName}') valList.push(args[updateKey]);\n      }\n      valList.push(args.${pkName});\n      const argsArray = Object.keys(args).filter((el) => el !== '${pkName}');\n      let setString = argsArray.map((x, i) => x + ' = $' + (i + 1)).join(', ');\n      const pKArg = '$'+ (argsArray.length + 1);\n      const query = 'UPDATE ${key} SET '+ setString +' WHERE ${pkName} = '+pKArg+' RETURNING *';\n      const values = valList; \n      return db.query(query, values)\n        .then(data => data.rows[0])\n        .catch(err => new Error(err));\n    },`
-    
+                
+              //delete mutation
               resolvers.Mutation[camelCase(`delete_${singular(key)}`)] = `(parent, args) => {\n      const query = 'DELETE FROM ${key} WHERE ${pkName} = $1 RETURNING *';\n      const values = [args.${pkName}];\n      return db.query(query, values)\n        .then(data => data.rows[0])\n        .catch(err => new Error(err));\n    },`
               
             } else {
+                //if its number of cols is indeed num of fks +1 then dont do any of the above and just add to join tables
                 joinTables[key] = true;
             }
         }
+
         //loop through pks and add as values in joinTables and nonJoinTables for ref
         for (let k = 0; k< res.locals.data.primaryKeys.length; k++) {
             const pkObjRef = res.locals.data.primaryKeys[k];
             if (pkObjRef.table_name in nonJoinTables) nonJoinTables[pkObjRef.table_name] = pkObjRef.primary_key_columns;
             else joinTables[pkObjRef.table_name] = pkObjRef.primary_key_columns;
         }
+
+        //INDIVIDUAL TABLE RESOLVERS
+        
         //loop through nonjointables
         for (let key of Object.keys(nonJoinTables)) {
             let pkName;
@@ -203,10 +218,6 @@ gqlController.makeResolvers = async function(req, res, next) {
             //add top level properties to output
             output += `\n  ${key}: {`;
           //add tier2 props to output for current tier1
-        //  for(let [key,val] of Object.entries(x)) {
-        //      output += `\n    ${key}:`
-        //  }  
-            //console.log(typeof val)
             for(let [innerKey,innerVal] of Object.entries(val)) {
               output += (`\n    ${innerKey}: `+ innerVal);
             }
@@ -217,7 +228,7 @@ gqlController.makeResolvers = async function(req, res, next) {
         return next();
         // return resolvers;  
     } catch (err) {
-        console.log('ERR IN MAKERESOLVERS');
+        console.log('ERR IN MAKERESOLVERS', err);
         return next(err);
     }
 }
