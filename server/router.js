@@ -11,7 +11,6 @@ router.post(
   gqlController.makeSchemaTypes,
   gqlController.makeSchemaMutations,
   gqlController.makeSchemaQueries,
-  // gqlController.makeSchema,
   gqlController.makeResolvers,
   (req, res) =>
     res.status(200).json({
