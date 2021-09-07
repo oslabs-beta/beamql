@@ -1,33 +1,16 @@
-//require SuperTest
-const request = require('supertest');
-const express = require('express');
-//const app = require('../../server/server.js');
+//install SuperTest
 
-const server = 'http://localhost:3000';
-import router from ('./server/router.js');
+import router from ('/server/router.js');
 
 
-// describe('Route integration', () => {
-//   describe('POST /uri', function() => {
-//     it('responds with 200 status and json content type', function(done) {
-//       return request(server)
-//         .post('/api/uri')
-//         .set('Accept', 'application/json')
-//         .expect('Content-Type', /json/)
-//         .expect(200, done);
-//     });
-//   });
-// })
 
-describe('Route integration', () => {
-  describe('POST /uri', function() => {
-    it('responds with 200 status and json content type', function(done) {
-      return request(server)
-        .post('/api/uri')
+describe('GET /tableData', function() {
+    it('responds with json', function(done) {
+      request(app)
+        .get('/tableData')
+        .auth('username', 'password')
+        .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, done);
     });
   });
-});
-
-
