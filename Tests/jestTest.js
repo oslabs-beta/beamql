@@ -9,6 +9,6 @@ test("cap first Letter", () => {
 });
 
 test("Returns correct Obj structure", () => {
-    expect(queryCreator({item:'key', value: "value"})).toBe({Item: "Key", Value: "Value"});
+    expect(queryCreator({item:'key', value: "value"})).toBe({item:Key,value:Value});
 });
 
