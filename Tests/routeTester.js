@@ -1,11 +1,12 @@
 //install SuperTest
-
+const request = require('supertest');
 import router from ('/server/router.js');
 
+const server = 'http://localhost:3000';
 
-
-describe('GET /tableData', function() {
-    it('responds with json', function(done) {
+describe('Route integration', () => {
+  describe('GET /tableData', function() {
+    it('responds with 200 status and json content', function(done) {
       request(app)
         .get('/tableData')
         .auth('username', 'password')
@@ -14,3 +15,4 @@ describe('GET /tableData', function() {
         .expect(200, done);
     });
   });
+})

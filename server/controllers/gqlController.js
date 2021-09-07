@@ -12,6 +12,7 @@ const {
   nonAndJoinTables,
   fktNoJoins,
   typeCreator,
+  brianFunction
 } = require("../gqlcorp/typeMain.js");
 
 const {
@@ -44,21 +45,20 @@ gqlController.makeSchemaTypes = async function (req, res, next) {
     //Count all keys to use later to determine join and nonJoin tables
     const allKeyCounts = countTupleKeys(tablesTuples);
     //Create join and nonJoin table objects from the PSQL DB. PK FK logic to determine whether the table is join or nonJoin
-    const [joinTable, nonJoinTable] = nonAndJoinTables(
-      fKeyCounts,
-      allKeyCounts,
-      fKeysObj,
-      tablesObj
-    );
+    const [joinTable, nonJoinTable] = nonAndJoinTables(fKeyCounts, allKeyCounts, fKeysObj, tablesObj);
     //Add nonJoinTable to res.locals.data for later use
     res.locals.data.nonJoinTable = nonJoinTable;
     //Creates object with foreign keys from non join tables
     const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable);
     //Creates the GraphQL Schema Type displayed on the front end.
-    const gqlTypes = typeCreator(nonJoinTable, fKeysObj, nullableObj);
-    console.log('MONEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY',typeof gqlTypes)
+    const gqlTypes = typeCreator(nonJoinTable, fKeysObj, fktObjNoJoins, nullableObj);
+    
     //Adds schema type to res.locals to sent to the front end
-    res.locals.schemaTypes = gqlTypes;
+    // res.locals.schemaTypes = gqlTypes; // test
+/////////////////////////////////////////////////////////////////////
+    const finalfinal = brianFunction(gqlTypes)
+/////////////////////////////////////////////////////////////////////
+    res.locals.schemaTypes = finalfinal
 
     return next();
   } catch (err) {
@@ -107,6 +107,30 @@ gqlController.makeSchemaQueries = async function (req, res, next) {
   }
 };
 
+// in type, we need a new line before each type ____ MUST BE DONE WITHIN TYPE
+// all of type is indented when it should not be MUST BE DONE WITHIN TYPE ?
+
+// last curly bracket of mutation should be on a new line MUST BE DONE WITHIN MUTATION
+
+// need \n before mutation starts DONE
+
+// need \n after typeDefs = ` DONE
+// 
+
+gqlController.completeString = function (req, res, next) {
+  try {
+    const {schemaQueries, schemaMutations, schemaTypes} = res.locals 
+    const completeSchemaString =  'const typeDefs = `' + '\n' +
+    `${(schemaQueries + '\n\n' + 'type Mutation {\n  ' + schemaMutations.slice(1) + '\n' + schemaTypes.slice(1,-1))}` + '\n' + '`'
+    
+
+    res.locals.completeSchemaString = completeSchemaString
+    return next();
+  } catch (err) {
+    console.log("Error in completeString is: ", err);
+    return next(err);
+  }
+}
 // convert types for mutation is done in mutation as well as types. do in types, store on res.locals, doesn't need to be done in makeschemamutations again (convertTypesForMutation)
 //rename variables i.e. regExFormat/toReplace
 
@@ -203,9 +227,10 @@ gqlController.makeResolvers = async function(req, res, next) {
                         //look for all the other nonjoins that join references
                         const otherJoinFkObjs = res.locals.data.foreignKeys.filter(el => el.foreign_table === fkObj.foreign_table && el.primary_table !== key);
                         for (let j = 0; j< otherJoinFkObjs.length; j++) {
-                            resolvers[resolversTablePropKey][camelCase(otherJoinFkObjs[j].primary_table)] = `(pTable) => {\n      const query = 'SELECT * FROM ${otherJoinFkObjs[j].primary_table} LEFT OUTER JOIN ${otherJoinFkObjs[j].foreign_table} ON ${otherJoinFkObjs[j].primary_table}.${nonJoinTables[otherJoinFkObjs[j].primary_table]} = ${otherJoinFkObjs[j].foreign_table}.${otherJoinFkObjs[j].fk_columns} WHERE ${otherJoinFkObjs[j].foreign_table}.${otherJoinFkObjs[j].fk_columns} = $1';\n      const values = [pTable.${pkName}];\n      return db.query(query, values)\n        .then(data => data.rows)\n        .catch(err => new Error(err));\n    },`
+                            resolvers[resolversTablePropKey][camelCase(otherJoinFkObjs[j].primary_table)] = `(pTable) => {\n      const query = 'SELECT * FROM ${otherJoinFkObjs[j].primary_table} LEFT OUTER JOIN ${otherJoinFkObjs[j].foreign_table} ON ${otherJoinFkObjs[j].primary_table}.${nonJoinTables[otherJoinFkObjs[j].primary_table]} = ${otherJoinFkObjs[j].foreign_table}.${otherJoinFkObjs[j].fk_columns} WHERE ${otherJoinFkObjs[j].foreign_table}.${fkObj.fk_columns} = $1';\n      const values = [pTable.${pkName}];\n      return db.query(query, values)\n        .then(data => data.rows)\n        .catch(err => new Error(err));\n    },`
                         }
                     }
+                    // CHANGED otherJoinFkObjs[j].fk_columns to fkObj.fk_columns
                 }
                 
                 //if this table is referencing another nonjoin's PK
