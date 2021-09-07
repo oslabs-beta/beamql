@@ -24,9 +24,13 @@ class App extends Component {
 
         foreignKeys: [],
         primaryKeys: [],
+        completeSchemaString: ' ',
+        resolvers: ' '
       },
+      renderSchema: true,
     };
     this.gTD = this.gTD.bind(this);
+    this.changeRender = this.changeRender.bind(this);
   }
 
   gTD() {
@@ -43,12 +47,32 @@ class App extends Component {
         document.getElementById('filled-basic').value = '';
         console.log('RESPONSE.DATA', response.data);
         console.log('THIS', this);
-        this.setState({ database: response.data });
+        this.setState(state => {
+          return {...state, database: response.data }
+        });
+        console.log('NEW STATE', this.state.database);
+        document.getElementById('outlined-multiline-static').value = this.state.database.completeSchemaString;
       })
       .catch(function (error) {
         // handle error
         console.log(error);
       });
+  }
+
+  changeRender(schema) {
+    if (schema === false) {
+      this.setState(state => {
+        return {...state, renderSchema: false}
+      })
+      document.getElementById('outlined-multiline-static').value = this.state.database.resolvers;
+    } else {
+      this.setState(state => {
+        return {...state, renderSchema: true}
+      })
+      document.getElementById('outlined-multiline-static').value = this.state.database.completeSchemaString;
+    }
+    
+
   }
 
   render() {
@@ -106,8 +130,8 @@ class App extends Component {
             <div id="OutputBox">
               <Diagram id="outputRight" data={this.state.database} />
               <div id="outputLeft">
-                <CodeOutputButtons />
-                <CodeOutput />
+                <CodeOutputButtons database={this.state.database} renderSchema={this.state.renderSchema} changeRender={this.changeRender} />
+                <CodeOutput database={this.state.database} renderSchema={this.state.renderSchema} />
               </div>
             </div>
           </Route>

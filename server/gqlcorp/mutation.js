@@ -14,9 +14,9 @@ function snakeToTitle(str) {
 
 // Takes non join tables, and switches SQL types to GQL types.
 const convertTypesforMutation = object => {
-
+  //console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$CONVERTTYPESFORRMUTATIONS OBJECT ARG", object);
   for (const table in object) {
-
+    
     for (const column in object[table]) {
       switch (object[table][column]) {
         case "bigint":
@@ -49,6 +49,7 @@ const addNullableFields = (dataWTypes, nullable) => {
 
     for (const column in nullable[tbl]) {
       let temp = dataWTypes[tbl][column];
+      if (temp[temp.length-1] === "!") temp = temp.slice(0, -1);
       if (temp) dataWTypes[tbl][column] = temp + "!";
     }
   }
@@ -99,7 +100,7 @@ const mutation = (obj) => {
 //Regex for GraphQL syntax, spacing, and indentation
 const replacerOne = (str) => {
   str = JSON.stringify(str)
-  console.log('before regex:', str)
+  //console.log('before regex:', str)
   str =
     "\n" +
     str
@@ -133,8 +134,8 @@ const replacerOne = (str) => {
     //find the next add
   } 
   if (str.length) output+=str;
-  
-  return output;
+  output = output.replace(/,\n.*\]/g,""); //removing the keys to foreign tables, adam check if this works so easily..?
+  return output.slice(1, -1) + '\n\n}'; ////////////////////////////////////////
 
 }
 

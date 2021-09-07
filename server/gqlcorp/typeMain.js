@@ -1,5 +1,6 @@
 const { singular } = require('pluralize');
-
+const jspc = require('json-stringify-pretty-compact')
+const camelCase = require('camelcase');
 //Capitalizes first letter of any string
 function capFirstLet(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -9,6 +10,13 @@ function capFirstLet(string) {
 function snakeToTitle(str) {
     return str.split("_").map(capFirstLet).join("");
 }
+
+const camelCaseIt = (string) =>
+  string
+    .toLowerCase()
+    .trim()
+    .split(/[.\-_\s]/g)
+    .reduce((string, word) => string + word[0].toUpperCase() + word.slice(1));
 
 //Easy mapper for the two tuple items
 const tuplesToObjects = (a,b) => [a,b].map(x=>Object.fromEntries(x))
@@ -105,7 +113,7 @@ const fktNoJoins = (fktAsObj, nonJT) => {
     }
 
 //From non join tables, creating GQL formatted string with all types
-const typeCreator = (nonJoinTables, fktObj, nullable) => {
+const typeCreator = (nonJoinTables, fktObj, fktObjNoJoins, nullable) => {
   const typeObj = {};
   
   //creates schema types for nonJoinTables with foreign keys and without foreign keys.
@@ -123,9 +131,10 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
         // loop through each table for column data and add column info
         if (prop in fktObj[key] === false) {
           typeObj[key][prop] = nonJoinTables[key][prop];
-        } else {
+        } else { 
           // but if it's in the foreign key object, it adds the type as a connection to a different table.
           const temp = fktObj[key][prop]
+          // const temp = camelCase(fktObj[key][prop]);
           typeObj[key][temp] = '['+capFirstLet(singular(temp))+']';
         }
       }
@@ -166,18 +175,20 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
 ////////////////////////////////////////////////////////////////TEST//////////////////////////////////
 for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
 
-  for (const fktCol in fktObj) { //iterate through fktObj fktCol i.e. people, peope_in_films
+  for (const fktCol in fktObjNoJoins) { //iterate through fktObj fktCol i.e. people, peope_in_films
 
-    for (const col in fktObj[fktCol]) { //iterate through nested obj
-      if (fktObj[fktCol][col] === njtCol) {
+    for (const col in fktObjNoJoins[fktCol]) { //iterate through nested obj
+      if (fktObjNoJoins[fktCol][col] === njtCol) {
           if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
             //console.log('missing fks', typeObj[njtCol],fktCol)
-            typeObj[njtCol][fktCol] = '['+snakeToTitle(singular(fktCol))+']'
+            let temp = camelCaseIt(fktCol);
+            typeObj[njtCol][temp] = '['+snakeToTitle(singular(fktCol))+']'
           }
     }
     }
   }
 }
+  
 ////////////////////////////////////////////////////////////////TEST//////////////////////////////////
 
 
@@ -213,11 +224,54 @@ for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, 
       if(temp) typeObj[tbl][column] = temp + '!'
       }
   }
+  
+  // const toDisplay = \t \n .replace
+  // const directToCopy straighup string
+  return typeObj
+}
+// jspc takes object, jsons it, then prettifies it
+// within object, take out commas and quotation marks
+// for each object, add "type " singular(key) plus object with above stuff done
 
-  return typeObj  
+// evening work
+// in type, we need a new line before each type ____ MUST BE DONE WITHIN TYPE
+// all of type is indented when it should not be MUST BE DONE WITHIN TYPE ?
+
+function brianFunction(object) {
+  const brianObj = {}
+  //loop through properties of object
+  for(const table in object) {
+    //for the current property
+    const value = object[table]
+    const newKey = `type ${snakeToTitle(singular(table))}`
+    brianObj[newKey] = value;
+  }
+  let closeToDone = jspc(brianObj);
+  closeToDone = closeToDone.replace(/"/g, '').replace(/: {/g,' {').replace(/,/g,'').replace(/type /g, '\ntype ')
+  return closeToDone
+      //store val in temp variable
+      //insert new property, key of which is "type singular(oldkeyname)" with temp as value
+      //delete original property
+  //return modified object
+
+
+
+
+  //   let frontEndString = '';
+
+
+// jspc()
+//   for(const table in object) {
+//     frontEndString += 'type ' + snakeToTitle(table) + JSON.stringify(object[table]).replace(/"/g,'').replace(/,/g,'')
+//   }
+//   return frontEndString
 }
 
+// console.log('aefhoiwhfoiqwehfalsdvnasdlkghalkdvhasldkghasdlkghsadlkfhakldvhaoidvhaoidgha',brianFunction(text))
 
+
+
+const postjspc = "{\n  \"planets\": {\n    \"_id\": \"ID!\",\n    \"name\": \"String\",\n    \"rotation_period\": \"Int\",\n    \"orbital_period\": \"Int\",\n    \"diameter\": \"Int\",\n    \"climate\": \"String\",\n    \"gravity\": \"String\",\n    \"terrain\": \"String\",\n    \"surface_water\": \"String\",\n    \"population\": \"Int\",\n    \"species\": \"[Species]\",\n    \"films\": \"[Film]\",\n    \"people\": \"[Person]\",\n    \"planets_in_films\": \"[PlanetsInFilm]\"\n  },\n  \"films\": {\n    \"_id\": \"ID!\",\n    \"title\": \"String!\",\n    \"episode_id\": \"Int!\",\n    \"opening_crawl\": \"String!\",\n    \"director\": \"String!\",\n    \"producer\": \"String!\",\n    \"release_date\": \"String!\",\n    \"people\": \"[Person]\",\n    \"planets\": \"[Planet]\",\n    \"species\": \"[Species]\",\n    \"vessels\": \"[Vessel]\",\n    \"people_in_films\": \"[PeopleInFilm]\",\n    \"planets_in_films\": \"[PlanetsInFilm]\",\n    \"species_in_films\": \"[SpeciesInFilm]\",\n    \"vessels_in_films\": \"[VesselsInFilm]\"\n  },\n  \"species\": {\n    \"_id\": \"ID!\",\n    \"name\": \"String!\",\n    \"classification\": \"String\",\n    \"average_height\": \"String\",\n    \"average_lifespan\": \"String\",\n    \"hair_colors\": \"String\",\n    \"skin_colors\": \"String\",\n    \"eye_colors\": \"String\",\n    \"language\": \"String\",\n    \"planets\": \"[Planet]\",\n    \"films\": \"[Film]\",\n    \"people\": \"[Person]\",\n    \"species_in_films\": \"[SpeciesInFilm]\"\n  },\n  \"vessels\": {\n    \"_id\": \"ID!\",\n    \"name\": \"String!\",\n    \"manufacturer\": \"String\",\n    \"model\": \"String\",\n    \"vessel_type\": \"String!\",\n    \"vessel_class\": \"String!\",\n    \"cost_in_credits\": \"Int\",\n    \"length\": \"String\",\n    \"max_atmosphering_speed\": \"String\",\n    \"crew\": \"Int\",\n    \"passengers\": \"Int\",\n    \"cargo_capacity\": \"String\",\n    \"consumables\": \"String\",\n    \"people\": \"[Person]\",\n    \"films\": \"[Film]\",\n    \"pilots\": \"[Pilot]\",\n    \"starship_specs\": \"[StarshipSpec]\",\n    \"vessels_in_films\": \"[VesselsInFilm]\"\n  },\n  \"people\": {\n    \"_id\": \"ID!\",\n    \"name\": \"String!\",\n    \"mass\": \"String\",\n    \"hair_color\": \"String\",\n    \"skin_color\": \"String\",\n    \"eye_color\": \"String\",\n    \"birth_year\": \"String\",\n    \"gender\": \"String\",\n    \"species\": \"[Species]\",\n    \"planets\": \"[Planet]\",\n    \"height\": \"Int\",\n    \"films\": \"[Film]\",\n    \"vessels\": \"[Vessel]\",\n    \"people_in_films\": \"[PeopleInFilm]\",\n    \"pilots\": \"[Pilot]\"\n  },\n  \"starship_specs\": {\n    \"_id\": \"ID!\",\n    \"hyperdrive_rating\": \"String\",\n    \"MGLT\": \"String\",\n    \"vessels\": \"[Vessel]\"\n  }\n}"
 
 // const {allTables, foreignKeys} = data
 
@@ -248,4 +302,5 @@ module.exports = {  capFirstLet,
           tuplesToObjects, 
           nonAndJoinTables, 
           fktNoJoins, 
-          typeCreator }
+          typeCreator,
+          brianFunction }
