@@ -412,7 +412,7 @@ const styles = makeStyles({
     }
 });
 
-function CodeOutput () {
+function CodeOutput ({ database, renderSchema }) {
     const classes = styles();
     return (
   <div id="codebox">
@@ -425,7 +425,7 @@ function CodeOutput () {
           className={classes.root}
           inputProps={{className: classes.root}}
           InputLabelProps={{className: classes.root}}
-          defaultValue={text3}
+          defaultValue={renderSchema ? database.completeSchemaString : database.resolvers}
           variant="outlined"
         />
         </div>
