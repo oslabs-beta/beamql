@@ -24,4 +24,3 @@ test('loads and displays codebox', async () => {
         return res(ctx.status(500))
       }),
     )
-  
