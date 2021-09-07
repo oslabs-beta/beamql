@@ -25,11 +25,12 @@ class App extends Component {
         foreignKeys: [],
         primaryKeys: [],
         completeSchemaString: ' ',
-        resolvers: ''
+        resolvers: ' '
       },
       renderSchema: true,
     };
     this.gTD = this.gTD.bind(this);
+    this.changeRender = this.changeRender.bind(this);
   }
 
   gTD() {
@@ -58,12 +59,20 @@ class App extends Component {
       });
   }
 
-  changeRender() {
-  
-    this.setState(state => {
-      return this.state.renderSchema ? {...state, renderSchema: false} : {...state, renderSchema: true}
-    })
+  changeRender(schema) {
+    if (schema === false) {
+      this.setState(state => {
+        return {...state, renderSchema: false}
+      })
+      document.getElementById('outlined-multiline-static').value = this.state.database.resolvers;
+    } else {
+      this.setState(state => {
+        return {...state, renderSchema: true}
+      })
+      document.getElementById('outlined-multiline-static').value = this.state.database.completeSchemaString;
+    }
     
+
   }
 
   render() {
@@ -121,7 +130,7 @@ class App extends Component {
             <div id="OutputBox">
               <Diagram id="outputRight" data={this.state.database} />
               <div id="outputLeft">
-                <CodeOutputButtons database={this.state.database} renderSchema={this.state.renderSchema} />
+                <CodeOutputButtons database={this.state.database} renderSchema={this.state.renderSchema} changeRender={this.changeRender} />
                 <CodeOutput database={this.state.database} renderSchema={this.state.renderSchema} />
               </div>
             </div>

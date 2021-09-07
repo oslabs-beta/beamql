@@ -14,7 +14,7 @@ function snakeToTitle(str) {
 
 // Takes non join tables, and switches SQL types to GQL types.
 const convertTypesforMutation = object => {
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$CONVERTTYPESFORRMUTATIONS OBJECT ARG", object);
+  //console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$CONVERTTYPESFORRMUTATIONS OBJECT ARG", object);
   for (const table in object) {
     
     for (const column in object[table]) {
@@ -100,7 +100,7 @@ const mutation = (obj) => {
 //Regex for GraphQL syntax, spacing, and indentation
 const replacerOne = (str) => {
   str = JSON.stringify(str)
-  console.log('before regex:', str)
+  //console.log('before regex:', str)
   str =
     "\n" +
     str

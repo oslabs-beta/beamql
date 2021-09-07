@@ -26,9 +26,7 @@ const useStyles = makeStyles({
 
 
 
-export default function UriEntry(props) {
-    console.log(props.gTD);
-    
+export default function UriEntry(props) {   
     const classes = useStyles();
     return (
         <div id='uri-entry'>
