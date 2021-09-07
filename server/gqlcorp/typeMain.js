@@ -113,7 +113,7 @@ const fktNoJoins = (fktAsObj, nonJT) => {
     }
 
 //From non join tables, creating GQL formatted string with all types
-const typeCreator = (nonJoinTables, fktObj, nullable) => {
+const typeCreator = (nonJoinTables, fktObj, fktObjNoJoins, nullable) => {
   const typeObj = {};
   
   //creates schema types for nonJoinTables with foreign keys and without foreign keys.
@@ -175,18 +175,20 @@ const typeCreator = (nonJoinTables, fktObj, nullable) => {
 ////////////////////////////////////////////////////////////////TEST//////////////////////////////////
 for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, films
 
-  for (const fktCol in fktObj) { //iterate through fktObj fktCol i.e. people, peope_in_films
+  for (const fktCol in fktObjNoJoins) { //iterate through fktObj fktCol i.e. people, peope_in_films
 
-    for (const col in fktObj[fktCol]) { //iterate through nested obj
-      if (fktObj[fktCol][col] === njtCol) {
+    for (const col in fktObjNoJoins[fktCol]) { //iterate through nested obj
+      if (fktObjNoJoins[fktCol][col] === njtCol) {
           if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
             //console.log('missing fks', typeObj[njtCol],fktCol)
-            typeObj[njtCol][fktCol] = '['+snakeToTitle(singular(fktCol))+']'
+            let temp = camelCaseIt(fktCol);
+            typeObj[njtCol][temp] = '['+snakeToTitle(singular(fktCol))+']'
           }
     }
     }
   }
 }
+  
 ////////////////////////////////////////////////////////////////TEST//////////////////////////////////
 
 

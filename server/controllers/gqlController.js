@@ -51,7 +51,7 @@ gqlController.makeSchemaTypes = async function (req, res, next) {
     //Creates object with foreign keys from non join tables
     const fktObjNoJoins = fktNoJoins(fKeysObj, nonJoinTable);
     //Creates the GraphQL Schema Type displayed on the front end.
-    const gqlTypes = typeCreator(nonJoinTable, fKeysObj, nullableObj);
+    const gqlTypes = typeCreator(nonJoinTable, fKeysObj, fktObjNoJoins, nullableObj);
     
     //Adds schema type to res.locals to sent to the front end
     // res.locals.schemaTypes = gqlTypes; // test
