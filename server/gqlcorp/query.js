@@ -20,7 +20,7 @@ const queryCreator = (object) => {
   for (const table in object) {
     // creating keys
     const camelCaseName = camelCaseIt(table); //starshipSpecs
-    const ccnWithID = singular(camelCaseName) === camelCaseName ? `${camelCaseName}ById(_id:ID!)` : camelCaseName+"(_id:ID!)";
+    const ccnWithID = singular(camelCaseName) === camelCaseName ? `${camelCaseName}ById(_id:ID!)` : singular(camelCaseName)+"(_id:ID!)";
     // const ccnWithID = singular(camelCaseName) + "(_id:ID!)"; // starshipSpecs(_id: ID!)
     // creating values
     const titleCaseWithBang = capFirstLet(singular(camelCaseName)) + "!"; // StarshipSpec!
@@ -35,8 +35,8 @@ const queryCreator = (object) => {
     "type Query " +
     queryStr
       .replace(/"/g, "")
-      .replace(/,/g, "\n\t")
-      .replace(/{/g, "{\n\t")
+      .replace(/,/g, "\n  ")
+      .replace(/{/g, "{\n  ")
       .replace(/}/g, "\n}")
       .replace(/:/g, ": ");
 
