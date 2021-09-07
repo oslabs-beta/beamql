@@ -99,7 +99,7 @@ last_name: String!
 
 `;
 
-const text2 =`type Query {
+const text2 = `type Query {
   people: [Person!]!
   person(_id: ID!): Person!
   films: [Film!]!
@@ -357,7 +357,8 @@ vessels: [Vessel]
 
 `;
 
-const text3 = "type Planets{_id:ID!name:Stringrotation_period:Intorbital_period:Intdiameter:Intclimate:Stringgravity:Stringterrain:Stringsurface_water:Stringpopulation:Intspecies:[Species]films:[Film]people:[Person]planets_in_films:[PlanetsInFilm]}type Films{_id:ID!title:String!episode_id:Int!opening_crawl:String!director:String!producer:String!release_date:String!people:[Person]planets:[Planet]species:[Species]vessels:[Vessel]people_in_films:[PeopleInFilm]planets_in_films:[PlanetsInFilm]species_in_films:[SpeciesInFilm]vessels_in_films:[VesselsInFilm]}type Species{_id:ID!name:String!classification:Stringaverage_height:Stringaverage_lifespan:Stringhair_colors:Stringskin_colors:Stringeye_colors:Stringlanguage:Stringplanets:[Planet]films:[Film]people:[Person]species_in_films:[SpeciesInFilm]}type Vessels{_id:ID!name:String!manufacturer:Stringmodel:Stringvessel_type:String!vessel_class:String!cost_in_credits:Intlength:Stringmax_atmosphering_speed:Stringcrew:Intpassengers:Intcargo_capacity:Stringconsumables:Stringpeople:[Person]films:[Film]pilots:[Pilot]starship_specs:[StarshipSpec]vessels_in_films:[VesselsInFilm]}type People{_id:ID!name:String!mass:Stringhair_color:Stringskin_color:Stringeye_color:Stringbirth_year:Stringgender:Stringspecies:[Species]planets:[Planet]height:Intfilms:[Film]vessels:[Vessel]people_in_films:[PeopleInFilm]pilots:[Pilot]}type StarshipSpecs{_id:ID!hyperdrive_rating:StringMGLT:Stringvessels:[Vessel]}"
+const text3 =
+  'type Planets{_id:ID!name:Stringrotation_period:Intorbital_period:Intdiameter:Intclimate:Stringgravity:Stringterrain:Stringsurface_water:Stringpopulation:Intspecies:[Species]films:[Film]people:[Person]planets_in_films:[PlanetsInFilm]}type Films{_id:ID!title:String!episode_id:Int!opening_crawl:String!director:String!producer:String!release_date:String!people:[Person]planets:[Planet]species:[Species]vessels:[Vessel]people_in_films:[PeopleInFilm]planets_in_films:[PlanetsInFilm]species_in_films:[SpeciesInFilm]vessels_in_films:[VesselsInFilm]}type Species{_id:ID!name:String!classification:Stringaverage_height:Stringaverage_lifespan:Stringhair_colors:Stringskin_colors:Stringeye_colors:Stringlanguage:Stringplanets:[Planet]films:[Film]people:[Person]species_in_films:[SpeciesInFilm]}type Vessels{_id:ID!name:String!manufacturer:Stringmodel:Stringvessel_type:String!vessel_class:String!cost_in_credits:Intlength:Stringmax_atmosphering_speed:Stringcrew:Intpassengers:Intcargo_capacity:Stringconsumables:Stringpeople:[Person]films:[Film]pilots:[Pilot]starship_specs:[StarshipSpec]vessels_in_films:[VesselsInFilm]}type People{_id:ID!name:String!mass:Stringhair_color:Stringskin_color:Stringeye_color:Stringbirth_year:Stringgender:Stringspecies:[Species]planets:[Planet]height:Intfilms:[Film]vessels:[Vessel]people_in_films:[PeopleInFilm]pilots:[Pilot]}type StarshipSpecs{_id:ID!hyperdrive_rating:StringMGLT:Stringvessels:[Vessel]}';
 // const useStyles = makeStyles({
 //     root: {
 //       background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -371,57 +372,55 @@ const text3 = "type Planets{_id:ID!name:Stringrotation_period:Intorbital_period:
 //   });
 
 const styles = makeStyles({
-    root: {
-        "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-          borderColor: "white",
-          border: '2px solid white',
-          width: '100%',
-          position: 'absolute',
-          right: '0',
-          height: '100%',
-          spellCheck: "false"
-        },
-        "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-          borderColor: "white",
-          border: '2px solid white',
-          width: '100%',
-          position: 'absolute',
-          right: '0',
-          height: '100%',
-          spellCheck: "false"
-        },
-        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-          borderColor: "white",
-          border: '2px solid white',
-          width: '100%',
-          position: 'absolute',
-          right: '0',
-          height: '100%',
-          spellCheck: "false"
-        },
-    }
+  root: {
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'white',
+      border: '2px solid white',
+      width: '100%',
+      position: 'absolute',
+      right: '0',
+      height: '100%',
+      spellCheck: 'false',
+    },
+    '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'white',
+      border: '2px solid white',
+      width: '100%',
+      position: 'absolute',
+      right: '0',
+      height: '100%',
+      spellCheck: 'false',
+    },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'white',
+      border: '2px solid white',
+      width: '100%',
+      position: 'absolute',
+      right: '0',
+      height: '100%',
+      spellCheck: 'false',
+    },
+  },
 });
 
-function CodeOutput () {
-    const classes = styles();
-    return (
-  <div id="codebox">
-    <TextField
-          id="outlined-multiline-static"
-          fullWidth={true}
-          label="Output"
-          multiline
-          rows={Math.floor(window.innerHeight/25.75)}
-          className={classes.root}
-          inputProps={{className: classes.root}}
-          InputLabelProps={{className: classes.root}}
-          defaultValue={text3}
-          variant="outlined"
-        />
-        </div>
-      
-       
-    )
-};
+function CodeOutput() {
+  const classes = styles();
+  return (
+    <div id="codebox">
+      <TextField
+        id="outlined-multiline-static"
+        fullWidth={true}
+        label="Output"
+        multiline
+        rows={Math.floor(window.innerHeight / 25.75)}
+        className={classes.root}
+        inputProps={{ className: classes.root }}
+        InputLabelProps={{ className: classes.root }}
+        defaultValue={text3}
+        variant="outlined"
+      />
+    </div>
+  );
+}
 
 export default CodeOutput;

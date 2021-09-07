@@ -1,14 +1,14 @@
-//install SuperTest
+//require SuperTest
+const test = require('supertest');
 
-import router from ('/server/router.js');
+import router from ('./server/router.js');
 
 
 
-describe('GET /tableData', function() {
+describe('POST /tableData', function() {
     it('responds with json', function(done) {
-      request(app)
-        .get('/tableData')
-        .auth('username', 'password')
+      test(router)
+        .post('/tableData')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, done);
