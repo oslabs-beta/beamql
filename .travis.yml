@@ -3,7 +3,6 @@ services:
 dist: focal
 script:
   # - docker-compose -f docker-compose-test.yml up --abort-on-container-exit # reserved for after tests are built
-  - pip install
   - python3 -VV
   - pip -V
 before_deploy:
