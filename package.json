@@ -7,7 +7,8 @@
     "start": "NODE_ENV=production nodemon ./server/server.js",
     "build": "NODE_ENV=production webpack",
     "dev": "NODE_ENV=development nodemon ./server/server.js & NODE_ENV=development webpack serve",
-    "docker-dev": "docker-compose -f docker-compose-dev.yml up"
+    "docker-dev": "docker-compose -f docker-compose-dev.yml up",
+    "ports": "npx kill-port 3000 5000 8000 8080"
   },
   "nodemonConfig": {
     "ignore": [
