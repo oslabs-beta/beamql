@@ -83,7 +83,7 @@ class App extends Component {
             <img id="logo" src="./assets/logo.png" />
           </Link>
           <div className="topButtons">
-            <Link to="/signup">
+            {/* <Link to="/signup">
               <button
                 className="signup-btn"
                 // onClick={(event) => {
@@ -94,7 +94,7 @@ class App extends Component {
                 {' '}
                 Sandbox{' '}
               </button>
-            </Link>
+            </Link> */}
 
             <Link to="/docs">
               <button className="login-btn"> Docs </button>
