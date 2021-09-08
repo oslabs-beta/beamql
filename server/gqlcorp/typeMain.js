@@ -135,7 +135,8 @@ const typeCreator = (nonJoinTables, fktObj, fktObjNoJoins, nullable) => {
           // but if it's in the foreign key object, it adds the type as a connection to a different table.
           const temp = fktObj[key][prop]
           // const temp = camelCase(fktObj[key][prop]);
-          typeObj[key][temp] = '['+capFirstLet(singular(temp))+']';
+          // typeObj[key][temp] = '['+capFirstLet(singular(temp))+']';
+          typeObj[key][temp] = '['+snakeToTitle(capFirstLet(singular(temp)))+']';
         }
       }
     }
@@ -194,8 +195,12 @@ for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, 
 
   //convert SQL types to GQL type
   for (const table in typeObj) {
-
+    
     for (const column in typeObj[table]) {
+      if (nonJoinTables.hasOwnProperty(column) && camelCase(column) !== column) {
+        typeObj[table][camelCase(column)] = typeObj[table][column];
+        delete typeObj[table][column];
+      }
       switch (typeObj[table][column]) {
         case 'bigint':
           typeObj[table][column] = 'Int'
@@ -208,6 +213,18 @@ for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, 
           break;
         case 'date':
           typeObj[table][column] = 'String'
+          break;
+        case 'numeric':
+          typeObj[table][column] = 'Int'
+          break;
+        case 'ARRAY':
+          typeObj[table][column] = '[String]'
+          break;
+        case 'character':
+          typeObj[table][column] = 'String'
+          break;
+        case 'smallint':
+          typeObj[table][column] = 'Int'
           break;
       }
       if (column === '_id') {

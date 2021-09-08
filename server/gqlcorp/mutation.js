@@ -31,6 +31,13 @@ const convertTypesforMutation = object => {
         case "date":
           object[table][column] = "String";
           break;
+        case 'numeric':
+          object[table][column] = 'Int'
+        break;
+        case 'smallint':
+          object[table][column] = 'Int'
+          break;
+        
       }
       if (column === "_id") {
         object[table][column] = "ID";
