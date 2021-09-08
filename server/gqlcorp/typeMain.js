@@ -136,7 +136,7 @@ const typeCreator = (nonJoinTables, fktObj, fktObjNoJoins, nullable) => {
           const temp = fktObj[key][prop]
           // const temp = camelCase(fktObj[key][prop]);
           // typeObj[key][temp] = '['+capFirstLet(singular(temp))+']';
-          typeObj[key][temp] = '['+snakeToTitle(capFirstLet(singular(temp)))+']';
+          typeObj[key][temp] = '['+temp.slice(0,1).toUpperCase()+camelCase(singular(temp)).slice(1)+']';
         }
       }
     }
@@ -150,7 +150,7 @@ const typeCreator = (nonJoinTables, fktObj, fktObjNoJoins, nullable) => {
       if (arrFK.includes(table)) {
         const valsToInput = arrFK.filter(elem => elem !== table) //filter for all other tables
         valsToInput.forEach(val => { //Add to final table 
-          typeObj[table][val] = '['+capFirstLet(singular(val))+']'
+          typeObj[table][val] = '['+val.slice(0,1).toUpperCase()+camelCase(singular(val)).slice(1)+']'
         })
       }
     }
@@ -183,7 +183,7 @@ for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, 
           if (!(Object.keys(typeObj[njtCol]).includes(fktCol))) {
             //console.log('missing fks', typeObj[njtCol],fktCol)
             let temp = camelCaseIt(fktCol);
-            typeObj[njtCol][temp] = '['+snakeToTitle(singular(fktCol))+']'
+            typeObj[njtCol][temp] = '['+fktCol.slice(0,1).toUpperCase()+camelCase(singular(fktCol)).slice(1)+']'
           }
     }
     }
@@ -244,6 +244,14 @@ for (const njtCol in nonJoinTables) { //type object name i.e. planets, species, 
   
   // const toDisplay = \t \n .replace
   // const directToCopy straighup string
+  for (const fktCol in fktObjNoJoins) {
+    // console.log('VALPROP', fktCol, fktObjNoJoins[fktCol])
+    for (let [valpropkey, valpropval] of Object.entries(fktObjNoJoins[fktCol])) {
+      // console.log('INTENDED INSERT', `${typeObj}[${snakeToTitle(singular(valpropval))}][${camelCase(fktCol)}]`)// = '['+snakeToTitle(singular(fktCol))+']';
+    
+      typeObj[valpropval][camelCase(fktCol)] = '['+fktCol.slice(0,1).toUpperCase()+camelCase(singular(fktCol)).slice(1)+']';
+    }
+  }
   return typeObj
 }
 // jspc takes object, jsons it, then prettifies it

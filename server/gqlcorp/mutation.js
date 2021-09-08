@@ -37,6 +37,9 @@ const convertTypesforMutation = object => {
         case 'smallint':
           object[table][column] = 'Int'
           break;
+        case 'ARRAY':
+          object[table][column] = '|String|'
+          break;
         
       }
       if (column === "_id") {
@@ -99,6 +102,7 @@ const mutation = (obj) => {
       mutationObj[temp2] = true;
     }
   }
+
   return mutationObj;
 };
 
@@ -142,6 +146,8 @@ const replacerOne = (str) => {
   } 
   if (str.length) output+=str;
   output = output.replace(/,\n.*\]/g,""); //removing the keys to foreign tables, adam check if this works so easily..?
+  //replace the vertical lines we subed for brackets in [String] to protect it from replacerone func
+  output = output.replace(/\|String\|/g, "[String]");
   return output.slice(1, -1) + '\n\n}'; ////////////////////////////////////////
 
 }
