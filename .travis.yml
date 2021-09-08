@@ -17,3 +17,5 @@ deploy:
   on:
     branch: deploy1
   script: sh $TRAVIS_BUILD_DIR/scripts/deploy.sh
+
+# works, script written, update to add testing on line 5 after that is implemented, change line 18 for deployment with main branch after that is done
