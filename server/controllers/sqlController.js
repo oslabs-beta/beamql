@@ -32,7 +32,7 @@ sqlController.getTableData = async function (req, res, next) {
     });
     const data = {}
     async function query(text, params, callback) {
-      console.log("Executed query", text);
+      //console.log("Executed query", text);
       return pool.query(text, params, callback);
     }
 
@@ -77,7 +77,7 @@ order by kcu.table_schema,
     data.foreignKeys = foreignKeyQuery.rows;
 
     //allTables will be an object, keys are table names & values are full arrays with each column & info as an object
-    console.log("Foreign Key", foreignKeyQuery.rows); // -> send foreignKeyQuery.rows to the front-end
+    //console.log("Foreign Key", foreignKeyQuery.rows); // -> send foreignKeyQuery.rows to the front-end
 
     const primaryKeyQuery = await query(`select kcu.table_name,
     tco.constraint_name,

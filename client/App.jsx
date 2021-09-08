@@ -45,12 +45,9 @@ class App extends Component {
       .then((response) => {
         // handle success
         document.getElementById('filled-basic').value = '';
-        console.log('RESPONSE.DATA', response.data);
-        console.log('THIS', this);
         this.setState(state => {
           return {...state, database: response.data }
         });
-        console.log('NEW STATE', this.state.database);
         document.getElementById('outlined-multiline-static').value = this.state.database.completeSchemaString;
       })
       .catch(function (error) {
