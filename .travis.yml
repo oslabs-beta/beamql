@@ -1,0 +1,21 @@
+services:
+  - docker
+dist: focal
+script:
+  # - docker-compose -f docker-compose-test.yml up --abort-on-container-exit # reserved for after tests are built
+  - python3 -VV
+  - pip -V
+before_deploy:
+  - pip install --upgrade pip
+  - python3 -m pip install --user awscli
+  - python3 -m pip install --user awsebcli
+env:
+  global: export PATH=$PATH:$HOME/.local/bin
+deploy:
+  provider: script
+  cleanup: true #skip_cleanup is deprecated, use cleanup instead
+  on:
+    branch: deploy1
+  script: sh $TRAVIS_BUILD_DIR/scripts/deploy.sh
+
+# works, script written, update to add testing on line 5 after that is implemented, change line 18 for deployment with main branch after that is done
