@@ -1,26 +1,22 @@
-import '@testing-library/react';
-import CodeOutput from '../client/Components/CodeOutput';
+import '@testing-library/jest-dom';
+import { schema } from './client/Components/CodeOutputButtons.jsx';
+import * as React from 'react';
+import { render, fireEvent, screen } from '@testing-library/react';
+import CodeOutput from './client/Components/CodeOutput.jsx';
+import app from '../client/App.jsx';
 
-// test('CodeOutput', () => {
-//   expect(CodeOutput()).toBe();
-// });
- 
+test('show text when clicked', () => {
+  const testMessage = 'Test Message';
+  render(<div id="codebox"></div>);
 
+  expect(screen.getAllByRole(/output/i)).toHaveTextContent('');
+  fireEvent.click(screen.getByText(schema));
 
-test('loads and displays codebox', async () => {
-    render(CodeOutput)
-  
-    fireEvent.click(screen.getByText('Load Greeting'))
-  
-    await waitFor(() => screen.getByRole('heading'))
-  
-    expect(screen.getByRole('heading')).toHaveTextContent('hello there')
-    expect(screen.getByRole('button')).toBeDisabled()
-  })
-  
-  test('handles server error', async () => {
-    server.use(
-      rest.get('/greeting', (req, res, ctx) => {
-        return res(ctx.status(500))
-      }),
-    )
+  expect(screen.getByRole(/output/i)).toHaveTextContent('Test Message');
+});
+
+test('renders page with github link', () => {
+  render(<app />);
+  const linkElement = screen.getByText(/github/i);
+  expect(linkElement).toBeInTheDocument();
+});
