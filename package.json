@@ -1,12 +1,16 @@
 {
   "name": "BeamQL",
+  "jest": {
+    "verbose": true
+  },
   "version": "1.0.0",
   "description": "",
   "main": "./client/index.js",
   "scripts": {
     "start": "NODE_ENV=production nodemon ./server/server.js",
     "build": "NODE_ENV=production webpack",
-    "dev": "NODE_ENV=development node ./server/server.js & NODE_ENV=development webpack serve"
+    "dev": "NODE_ENV=development node ./server/server.js & NODE_ENV=development webpack serve",
+    "test": "jest --verbose ./__tests__/route.test.js "
   },
   "nodemonConfig": {
     "ignore": [
@@ -42,18 +46,22 @@
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.8",
     "@babel/preset-react": "^7.14.5",
+    "@testing-library/dom": "^8.2.0",
+    "@testing-library/react": "^12.0.0",
     "@types/regenerator-runtime": "^0.13.1",
     "babel-loader": "^8.2.2",
     "concurrently": "^6.0.2",
     "css-minimizer-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^5.3.2",
     "isomorphic-fetch": "^3.0.0",
+    "jest": "^27.1.0",
     "mini-css-extract-plugin": "^2.1.0",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.7",
     "sass": "^1.36.0",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.2.1",
+    "supertest": "^6.1.6",
     "webpack": "^5.46.0",
     "webpack-cli": "4.7.2",
     "webpack-dev-server": "^3.11.2"

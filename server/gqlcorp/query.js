@@ -1,4 +1,4 @@
-const { singular } = require("pluralize");
+const { singular } = require('pluralize');
 
 //capitalize first letter of any string
 function capFirstLet(string) {
@@ -23,8 +23,8 @@ const queryCreator = (object) => {
     const ccnWithID = singular(camelCaseName) === camelCaseName ? `${camelCaseName}ById(_id:ID!)` : singular(camelCaseName)+"(_id:ID!)";
     // const ccnWithID = singular(camelCaseName) + "(_id:ID!)"; // starshipSpecs(_id: ID!)
     // creating values
-    const titleCaseWithBang = capFirstLet(singular(camelCaseName)) + "!"; // StarshipSpec!
-    const pluralValue = "[" + titleCaseWithBang + "]!"; // [StarshipSpec!]!
+    const titleCaseWithBang = capFirstLet(singular(camelCaseName)) + '!'; // StarshipSpec!
+    const pluralValue = '[' + titleCaseWithBang + ']!'; // [StarshipSpec!]!
     //assign key value pairs in obj
     queryObject[camelCaseName] = pluralValue;
     queryObject[ccnWithID] = titleCaseWithBang;
@@ -32,7 +32,7 @@ const queryCreator = (object) => {
   let queryStr = JSON.stringify(queryObject);
   //regex to display correct spacing and indentation on the front-end
   queryStr =
-    "type Query " +
+    'type Query ' +
     queryStr
       .replace(/"/g, "")
       .replace(/,/g, "\n  ")
@@ -42,6 +42,5 @@ const queryCreator = (object) => {
 
   return queryStr;
 };
-
 
 module.exports = { camelCaseIt, queryCreator };

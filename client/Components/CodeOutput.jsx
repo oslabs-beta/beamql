@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/core/styles";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
+import React, { Component } from 'react';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
 
 const text = `type Query {
   userData: [UserDatum!]!
@@ -357,7 +357,8 @@ vessels: [Vessel]
 
 `;
 
-const text3 = "{\n  \ntype Planet {\n    _id: ID!\n    name: String\n    rotation_period: Int\n    orbital_period: Int\n    diameter: Int\n    climate: String\n    gravity: String\n    terrain: String\n    surface_water: String\n    population: Int\n    species: [Species]\n    films: [Film]\n    people: [Person]\n  }\n  \ntype Film {\n    _id: ID!\n    title: String!\n    episode_id: Int!\n    opening_crawl: String!\n    director: String!\n    producer: String!\n    release_date: String!\n    people: [Person]\n    planets: [Planet]\n    species: [Species]\n    vessels: [Vessel]\n  }\n  \ntype Species {\n    _id: ID!\n    name: String!\n    classification: String\n    average_height: String\n    average_lifespan: String\n    hair_colors: String\n    skin_colors: String\n    eye_colors: String\n    language: String\n    planets: [Planet]\n    films: [Film]\n    people: [Person]\n  }\n  \ntype Vessel {\n    _id: ID!\n    name: String!\n    manufacturer: String\n    model: String\n    vessel_type: String!\n    vessel_class: String!\n    cost_in_credits: Int\n    length: String\n    max_atmosphering_speed: String\n    crew: Int\n    passengers: Int\n    cargo_capacity: String\n    consumables: String\n    people: [Person]\n    films: [Film]\n    starshipSpecs: [StarshipSpec]\n  }\n  \ntype Person {\n    _id: ID!\n    name: String!\n    mass: String\n    hair_color: String\n    skin_color: String\n    eye_color: String\n    birth_year: String\n    gender: String\n    species: [Species]\n    planets: [Planet]\n    height: Int\n    films: [Film]\n    vessels: [Vessel]\n  }\n  \ntype StarshipSpec {\n    _id: ID!\n    hyperdrive_rating: String\n    MGLT: String\n    vessels: [Vessel]\n  }\n}"
+const text3 =
+  '{\n  \ntype Planet {\n    _id: ID!\n    name: String\n    rotation_period: Int\n    orbital_period: Int\n    diameter: Int\n    climate: String\n    gravity: String\n    terrain: String\n    surface_water: String\n    population: Int\n    species: [Species]\n    films: [Film]\n    people: [Person]\n  }\n  \ntype Film {\n    _id: ID!\n    title: String!\n    episode_id: Int!\n    opening_crawl: String!\n    director: String!\n    producer: String!\n    release_date: String!\n    people: [Person]\n    planets: [Planet]\n    species: [Species]\n    vessels: [Vessel]\n  }\n  \ntype Species {\n    _id: ID!\n    name: String!\n    classification: String\n    average_height: String\n    average_lifespan: String\n    hair_colors: String\n    skin_colors: String\n    eye_colors: String\n    language: String\n    planets: [Planet]\n    films: [Film]\n    people: [Person]\n  }\n  \ntype Vessel {\n    _id: ID!\n    name: String!\n    manufacturer: String\n    model: String\n    vessel_type: String!\n    vessel_class: String!\n    cost_in_credits: Int\n    length: String\n    max_atmosphering_speed: String\n    crew: Int\n    passengers: Int\n    cargo_capacity: String\n    consumables: String\n    people: [Person]\n    films: [Film]\n    starshipSpecs: [StarshipSpec]\n  }\n  \ntype Person {\n    _id: ID!\n    name: String!\n    mass: String\n    hair_color: String\n    skin_color: String\n    eye_color: String\n    birth_year: String\n    gender: String\n    species: [Species]\n    planets: [Planet]\n    height: Int\n    films: [Film]\n    vessels: [Vessel]\n  }\n  \ntype StarshipSpec {\n    _id: ID!\n    hyperdrive_rating: String\n    MGLT: String\n    vessels: [Vessel]\n  }\n}';
 // const useStyles = makeStyles({
 //     root: {
 //       background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -372,56 +373,56 @@ const text3 = "{\n  \ntype Planet {\n    _id: ID!\n    name: String\n    rotatio
 
 const styles = makeStyles({
   root: {
-    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-      borderColor: "white",
-      border: "2px solid white",
-      width: "100%",
-      position: "absolute",
-      right: "0",
-      height: "100%",
-      spellCheck: "false",
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'white',
+      border: '2px solid white',
+      width: '100%',
+      position: 'absolute',
+      right: '0',
+      height: '100%',
+      spellCheck: 'false',
     },
-    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-      borderColor: "white",
-      border: "2px solid white",
-      width: "100%",
-      position: "absolute",
-      right: "0",
-      height: "100%",
-      spellCheck: "false",
+    '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'white',
+      border: '2px solid white',
+      width: '100%',
+      position: 'absolute',
+      right: '0',
+      height: '100%',
+      spellCheck: 'false',
     },
-    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "white",
-      border: "2px solid white",
-      width: "100%",
-      position: "absolute",
-      right: "0",
-      height: "100%",
-      spellCheck: "false",
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'white',
+      border: '2px solid white',
+      width: '100%',
+      position: 'absolute',
+      right: '0',
+      height: '100%',
+      spellCheck: 'false',
     },
   },
 });
 
-function CodeOutput ({ database, renderSchema }) {
-    const classes = styles();
-    return (
-  <div id="codebox">
-    <TextField
-          id="outlined-multiline-static"
-          fullWidth={true}
-          label="Output"
-          multiline
-          rows={Math.floor(window.innerHeight/25.75)}
-          className={classes.root}
-          inputProps={{className: classes.root}}
-          InputLabelProps={{className: classes.root}}
-          defaultValue={renderSchema ? database.completeSchemaString : database.resolvers}
-          variant="outlined"
-        />
-        </div>
-      
-       
-    )
-};
+function CodeOutput({ database, renderSchema }) {
+  const classes = styles();
+  return (
+    <div id="codebox">
+      <TextField
+        id="outlined-multiline-static"
+        fullWidth={true}
+        label="Output"
+        multiline
+        rows={Math.floor(window.innerHeight / 25.75)}
+        className={classes.root}
+        inputProps={{ className: classes.root }}
+        InputLabelProps={{ className: classes.root }}
+        defaultValue={
+          renderSchema ? database.completeSchemaString : database.resolvers
+        }
+        variant="outlined"
+      />
+    </div>
+  );
+}
 
 export default CodeOutput;
