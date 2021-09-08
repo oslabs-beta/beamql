@@ -23,26 +23,6 @@ const styles = {
   },
 };
 
-export default function UriEntry(props) {
-  console.log(props.gTD);
-
-  const classes = useStyles();
-  return (
-    <div id="uri-entry">
-      <form id="uribox" noValidate autoComplete="off">
-        <TextField
-          className={classes.root}
-          id="filled-basic"
-          onBlur={() => props.gTD()}
-          InputProps={{ className: classes.input }}
-          label="Enter database URI"
-          variant="filled"
-        />
-        <Link to="/visualize">
-          <Button className={classes.root} variant="contained" size="small">
-            Submit
-          </Button>
-        </Link>
 
 export default function UriEntry(props) {   
     const classes = useStyles();
