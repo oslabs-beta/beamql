@@ -63,8 +63,8 @@ Live demo [_here_](https://www.beamql.com).
 - Many thanks to OSLabs for accepting us into the tech accelerator and providing amazing support throughout this whole process.
 
 ## Contributors
-[Adam Goodman](https://www.linkedin.com/in/adam-goodman1/)
-[Brian Grosso](https://www.linkedin.com/in/newarkbg/)
-[Eric Askew](https://www.linkedin.com/in/eric-askew-8a91714a/)
-[Mark Liu](https://www.linkedin.com/in/markyliu1/)
+- [Brian Grosso](https://www.linkedin.com/in/newarkbg/)
+- [Eric Askew](https://www.linkedin.com/in/eric-askew-8a91714a/)
+- [Adam Goodman](https://www.linkedin.com/in/adam-goodman1/)
+- [Mark Liu](https://www.linkedin.com/in/markyliu1/)
 
