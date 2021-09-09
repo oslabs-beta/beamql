@@ -1,6 +1,6 @@
 body {
   margin: 0px;
-  background-color: rgb(56, 33, 158);
+  background-color: #7b5ff9;
   // color: black;
   font-family: Noto Sans, 'sans-serif';
   outline: none;
@@ -320,33 +320,33 @@ p {
   font-family: 'Helvetica';
   text-decoration: underline;
 }
-.teampic{
+.teampic {
   border-radius: 100%;
-  border:2px solid white;
+  border: 2px solid white;
 }
-.teampic:hover{
- border:2px solid #48BFE3;
+.teampic:hover {
+  border: 2px solid #48bfe3;
 }
 
-.socials{
+.socials {
   display: flex;
   justify-content: center;
-  font-size: 2.0em;
+  font-size: 2em;
   color: white;
 }
-a:hover{
-  color:#48BFE3;
+a:hover {
+  color: #48bfe3;
 }
-.firstLetter{
-  color:#48BFE3;
+.firstLetter {
+  color: #48bfe3;
   font-weight: bold;
 }
 .fa-github {
-  color:whitesmoke;
+  color: whitesmoke;
   margin: 0 10px 0 10px;
 }
 .fa-linkedin {
-  color:whitesmoke;
+  color: whitesmoke;
   margin: 0 10px 0 10px;
 }
 
@@ -358,7 +358,7 @@ a:hover{
 }
 
 #olCode {
-  list-style-position: inside; 
+  list-style-position: inside;
   padding-left: 0;
 }
 
