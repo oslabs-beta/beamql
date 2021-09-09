@@ -8,6 +8,4 @@ services:
     volumes:
       - .:/usr/src/app
     command: npm test
-volumes:
-    node_modules:
 # currently unused, waiting for test suites
