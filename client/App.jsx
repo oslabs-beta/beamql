@@ -45,14 +45,10 @@ class App extends Component {
       .then((response) => {
         // handle success
         document.getElementById('filled-basic').value = '';
-        console.log('RESPONSE.DATA', response.data);
-        console.log('THIS', this);
-        this.setState((state) => {
-          return { ...state, database: response.data };
+        this.setState(state => {
+          return {...state, database: response.data }
         });
-        console.log('NEW STATE', this.state.database);
-        document.getElementById('outlined-multiline-static').value =
-          this.state.database.completeSchemaString;
+        document.getElementById('outlined-multiline-static').value = this.state.database.completeSchemaString;
       })
       .catch(function (error) {
         // handle error
@@ -84,7 +80,7 @@ class App extends Component {
             <img id="logo" src="./assets/logo.png" />
           </Link>
           <div className="topButtons">
-            <Link to="/signup">
+            {/* <Link to="/signup">
               <button
                 className="signup-btn"
                 // onClick={(event) => {
@@ -95,7 +91,7 @@ class App extends Component {
                 {' '}
                 Sandbox{' '}
               </button>
-            </Link>
+            </Link> */}
 
             <Link to="/docs">
               <button className="login-btn"> Docs </button>

@@ -1,0 +1,11 @@
+version: "3.0"  # optional since v1.27.0
+services:
+  dev:
+    image: beamcorp/bql-dev
+    container_name: bql-dev
+    ports: 
+      - 8080:8080
+    volumes: 
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run dev

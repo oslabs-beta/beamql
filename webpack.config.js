@@ -1,9 +1,9 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: ['regenerator-runtime/runtime.js', './client/index.js'],
@@ -14,10 +14,11 @@ module.exports = {
   mode: process.env.NODE_ENV,
   devServer: {
     historyApiFallback: true,
-    host: 'localhost',
+    host: '0.0.0.0', // '0.0.0.0' FOR DOCKER NOT localhost
     port: 8080,
     inline: true,
     compress: true,
+    hot: true,
     publicPath: '/',
     proxy: {
       '/': 'http://localhost:3000',
@@ -29,18 +30,20 @@ module.exports = {
       //   proxyReq.setHeader('Cookie', cookie);
       //   },
       // }
+      
     },
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Production',
-      template: 'index.html',
-    }),
-    new MiniCssExtractPlugin(),
+      template: 'index.html'
+    }), 
+    new MiniCssExtractPlugin(), 
     new CopyPlugin({
-      patterns: [{ from: 'assets', to: 'assets' }],
-    }),
-  ],
+    patterns: [
+      { from: "assets", to: "assets" },
+    ],
+  }),],
   module: {
     rules: [
       {
@@ -54,15 +57,13 @@ module.exports = {
           },
         },
       },
-      {},
       {
         test: /\.s[ac]ss$/i,
+        exclude: /(node_modules)/,
         use: [
-          process.env.NODE_ENV === 'production'
-            ? MiniCssExtractPlugin.loader
-            : 'style-loader',
+          process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader',
-          'sass-loader',
+          'sass-loader'
         ],
       },
     ],
