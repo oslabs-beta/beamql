@@ -8,7 +8,7 @@ services:
     volumes:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
-    command: npm run test
+    command: npm run test:ci
 volumes:
     node_modules:
 # currently unused, waiting for test suites
