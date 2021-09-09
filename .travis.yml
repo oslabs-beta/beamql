@@ -15,5 +15,5 @@ deploy:
   provider: script
   cleanup: true #skip_cleanup is deprecated, use cleanup instead
   on:
-    branch: dev
+    branch: tests
   script: sh $TRAVIS_BUILD_DIR/scripts/deploy.sh
