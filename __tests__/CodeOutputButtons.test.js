@@ -1,27 +1,28 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from 'react';
+import App from '../client/App.jsx';
 import '@testing-library/dom';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
-import CodeOutputButtons from './client/Components/CodeOutputButtons';
+import CodeOutputButtons, {
+  Resolvers,
+} from '../client/Components/CodeOutputButtons.jsx';
+import UriEntry from '../client/Components/UriEntry.jsx';
+import { Button } from '@material-ui/core';
+import userEvent from '@testing-library/user-event';
 
-// test('CodeOutput', () => {
-//   expect(CodeOutput()).toBe();
-// });
+xdescribe('testing CodeOutputButton functions', () => {
+  test('onclick button changes render from true to false', function () {
+    render(<CodeOutputButtons />);
+    //screen.debug();
+    //const { getByTestId } = render(<button id="selection" />);
 
-test('loads and displays Buttons', async () => {
-  render(<CodeOutputButtons/>);
+    const btnIncrement = screen.getByText('Resolvers');
+    // console.log(btnIncrement);
+    userEvent.click(Button, 'btnIncrement');
 
-  fireEvent.click(screen.getByText('Schema'));
-
-  await waitFor(() => screen.getBytext('heading'));
-
-  expect(screen.getByRole('heading')).toHaveTextContent('Schema');
-  expect(screen.getByRole('button')).toBeDisabled();
+    expect(screen.getByTestId('changeRender')).toHaveTextContent(false);
+  });
 });
-
-// test('handles server error', async () => {
-//   server.use(
-//     rest.get('/greeting', (req, res, ctx) => {
-//       return res(ctx.status(500));
-//     })
-//   );
-// });
