@@ -34,8 +34,6 @@ class App extends Component {
   }
 
   gTD() {
-    console.log('get tabledata invoked');
-    console.log(document.getElementById('filled-basic').value);
     axios
       .post('/api/uri', {
         uri:

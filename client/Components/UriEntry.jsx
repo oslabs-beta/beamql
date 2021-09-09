@@ -53,7 +53,6 @@ export default function UriEntry(props) {
             id="demo-simple-select-filled"
             autoWidth={true}
             value={''}
-            onChange={() => console.log('click')}
             label="Sample DB"
           >
             <Link to="/visualize">
