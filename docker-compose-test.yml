@@ -1,0 +1,13 @@
+version: "3.0"
+services:
+  test:
+    image: beamcorp/bql-dev
+    container_name: bql-test
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run test
+
+# currently unused, waiting for test suites
