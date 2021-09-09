@@ -1,6 +1,6 @@
 # BeamQL
-> Seamlessly visualize your PostgreSQL database and transform your REST API into GraphQL in less than 15 minutes.
-> Live demo [_here_](https://www.beamql.com). 
+Seamlessly visualize your PostgreSQL database and transform your REST API into GraphQL in less than 15 minutes.
+Live demo [_here_](https://www.beamql.com). 
 
 ## Table of Contents
 * [General Info](#general-information)
