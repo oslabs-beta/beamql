@@ -1,8 +1,8 @@
 services:
   - docker
-dist: 
+dist: xenial
 script:
-# - docker-compose -f docker-compose-test.yml up --abort-on-container-exit
+  - docker-compose -f docker-compose-test.yml up --abort-on-container-exit
   - python3 -VV
   - pip -V
 before_deploy:
