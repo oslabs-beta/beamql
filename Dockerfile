@@ -11,4 +11,4 @@ RUN npm run build
 # EXPOSE your server port (3000)
 EXPOSE 3000
 # Create an ENTRYPOINT where you'll run node ./server/server.js
-CMD ["npm", "test"]
+CMD ["npm", "start"]
