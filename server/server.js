@@ -14,11 +14,8 @@ app.use(express.urlencoded({ extended: true }));
  * handle requests for static files
  */
 //app.use(express.static(path.resolve(__dirname, '../client'))); // look over this later
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve(__dirname, '../dist')));
-} else {
-  app.use(express.static(path.resolve(__dirname, '../')));
-}
+if (process.env.NODE_ENV === 'production') app.use(express.static(path.resolve(__dirname, '../dist')));
+else app.use(express.static(path.resolve(__dirname, '../')));
 //  console.log(path.resolve(__dirname, '../client/assets'));
 /**
  * define route handlers
