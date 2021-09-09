@@ -1,7 +1,8 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
@@ -13,9 +14,12 @@ module.exports = {
   mode: process.env.NODE_ENV,
   devServer: {
     historyApiFallback: true,
+    host: '0.0.0.0', // '0.0.0.0' FOR DOCKER NOT localhost
+    port: 8080,
     inline: true,
     compress: true,
-    publicPath: '/dist',
+    hot: true,
+    publicPath: '/',
     proxy: {
       '/': 'http://localhost:3000'
       // '/api/**': {
@@ -29,7 +33,17 @@ module.exports = {
 
     },
   },
-  plugins: [new HtmlWebpackPlugin(), new MiniCssExtractPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Production',
+      template: 'index.html'
+    }), 
+    new MiniCssExtractPlugin(), 
+    new CopyPlugin({
+    patterns: [
+      { from: "assets", to: "assets" },
+    ],
+  }),],
   module: {
     rules: [
       {
@@ -42,20 +56,18 @@ module.exports = {
           },
         },
       },
-
       {
         test: /\.s[ac]ss$/i,
+        exclude: /(node_modules)/,
         use: [
-          process.env.NODE_ENV === 'production'
-            ? MiniCssExtractPlugin.loader
-            : 'style-loader',
+          process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader',
-          'sass-loader',
+          'sass-loader'
         ],
       },
     ],
   },
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
-  },
+  }
 };

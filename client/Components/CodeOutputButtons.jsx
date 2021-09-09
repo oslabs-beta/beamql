@@ -1,42 +1,28 @@
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import React, { Component } from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 
-// const useStyles = makeStyles({
-//     root: {
-//       background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-//       border: 0,
-//       borderRadius: 3,
-//       boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-//       color: 'white',
-//       height: 50,
-//       padding: '30px 30px',
-//     },
-//   });
+function CodeOutputButtons({ database, renderSchema, changeRender }) {
+  return (
+    <div id="Selection">
+      <button id="schemaButton" onClick={() => {
+        changeRender(true);
+        document.getElementById('schemaButton').style.border = '2px solid #00d8ff'
+        document.getElementById('resolversButton').style.border = 'none'
+        document.getElementById('outlined-multiline-static').style.spellCheck = 'false'
+      }}>Schema</button>
+      <button id="resolversButton" onClick={() => {
+        changeRender(false);
+        document.getElementById('schemaButton').style.border = 'none'
+        document.getElementById('resolversButton').style.border = '2px solid #00d8ff'
+        document.getElementById('outlined-multiline-static').style.spellCheck = 'false'
+      }}>Resolvers</button>
+      <button onClick={()=> {
+        document.getElementById("outlined-multiline-static").select();
+        document.execCommand("copy");
+      }}>Copy</button>
+    </div>
+  );
+}
 
-// const styles = makeStyles({
-//     root: {
-//           borderColor: "white",
-//           width: '100%',
-//           position: 'absolute',
-//           right: '0',
-//           height: '50px'
-//     }
-// });
-
-function CodeOutput () {
-    //const classes = styles();
-    //className={classes.root}
-    return (
-        <div id="Selection">
-        
-        <button >Schema</button>
-        <button >Resolver</button>
-        <button >Copy</button>
-
-        </div>
-    )
-};
-
-export default CodeOutput;
+export default CodeOutputButtons;
