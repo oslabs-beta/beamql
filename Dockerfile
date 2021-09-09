@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:14.17.6
 # Set up a WORKDIR for application in the container and set it to /usr/src/app.
 WORKDIR /usr/src/app
 COPY . /usr/src/app
