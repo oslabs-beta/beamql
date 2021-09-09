@@ -2,6 +2,12 @@
   "name": "BeamQL",
   "version": "1.0.0",
   "description": "",
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "\\.(js|jsx)$": "babel-jest"
+    }
+  },
   "main": "./client/index.js",
   "scripts": {
     "start": "NODE_ENV=production nodemon ./server/server.js",
