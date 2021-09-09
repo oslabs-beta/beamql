@@ -8,7 +8,7 @@ function Docs() {
       <div id="docs">
         <div className="step">Documentation</div>
         <br />
-        <b>Beam</b> is an open source tool to make understanding and adding a
+        <b>BeamQL</b> is an open source tool to make understanding and adding a
         GraphQL layer to any REST API as simple as possible.
         <br></br>
         <br></br>
@@ -19,7 +19,7 @@ function Docs() {
         sees it.
         <br></br>
         <br></br>
-        In addition, Beam generates everything you will need (all schema and
+        In addition, BeamQL generates everything you will need (all schema and
         resolvers) to add a GraphQL controller layer to your existing REST API.
         Assuming you are using a common backend framework in Node.js, you simply
         need to copy these two bodies of text into your server/app.js code, and
