@@ -93,6 +93,7 @@ hr {
 #textlink {
   text-decoration: underline;
   color: white;
+  display: inline-block;
 }
 #gif {
   display: flex;
@@ -384,6 +385,9 @@ a:hover{
 #olCode {
   list-style-position: inside; 
   padding-left: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #codeOutputImg {
@@ -393,6 +397,10 @@ a:hover{
   margin-right: auto;
   align-self: center;
   justify-self: center;
+}
+
+a {
+  display: inline-block;
 }
 
 @media only screen and (max-width: 870px) {
