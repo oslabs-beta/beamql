@@ -9,5 +9,6 @@ services:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
     command: npm run test
-
+volumes:
+    node_modules:
 # currently unused, waiting for test suites
