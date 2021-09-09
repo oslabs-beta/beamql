@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 #COPY . /usr/src/app
 # RUN a command to npm install your node_modules in the container
-RUN npm i
+RUN npm ci
 RUN npm run build
 # RUN a command to build your application in the container
 # EXPOSE your server port (3000)
