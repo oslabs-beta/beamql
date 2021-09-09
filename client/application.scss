@@ -48,12 +48,35 @@ hr {
 
 #docs {
   color: white;
+  display: flex;
+  flex-direction: column;
   padding: 30px;
   text-decoration: none;
-  width: 40vw;
-  position: absolute;
-  margin-left: 20px;
+  width: 70vw;
+  margin-left: auto;
   margin-right: auto;
+}
+
+#topLeftDocs {
+  width: 40vh;
+}
+
+#docsTop {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  padding: 30px;
+  text-decoration: none;
+  width: 90vw;
+}
+
+#docsBot {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  padding: 30px;
+  text-decoration: none;
+  width: 90vw;
 }
 
 #docsRight {
@@ -286,6 +309,8 @@ textarea {
 }
 #team {
   display: flex;
+  flex-wrap: wrap;
+  min-width: 500px;
   justify-content: space-evenly;
   margin-left: auto;
   margin-right: auto;
@@ -293,23 +318,22 @@ textarea {
 }
 #Brian {
   font-size: large;
-
-  width: 20%;
+  margin-bottom: 30px;
   text-align: center;
 }
 #Eric {
   font-size: large;
-  width: 20%;
+  margin-bottom: 30px;
   text-align: center;
 }
 #Adam {
   font-size: large;
-  width: 20%;
+  margin-bottom: 30px;
   text-align: center;
 }
 #Marc {
   font-size: large;
-  width: 20%;
+  margin-bottom: 30px;
   text-align: center;
 }
 h2 {
@@ -369,4 +393,39 @@ a:hover{
   margin-right: auto;
   align-self: center;
   justify-self: center;
+}
+
+@media only screen and (max-width: 870px) {
+  #uri-entry {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #logo {
+    position: static;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .topButtons {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .topButtons button {
+    min-width: 40px;
+  }
+
+  #smallWidthFlex {
+    display: flex;
+    flex-direction: column;
+  }
 }

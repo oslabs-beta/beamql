@@ -29,7 +29,7 @@ export default function UriEntry(props) {
     return (
         <div id='uri-entry'>
         <form  id="uribox" noValidate autoComplete="off">
-        <TextField className={classes.root} id="filled-basic" onBlur={() => props.gTD()} InputProps={{className: classes.input}} label="Enter database URI" variant='filled'/>
+        <TextField className={classes.root} id="filled-basic" onBlur={() => props.gTD()} InputProps={{className: classes.input}} label={ window.innerWidth > 500 ? "Enter database URI" : "DB URI"} variant='filled'/>
             <Link to='/visualize' >
             <Button className={classes.root}  variant="contained"  size="small">
                 Submit

@@ -73,40 +73,42 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="header">
-          <Link to="/">
-            <img id="logo" src="./assets/logo.png" />
-          </Link>
-          <div className="topButtons">
-            {/* <Link to="/signup">
-              <button
-                className="signup-btn"
-                // onClick={(event) => {
-                //   console.log('trying to send you to singup');
-                //   console.log(this.state);
-                //   this.setState({ currentpage: 'signup' });}}
-              >
-                {' '}
-                Sandbox{' '}
-              </button>
-            </Link> */}
-
-            <Link to="/docs">
-              <button className="login-btn"> Docs </button>
+        
+          <div className="header">
+            <Link to="/">
+              <img id="logo" src="./assets/logo.png" />
             </Link>
+            <div id="smallWidthFlex">
+            <div className="topButtons">
+              {/* <Link to="/signup">
+                <button
+                  className="signup-btn"
+                  // onClick={(event) => {
+                  //   console.log('trying to send you to singup');
+                  //   console.log(this.state);
+                  //   this.setState({ currentpage: 'signup' });}}
+                >
+                  {' '}
+                  Sandbox{' '}
+                </button>
+              </Link> */}
 
-            <a href="https://github.com/oslabs-beta/beam-corp" target="_blank" rel="noreferrer">
-              <button>Github</button>
-            </a>
-            <Link to="/team">
-              <button>Team</button>
-            </Link>
+              <Link to="/docs">
+                <button className="login-btn"> Docs </button>
+              </Link>
+
+              <a href="https://github.com/oslabs-beta/beam-corp" target="_blank" rel="noreferrer">
+                <button>GitHub</button>
+              </a>
+              <Link to="/team">
+                <button>Team</button>
+              </Link>
+            </div>
+            <ThemeProvider theme={theme}>
+              <UriEntry gTD={this.gTD} />
+            </ThemeProvider>
           </div>
-          <ThemeProvider theme={theme}>
-            <UriEntry gTD={this.gTD} />
-          </ThemeProvider>
         </div>
-
         <Switch>
           <Route exact path="/">
             <img id="gif" src="./assets/getstarted.gif" alt="Get Started" />
@@ -114,12 +116,6 @@ class App extends Component {
           </Route>
           <Route exact path="/docs">
             <Docs />
-            <img
-              id="gif"
-              style={{ marginRight: '30px', width: '50vw' }}
-              src="./assets/getstarted.gif"
-              alt="Get Started"
-            />
           </Route>
           <Route path="/visualize">
             <div id="OutputBox">

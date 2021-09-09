@@ -98,7 +98,7 @@ function Team() {
         <div className="socials">
           <a href="https://github.com/markyliu" target="_blank" rel="noreferrer">
             {/* Github */}
-            <i class="fab fa-github"></i>
+            <i className="fab fa-github"></i>
           </a>
 
           <br />
