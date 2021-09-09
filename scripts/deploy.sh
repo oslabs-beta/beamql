@@ -7,7 +7,6 @@ aws configure set default.region us-east-1
 eval $(aws ecr get-login --no-include-email --region us-east-1)
 # Build docker image based on our production Dockerfile
 docker build -t beamcorp/bql .
-echo "testing line 10 okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
 # tag the image with the Travis-CI SHA
 docker tag beamcorp/bql:latest 746748738687.dkr.ecr.us-east-1.amazonaws.com/bql:$TRAVIS_COMMIT
 # Push built image to ECS
