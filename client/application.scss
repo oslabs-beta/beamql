@@ -56,6 +56,17 @@ hr {
   margin-right: auto;
 }
 
+#docsRight {
+  position: absolute;
+  color: white;
+  padding: 30px;
+  text-decoration: none;
+  width: 46vw;
+  top: 74vh;
+  margin-left: auto;
+  right: 20px;
+}
+
 #textlink {
   text-decoration: underline;
   color: white;
@@ -337,4 +348,25 @@ a:hover{
 .fa-linkedin {
   color:whitesmoke;
   margin: 0 10px 0 10px;
+}
+
+.step {
+  font-size: 1.5em;
+  text-decoration: underline;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#olCode {
+  list-style-position: inside; 
+  padding-left: 0;
+}
+
+#codeOutputImg {
+  border: 2px solid white;
+  width: 40vw;
+  margin-left: auto;
+  margin-right: auto;
+  align-self: center;
+  justify-self: center;
 }
