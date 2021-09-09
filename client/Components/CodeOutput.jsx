@@ -416,9 +416,7 @@ function CodeOutput({ database, renderSchema }) {
         className={classes.root}
         inputProps={{ className: classes.root }}
         InputLabelProps={{ className: classes.root }}
-        defaultValue={
-          renderSchema ? database.completeSchemaString : database.resolvers
-        }
+        defaultValue={database.completeSchemaString}
         variant="outlined"
       />
     </div>

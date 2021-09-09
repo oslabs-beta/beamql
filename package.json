@@ -13,7 +13,7 @@
     "start": "NODE_ENV=production nodemon ./server/server.js",
     "build": "NODE_ENV=production webpack",
     "dev": "NODE_ENV=development node ./server/server.js & NODE_ENV=development webpack serve",
-    "test": "jest --verbose ./__tests__/App.test.js "
+    "test": "jest --verbose ./__tests__/App.test.js ./__tests__/CodeOutput.test.js ./__tests__/CodeOutputButtons.test.js "
   },
   "nodemonConfig": {
     "ignore": [
@@ -50,9 +50,10 @@
     "@babel/plugin-syntax-jsx": "^7.14.5",
     "@babel/preset-env": "^7.14.8",
     "@babel/preset-react": "^7.14.5",
-    "@testing-library/dom": "^8.2.0",
+    "@testing-library/dom": "^8.3.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
     "@types/regenerator-runtime": "^0.13.1",
     "babel-jest": "^27.1.1",
     "babel-loader": "^8.2.2",

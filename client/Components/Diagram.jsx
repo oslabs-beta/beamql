@@ -839,7 +839,7 @@ const CustomNodeComponent = ({ data }) => {
   let count = 0;
   let keyNum = 0;
   return (
-    <div style={customNodeStyles}>
+    <div data-testid="NodeTest" style={customNodeStyles}>
       <div className="node-key">{data.key}</div>
       <hr />
       {data.pk ? (
