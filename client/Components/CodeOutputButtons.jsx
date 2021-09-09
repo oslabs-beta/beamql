@@ -9,13 +9,13 @@ function CodeOutputButtons({ database, renderSchema, changeRender }) {
         changeRender(true);
         document.getElementById('schemaButton').style.border = '2px solid #00d8ff'
         document.getElementById('resolversButton').style.border = 'none'
-        document.getElementById('outlined-multiline-static').style.spelllCheck = 'false'
+        document.getElementById('outlined-multiline-static').style.spellCheck = 'false'
       }}>Schema</button>
       <button id="resolversButton" onClick={() => {
         changeRender(false);
         document.getElementById('schemaButton').style.border = 'none'
         document.getElementById('resolversButton').style.border = '2px solid #00d8ff'
-        document.getElementById('outlined-multiline-static').style.spelllCheck = 'false'
+        document.getElementById('outlined-multiline-static').style.spellCheck = 'false'
       }}>Resolvers</button>
       <button onClick={()=> {
         document.getElementById("outlined-multiline-static").select();
