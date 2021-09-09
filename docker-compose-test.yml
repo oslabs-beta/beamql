@@ -1,7 +1,7 @@
 version: "3.0"
 services:
   test:
-    image: beamcorp/bql-dev
+    image: beamcorp/bql
     container_name: bql-test
     ports:
       - 3000:3000
