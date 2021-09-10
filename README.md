@@ -1,6 +1,6 @@
 # BeamQL
 Seamlessly visualize your PostgreSQL database and transform your REST API into GraphQL in less than 15 minutes.
-Visit the tool [here](https://www.beamql.com). 
+Live demo, docs, and more info [_here_](https://www.beamql.com). 
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -20,12 +20,12 @@ Visit the tool [here](https://www.beamql.com).
 
 
 ## Technologies Used
-- React.js (React Hooks) - version 17.0.2
-- React-flow-renderer - version 5.2.0
-- axios - version 0.21.1
-- Express - version 4.17.1
-- jest - version 27.1.0
-- supertest - version 6.1.6
+- React.js (React Hooks) - v17.0.2
+- React-flow-renderer - v5.2.0
+- Node.js - v14.17.6
+- Express - v4.17.1
+- jest - v27.1.0
+- supertest - v6.1.6
 - Docker
 - AWS
 - Travis.ci
@@ -40,7 +40,7 @@ Visit the tool [here](https://www.beamql.com).
 
 ## Screenshots
 ![Example screenshot](./assets/getstarted.gif)
-
+<!-- If you have screenshots you'd like to share, include them here. -->
 
 
 
@@ -54,13 +54,13 @@ Visit the tool [here](https://www.beamql.com).
 
 
 ## To Do
-- Convert to typescript
-- Add support for all PostgreSQL data types
-- Integrate GraphiQL so user's can test their endpoints with the generated schema and resolvers
+- Migrate codebase to TypeScript!
+- Add support for every single SQL data type, options for custom types in GraphQL
+- Integrate [GraphiQL](https://github.com/graphql/graphiql) so users can test their endpoints with the generated schema and resolvers
 
 
 ## Acknowledgements
-- Many thanks to OSLabs for accepting us into the tech accelerator and providing amazing support throughout this whole process.
+- Many thanks to the tech accelerator [Open Source Labs](https://opensourcelabs.io/) for their continued support and sponsorship throughout this whole process.
 
 ## Contributors
 - [Brian Grosso](https://github.com/modelB) | [LinkedIn](https://www.linkedin.com/in/newarkbg/)
