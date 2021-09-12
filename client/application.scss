@@ -38,8 +38,8 @@ hr {
 
 .topButtons {
   display: flex;
-  height: 100px;
-  align-items: center;
+  height: 60px;
+  align-items: flex-start;
   justify-content: flex-end;
   margin: 0;
   margin-right: 20px;
@@ -139,7 +139,7 @@ hr {
   justify-content: center;
   width: 20%;
   left: 70px;
-  top: 205px;
+  top: 195px;
 }
 
 #Selection button {
@@ -170,7 +170,7 @@ hr {
 #codebox {
   display: flex;
   position: absolute;
-  top: 217px;
+  top: 205px;
   width: 23%;
   height: auto;
   left: 10px;
@@ -437,11 +437,11 @@ a {
     flex-direction: column;
   }
   #codebox {
-    top: 240px;
+    top: 300px;
   }
 
   #Selection {
-    top: 223px;
+    top: 220px;
   }
 }
 
@@ -451,6 +451,6 @@ a {
   }
 
   #Selection {
-    top: 223px;
+    top: 235px;
   }
 }
