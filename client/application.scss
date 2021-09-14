@@ -139,7 +139,7 @@ hr {
   justify-content: center;
   width: 20%;
   left: 70px;
-  top: 195px;
+  top: 215px;
 }
 
 #Selection button {
@@ -170,7 +170,7 @@ hr {
 #codebox {
   display: flex;
   position: absolute;
-  top: 205px;
+  top: 225px;
   width: 23%;
   height: auto;
   left: 10px;
@@ -437,17 +437,20 @@ a {
     flex-direction: column;
   }
   #codebox {
-    top: 300px;
+    top: 225px;
+    display: none;
   }
 
   #Selection {
-    top: 220px;
+    top: 215px;
+    display: none;
   }
 }
 
 @media (max-width: 500px) {
   #codebox {
     top: 240px;
+    display: none;
   }
 
   #Selection {
