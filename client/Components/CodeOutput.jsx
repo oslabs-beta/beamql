@@ -46,7 +46,7 @@ function CodeOutput({ database, renderSchema }) {
         fullWidth={true}
         label="Output"
         multiline
-        rows={Math.floor(window.innerHeight / 25.75)}
+        rows={Math.floor(window.innerHeight / 28.2)}
         className={classes.root}
         inputProps={{ className: classes.root }}
         InputLabelProps={{ className: classes.root }}

@@ -403,7 +403,7 @@ a {
   display: inline-block;
 }
 
-@media only screen and (max-width: 870px) {
+@media (max-width: 870px) {
   #uri-entry {
     position: static;
     display: flex;
@@ -449,11 +449,11 @@ a {
 
 @media (max-width: 500px) {
   #codebox {
-    top: 240px;
+    top: 225px;
     display: none;
   }
 
   #Selection {
-    top: 235px;
+    top: 215px;
   }
 }
