@@ -4,11 +4,11 @@ dist: focal
 script:
 # - docker-compose -f docker-compose-test.yml up --abort-on-container-exit
   - python3 -VV
-  - pip -V
+  - pip3 -V
 before_deploy:
-  - python3 -m pip install --upgrade pip
-  - python3 -m pip install --user awscli
-  - python3 -m pip install --user awsebcli
+  - pip3 install --upgrade pip
+  - python3 -m pip3 install --user awscli
+  - python3 -m pip3 install --user awsebcli
 env:
   global: export PATH=$PATH:$HOME/.local/bin
 deploy:
