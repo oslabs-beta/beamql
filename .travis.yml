@@ -6,7 +6,7 @@ script:
   - python3 -VV
   - pip -V
 before_deploy:
-  - pip install --upgrade pip
+  - python3 -m pip install --upgrade pip
   - python3 -m pip install --user awscli
   - python3 -m pip install --user awsebcli
 env:
