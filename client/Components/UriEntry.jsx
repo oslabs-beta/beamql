@@ -26,6 +26,7 @@ const styles = {
 
 export default function UriEntry(props) {   
     const classes = useStyles();
+    console.log('aaaaaaaaaaaaaaaaaa',classes.root)
     return (
         <div id='uri-entry'>
         <form  id="uribox" noValidate autoComplete="off">

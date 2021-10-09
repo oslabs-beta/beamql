@@ -20,33 +20,33 @@ class App extends Component {
     super(props);
     this.state = {
       database: {
-        allTables: {},
+        allTables: {}, // object
 
-        foreignKeys: [],
-        primaryKeys: [],
-        completeSchemaString: ' ',
-        resolvers: ' '
+        foreignKeys: [], // array
+        primaryKeys: [], // array
+        completeSchemaString: ' ', // string
+        resolvers: ' ' // string
       },
-      renderSchema: true,
+      renderSchema: true, // bool
     };
     this.gTD = this.gTD.bind(this);
     this.changeRender = this.changeRender.bind(this);
   }
 
-  gTD() {
+  gTD() { // get Table Data
     axios
       .post('/api/uri', {
         uri:
           document.getElementById('filled-basic').value ||
           'postgres://vdnvhfkq:sYiMTdCmk1vs2br_eUrrmX1unPvfucdW@batyr.db.elephantsql.com/vdnvhfkq',
       })
-      .then((response) => {
+      .then(response => {
         // handle success
-        document.getElementById('filled-basic').value = '';
+        document.getElementById('filled-basic').value = ''; // overwriting
         this.setState(state => {
-          return {...state, database: response.data }
+          return {...state, database: response.data } // object see line 22
         });
-        document.getElementById('outlined-multiline-static').value = this.state.database.completeSchemaString;
+        document.getElementById('outlined-multiline-static').value = this.state.database.completeSchemaString; // string
       })
       .catch(function (error) {
         // handle error
@@ -59,7 +59,7 @@ class App extends Component {
       this.setState(state => {
         return {...state, renderSchema: false}
       })
-      document.getElementById('outlined-multiline-static').value = this.state.database.resolvers;
+      document.getElementById('outlined-multiline-static').value = this.state.database.resolvers; // string
     } else {
       this.setState(state => {
         return {...state, renderSchema: true}
@@ -78,25 +78,11 @@ class App extends Component {
             <img id="logo" src="./assets/logo.png" />
           </Link>
           <div className="topButtons">
-            {/* <Link to="/signup">
-              <button
-                className="signup-btn"
-                // onClick={(event) => {
-                //   console.log('trying to send you to singup');
-                //   console.log(this.state);
-                //   this.setState({ currentpage: 'signup' });}}
-              >
-                {' '}
-                Sandbox{' '}
-              </button>
-            </Link> */}
-
             <Link to="/docs">
               <button className="login-btn"> Docs </button>
             </Link>
-
-            <a href="https://github.com/oslabs-beta/beam-corp" target="_blank" rel="noreferrer">
-              <button>Github</button>
+            <a href="https://github.com/oslabs-beta/beamql" target="_blank" rel="noreferrer">
+              <button>GitHub</button>
             </a>
             <Link to="/team">
               <button>Team</button>
