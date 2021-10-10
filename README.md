@@ -45,7 +45,7 @@ Live demo, docs, and more info [_here_](https://www.beamql.com).
 
 
 ## Usage
-1. Copy your PostgreSQL database URI into [beamql.com](https://www.beamql.com).
+1. Copy your PostgreSQL database URI into [beamQL](https://www.beamql.com).
 2. View and interact with the graphical visualization of the database and use it in API documentation to give users a better understanding of what they are working with.
 3. Open NodeJS backend codebase in a code editor.
 4. Use the schema and resolvers that BeamQL produces with [Apollo Server](https://www.npmjs.com/package/apollo-server-express) or a similar GraphQL server that suits your Node.js server.
