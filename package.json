@@ -4,7 +4,7 @@
     "verbose": true
   },
   "version": "1.0.0",
-  "description": "",
+  "description": "a postgresql interactive visualizer and graphql schema & resolver generator",
   "main": "./client/index.js",
   "scripts": {
     "start": "NODE_ENV=production nodemon ./server/server.js",
